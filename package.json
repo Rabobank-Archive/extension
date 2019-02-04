@@ -1,0 +1,15 @@
+{
+  "name": "azure-devops-web",
+  "version": "1.0.0",
+  "description": "Azure Devops web extensions",
+  "main": "index.js",
+  "scripts": {
+    "build:prod": "npm i && npm prune --production && npm dedupe",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vss-web-extension-sdk": "^5.141.0"
+  }
+}
