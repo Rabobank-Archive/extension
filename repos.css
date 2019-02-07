@@ -1,0 +1,24 @@
+body {
+    overflow: scroll !important;
+}
+
+.info {
+    margin: 1em;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background: whitesmoke;
+}
+
+td {
+    padding: 0.25em 0.5em
+}
