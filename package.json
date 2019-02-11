@@ -4,12 +4,23 @@
   "description": "Azure Devops web extensions",
   "main": "index.js",
   "scripts": {
-    "build:prod": "npm i && npm prune --production && npm dedupe",
+    "build:prod": "npm i && webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "moment": "^2.24.0",
+    "office-ui-fabric-react": "^6.136.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
     "vss-web-extension-sdk": "^5.141.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.6.0",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3"
   }
 }

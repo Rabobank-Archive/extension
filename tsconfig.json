@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "module": "amd",
+        "target": "es5",
+        "sourceMap": true,
+        "moduleResolution": "node",
+        "lib": [
+            "dom",
+            "es2015.promise",
+            "es5"
+        ],
+        "jsx": "react",
+        "types": [
+            "requirejs"
+        ],
+        "typeRoots": [
+            "node_modules/@types"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
