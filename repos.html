@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <script src="lib/VSS.SDK.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script type="text/javascript" src="repos.js"></script>
     <link rel="stylesheet" type="text/css" href="repos.css" />
@@ -17,10 +18,10 @@
     </div>
     <div id="app">
         <table>
-            <thead><th>Repository</th><th>Required Reviewer Policy</th></thead>
+            <thead><th>Repository</th><th>Required Reviewer Policy</th><th>Checked</th></thead>
             <tbody>
                 <tr v-for="report in reports">
-                    <td>{{ report.repository }}</td><td>{{ report.hasRequiredReviewerPolicy }}</td>
+                    <td>{{ report.repository }}</td><td>{{ report.hasRequiredReviewerPolicy }}</td><td>{{ report.date | moment }}</td>
                 </tr>
             </tbody>
         </table>

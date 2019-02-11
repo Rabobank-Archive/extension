@@ -13,6 +13,8 @@ table {
 
 th {
     text-align: left;
+    white-space: nowrap;
+    padding: 0.25em 1em 0 0.5em;
 }
 
 tr:nth-child(even) {
@@ -20,5 +22,10 @@ tr:nth-child(even) {
 }
 
 td {
-    padding: 0.25em 0.5em
+    padding: 0.25em 1em;
+    white-space: nowrap;
+}
+
+td:last-child {
+    width: 100%;
 }

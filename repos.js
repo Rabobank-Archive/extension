@@ -16,7 +16,14 @@ VSS.getService(VSS.ServiceIds.ExtensionData).then(function(dataService) {
         .then(function(doc) { 
             new Vue({
                 el: '#app',
-                data: doc
+                data: {
+                    reports: doc.reports.sort(function(a, b) { return a.repository.localeCompare(b.repository); })
+                },
+                filters: {
+                    moment: function(date) {
+                        return moment(date).fromNow();
+                    }
+                }
             });
         }, function(err) { document.getElementById("error").innerText = err.message; })
         .then(function(){ VSS.notifyLoadSucceeded(); });
