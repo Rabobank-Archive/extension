@@ -20,7 +20,7 @@
             <thead><th>Pipeline</th><th>Release</th><th>Environment</th><th>Date</th><th>Has Manual Approval</th><th>Uses Prod Environment</th></thead>
             <tbody>
                 <tr v-for="report in reports">
-                    <td>{{ report.release }}</td><td>{{ report.environment }}</td><td>{{ report.createdDate | moment }}</td><td>{{ hasApprovalOptions }}</td><td>{{ usesProductionEndpoints }}</td>
+                    <td>{{ report.pipeline }}</td><td>{{ report.release }}</td><td>{{ report.environment }}</td><td>{{ report.createdDate | moment }}</td><td>{{ hasApprovalOptions }}</td><td>{{ usesProductionEndpoints }}</td>
                 </tr>
             </tbody>
         </table>
