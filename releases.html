@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="lib/VSS.SDK.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/javascript" src="releases.js"></script>
+    <link rel="stylesheet" type="text/css" href="compliancyPlugins.css" />
+</head>
+<body>        
+    <div class="info">
+        <h1>Rabobank DevOps Security Blueprint: Releases</h1>
+        <h2>&#9888; This page is work in progress &#9888;</h2>
+        <p>For feedback or questions, please contact the TAS/Proton team.</p>
+
+        <div id="error" class="error"></div>
+    </div>
+    <div id="app">
+        <table>
+            <thead><th>Pipeline</th><th>Release</th><th>Environment</th><th>Date</th><th>Has Manual Approval</th><th>Uses Prod Environment</th></thead>
+            <tbody>
+                <tr v-for="report in reports">
+                    <td>{{ report.release }}</td><td>{{ report.environment }}</td><td>{{ report.createdDate | moment }}</td><td>{{ hasApprovalOptions }}</td><td>{{ usesProductionEndpoints }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
