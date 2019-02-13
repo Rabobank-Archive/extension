@@ -17,7 +17,7 @@ VSS.getService(VSS.ServiceIds.ExtensionData).then(function(dataService) {
             new Vue({
                 el: '#app',
                 data: {
-                    reports: doc.reports.sort(function(a, b) { return a.release.localeCompare(b.release); })
+                    reports: doc.reports
                 },
                 filters: {
                     moment: function(date) {
