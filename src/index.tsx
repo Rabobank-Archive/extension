@@ -4,19 +4,8 @@ import './index.css';
 import { initializeIcons } from '@uifabric/icons';
 import Repositories from './Repositories';
 import Releases from './Releases';
-const VSS = require('vss-web-extension-sdk/lib/VSS.SDK');
 
 initializeIcons();
-
-// only do VSS stuff when running as part of the extension
-if (typeof VSS != 'undefined') {
-    VSS.init({
-        setupModuleLoader: true,
-        explicitNotifyLoaded: false,
-        usePlatformScripts: true,
-        usePlatformStyles: true
-    });
-}
 
 // Not using react router because the paths are incompatible
 // with static hosting on Azure Devops extensions therefore
