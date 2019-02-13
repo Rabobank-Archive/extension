@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom';
 import { DetailsList, IColumn, DetailsListLayoutMode, SelectionMode } from 'office-ui-fabric-react/lib/DetailsList';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 import * as moment from 'moment';
+import { Checkmark } from './components/Checkmark';
 
 export interface IRepositoryReport {
     repository: string,
@@ -42,7 +43,7 @@ export class RepositoryReport extends React.Component<{}, IRepositoryReportState
                 isResizable: true,
                 data: Boolean,
                 onColumnClick: this._onColumnClick,
-                onRender: (item: IRepositoryReport) => { item.hasRequiredReviewerPolicy ? <span>&#x2713;</span> : <span>&#10007;</span>}
+                onRender: (item: IRepositoryReport) => <Checkmark checked={item.hasRequiredReviewerPolicy} />
             },
             {
                 key: 'column3',
