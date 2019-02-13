@@ -2,11 +2,6 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
-    "react-scripts": "2.1.5"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -21,5 +16,19 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "dependencies": {
+    "moment": "^2.24.0",
+    "office-ui-fabric-react": "^6.138.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-scripts": "2.1.5",
+    "vss-web-extension-sdk": "^5.141.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.3",
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "typescript": "^3.3.3"
+  }
 }
