@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import RepositoriesReport from './Repositories';
+import Releases from './Releases';
 
-describe('Repositories', () => {
+describe('Releases', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render((<RepositoriesReport />), div);
+    ReactDOM.render((<Releases />), div);
     ReactDOM.unmountComponentAtNode(div);
   });
 });

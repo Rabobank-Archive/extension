@@ -6,18 +6,22 @@ import moment from 'moment';
 import Checkmark from './components/Checkmark';
 
 interface IReport {
-    repository: string,
-    hasRequiredReviewerPolicy: boolean,
-    date: string
+    pipeline: string,
+    release: string,
+    releaseId: string,
+    environment: string,
+    createdDate: string,
+    hasApprovalOptions: boolean,
+    usesProductionEndpoints: boolean
 }
 
-interface IState {
+interface IReportState {
     reports: IReport[],
     columns: IColumn[],
     error: string
 }
 
-export default class extends React.Component<{}, IState> {
+export default class extends React.Component<{}, IReportState> {
     constructor(props: {}) {
         super(props);
         this.state = {
@@ -25,8 +29,8 @@ export default class extends React.Component<{}, IState> {
             error: '',
             columns: [{
                 key: 'column1',
-                fieldName: 'repository',
-                name: 'Repository',
+                fieldName: 'pipeline',
+                name: 'Pipeline',
                 minWidth: 250,
                 maxWidth: 400,
                 isResizable: true,
@@ -34,23 +38,53 @@ export default class extends React.Component<{}, IState> {
             },
             {
                 key: 'column2',
-                fieldName: 'hasRequiredReviewerPolicy',
-                name: 'Required Reviewer Policy',
+                fieldName: 'release',
+                name: 'Release',
                 minWidth: 50,
                 maxWidth: 250,
                 isResizable: true,
-                data: Boolean,
-                onColumnClick: this._onColumnClick,
-                onRender: (item: IReport) => <Checkmark checked={item.hasRequiredReviewerPolicy} />
+                onColumnClick: this._onColumnClick
             },
             {
                 key: 'column3',
-                fieldName: 'date',
-                name: 'Checked',
+                fieldName: 'environment',
+                name: 'Environment',
                 minWidth: 50,
+                maxWidth: 250,
+                isResizable: true,
+                onColumnClick: this._onColumnClick
+            },
+            {
+                key: 'column4',
+                fieldName: 'createdDate',
+                name: 'Created',
+                minWidth: 50,
+                maxWidth: 100,
                 isResizable: true,
                 onColumnClick: this._onColumnClick,
-                onRender: (item: IReport) => <div>{moment(item.date).fromNow()}</div>
+                onRender: (item: IReport) => <div>{moment(item.createdDate).fromNow()}</div>
+            },
+            {
+                key: 'column5',
+                fieldName: 'hasApprovalOptions',
+                name: 'Approval',
+                minWidth: 50,
+                maxWidth: 50,
+                isResizable: true,
+                data: Boolean,
+                onColumnClick: this._onColumnClick,
+                onRender: (item: IReport) => <Checkmark checked={item.hasApprovalOptions} />
+            },
+            {
+                key: 'column6',
+                fieldName: 'usesProductionEndpoints',
+                name: 'Production Endpoints',
+                minWidth: 50,
+                maxWidth: 50,
+                isResizable: true,
+                data: Boolean,
+                onColumnClick: this._onColumnClick,
+                onRender: (item: IReport) => <Checkmark checked={item.usesProductionEndpoints} />
             }]
         };
     }
@@ -59,7 +93,7 @@ export default class extends React.Component<{}, IState> {
       if (typeof VSS !== 'undefined') {
         VSS.getService<IExtensionDataService>(VSS.ServiceIds.ExtensionData).then((service) => {
             var context = VSS.getWebContext();
-            service.getDocument("GitRepositories", context.project.name)
+            service.getDocument("Releases", context.project.name)
                 .then((doc: { reports: IReport[]}) => this.setState(doc), (err: Error) => this.setState({ error: err.message }))
                 .then(() => VSS.notifyLoadSucceeded());
         });
@@ -116,15 +150,23 @@ export default class extends React.Component<{}, IState> {
 
     private dummyReports(): IReport[] {
       return [{
-          "repository": "investment-application-messages",
-          "hasRequiredReviewerPolicy": true,
-          "date": "2019-02-07T18:30:56.0654773+00:00"
-        },
-        {
-          "repository": "rbo-feature-settings-ked",
-          "hasRequiredReviewerPolicy": true,
-          "date": "2019-02-07T18:30:56.0654773+00:00"
-        }];
+        "release": "Release-200",
+        "environment": "raboweb-test",
+        "releaseId": "2375",
+        "createdDate": "2019-02-12T11:39:12.9157118Z",
+        "usesProductionEndpoints": true,
+        "hasApprovalOptions": false,
+        "pipeline": "TAS Azure DevOps Extensions"
+      },
+      {
+        "release": "Release-199",
+        "environment": "raboweb-test",
+        "releaseId": "2374",
+        "createdDate": "2019-02-12T11:34:18.8188815Z",
+        "usesProductionEndpoints": true,
+        "hasApprovalOptions": false,
+        "pipeline": "TAS Azure DevOps Extensions"
+      }];
     }  
 }
 

@@ -1,4 +1,4 @@
-import { Icon } from 'office-ui-fabric-react/lib';
+import { Icon } from 'office-ui-fabric-react';
 import * as React from 'react'
 
 export interface ICheckmark {
