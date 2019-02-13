@@ -100,8 +100,16 @@ export class RepositoryReport extends React.Component<{}, IRepositoryReportState
     };
     
     private _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boolean): T[] {
-      const key = columnKey as keyof T;
-      return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
+        const key = columnKey as keyof T;
+        return items.slice(0).sort((a: T, b: T) => {
+            let left = a[key];
+            let right = b[key];
+
+            if (typeof left === 'string' && typeof right === 'string') {
+                return left.localeCompare(right) * (isSortedDescending ? 1 : -1);
+            }
+            return ((isSortedDescending ? left < right : left > right) ? 1 : -1)
+        });
     }
 }
 
