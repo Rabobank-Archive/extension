@@ -1,7 +1,7 @@
 import { Icon } from 'office-ui-fabric-react';
 import * as React from 'react'
 
-export interface ICheckmark {
+interface ICheckmark {
     checked: boolean
 }
 
@@ -11,6 +11,8 @@ export default class extends React.Component<ICheckmark, {}> {
     }
 
     public render() {
-        return ( this.props.checked ? <Icon iconName="CheckMark" className="ms-IconExample" /> : <Icon iconName="Cancel" className="ms-IconExample" />)
+        return ( this.props.checked ? 
+            <Icon iconName="CheckMark" className="ms-IconExample" /> : 
+            <Icon iconName="Cancel" className="ms-IconExample" />)
     }
 }
