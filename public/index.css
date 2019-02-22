@@ -1,0 +1,12 @@
+body {
+    overflow: scroll !important;
+    font-family: "Segoe UI VSS (Regular)","Segoe UI","-apple-system",BlinkMacSystemFont,Roboto,"Helvetica Neue",Helvetica,Ubuntu,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 12px;
+}
+
+.logo {
+    position: fixed;
+    right: 2em;
+    top: 2em;
+    height: 2em;
+}

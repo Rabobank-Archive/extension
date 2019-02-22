@@ -1,10 +1,10 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import './index.css';
 import { initializeIcons } from '@uifabric/icons';
 import Repositories from './Repositories';
 import Releases from './Releases';
 
+import './index.css';
 initializeIcons();
 
 // Not using react router because the paths are incompatible

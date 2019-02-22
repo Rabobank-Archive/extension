@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-      <script src="./VSS.SDK.min.js"></script>
+    <script src="./VSS.SDK.min.js"></script>
     <script>
       VSS.init({
           setupModuleLoader: true,
           explicitNotifyLoaded: false,
           usePlatformScripts: true,
-          usePlatformStyles: true
+          usePlatformStyles: false
       });
       </script>
+      <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-
-    <div class="info">
-      <h1>Rabobank DevOps Security Blueprint</h1>
-      <h2>&#9888; This page is work in progress &#9888;</h2>
-      <p>For feedback or questions, please contact the TAS/Proton team.</p>
-      <p>See <a href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Repositories" target="_blank">this</a> page for more information on the <em>how & why</em> of branching policies with Azure Repos.</p>
-  </div>
-
-  <div id="root"></div>
+    <img src="rabobank.png" alt="rabobank logo" class="logo" />
+    <div id="root"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

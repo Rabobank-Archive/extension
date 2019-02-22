@@ -92,7 +92,14 @@ export default class extends React.Component<{}, {}> {
         "pipeline": "TAS Azure DevOps Extensions"
       }];
 
-      return (<Report columns={columns} document="Releases" dummy={dummy} />);
+      return (<div>
+            <div>
+                <h1>Release compliancy</h1>
+                <p>For feedback and questions, please contact the TAS/Proton team. We would ❤ getting in touch on how to improve distinguishing production endpoints!</p>
+                <p>More information on the <a href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Release" target="_blank">how &amp; why</a> of manual approvals and securing service endpoints with Azure Pipelines or <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</a> in general.</p>
+            </div>
+            <Report columns={columns} document="Releases" dummy={dummy} />
+        </div>);
     }  
 }
 

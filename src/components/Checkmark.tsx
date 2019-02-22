@@ -1,5 +1,6 @@
 import { Icon } from 'office-ui-fabric-react';
 import * as React from 'react'
+import './Checkmark.css'
 
 interface ICheckmark {
     checked: boolean

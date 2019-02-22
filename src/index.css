@@ -1,7 +1,8 @@
-body {
-  overflow: scroll !important;
-}
-
 .info {
   margin: 1em;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: 400;
 }

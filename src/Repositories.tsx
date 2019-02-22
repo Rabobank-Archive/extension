@@ -53,7 +53,16 @@ export default class extends React.Component<{}, {}> {
         "date": "2019-02-07T18:30:56.0654773+00:00"
       }];
 
-      return (<Report columns={columns} document="GitRepositories" dummy={dummy}  />)
+      return (<div>
+          <div>
+              <h1>Compliancy</h1>
+              <img src="rabobank.png" alt="rabobank logo" className="logo" />
+              <p>For feedback and questions, please contact the TAS/Proton team.</p>
+              <p>More information on the <a href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Repositories" target="_blank">how &amp; why</a> of branching policies with Azure Repos or <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</a> in general.</p>
+          </div>
+          <hr />
+          <Report columns={columns} document="GitRepositories" dummy={dummy}  />
+        </div>)
     }
 }
 
