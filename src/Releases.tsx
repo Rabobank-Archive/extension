@@ -73,23 +73,23 @@ export default class extends React.Component<{}, {}> {
           onRender: (item: IReport) => <Checkmark checked={item.usesProductionEndpoints} />
       }];
     
-      const dummy =[{
-        "release": "Release-200",
-        "environment": "raboweb-test",
-        "releaseId": "2375",
-        "createdDate": "2019-02-12T11:39:12.9157118Z",
-        "usesProductionEndpoints": true,
-        "hasApprovalOptions": false,
-        "pipeline": "TAS Azure DevOps Extensions"
+      const dummy: IReport[] =[{
+        release: "Release-200",
+        environment: "raboweb-test",
+        releaseId: "2375",
+        createdDate: "2019-02-12T11:39:12.9157118Z",
+        usesProductionEndpoints: true,
+        hasApprovalOptions: false,
+        pipeline: "TAS Azure DevOps Extensions"
       },
       {
-        "release": "Release-199",
-        "environment": "raboweb-test",
-        "releaseId": "2374",
-        "createdDate": "2019-02-12T11:34:18.8188815Z",
-        "usesProductionEndpoints": true,
-        "hasApprovalOptions": false,
-        "pipeline": "TAS Azure DevOps Extensions"
+        release: "Release-199",
+        environment: "raboweb-test",
+        releaseId: "2374",
+        createdDate: "2019-02-12T11:34:18.8188815Z",
+        usesProductionEndpoints: true,
+        hasApprovalOptions: false,
+        pipeline: "TAS Azure DevOps Extensions"
       }];
 
       return (<div>

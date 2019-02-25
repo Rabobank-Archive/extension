@@ -5,6 +5,7 @@ import Repositories from './Repositories';
 import Releases from './Releases';
 
 import './index.css';
+import Builds from './Builds';
 initializeIcons();
 
 // Not using react router because the paths are incompatible
@@ -13,6 +14,9 @@ initializeIcons();
 let element: JSX.Element;
 const report = window.location.hash.substr(1);
 switch (report) {
+    case 'builds':
+        element = (<Builds />);
+        break;
     case 'repositories':
         element = (<Repositories />);
         break;
