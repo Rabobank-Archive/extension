@@ -97,7 +97,7 @@ export default class extends React.Component<{}, {}> {
                 <p>For feedback and questions, please contact the TAS/Proton team. We would ❤ getting in touch on how to improve analyzing builds and stuff!</p>
                 <p>More information on the <a href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Build" target="_blank">how &amp; why</a> of storing artifatcs secure with Azure Pipelines or <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</a> in general.</p>
             </div>
-            <Report columns={columns} document="Builds" dummy={dummy} />
+            <Report columns={columns} document="BuildReports" dummy={dummy} />
         </div>);
     }  
 }
