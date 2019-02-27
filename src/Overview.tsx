@@ -120,13 +120,19 @@ export default class extends React.Component<{}, {}> {
 ];
 
 
-if(typeof VSS !== 'undefined' && VSS.getWebContext().collection.name === 'raboweb')
+if(typeof VSS !== 'undefined')
 {
-    /// We are in production!
-    return (<div>&#9888; This page is work in progress &#9888;</div>)
+    VSS.getService<IExtensionDataService>(VSS.ServiceIds.ExtensionData).then((service) => {
+        var context = VSS.getWebContext();
+        
+        if (context.collection.name === 'raboweb')
+        {
+            // We are in production!
+            return (<div>&#9888; This page is work in progress &#9888;</div>)
+        }
+    })
 }
-else 
-{
+
       return (<div>
           <div>
               <h1>Project compliancy</h1>
@@ -136,7 +142,6 @@ else
           <hr />
           <Report columns={columns} document="CompliancyOverview" dummy={dummy}  />
         </div>)
-    }
+ 
 }
 }
-
