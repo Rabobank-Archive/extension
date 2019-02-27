@@ -36,7 +36,7 @@ export default class<TReport> extends React.Component<IReportProperties<TReport>
                 .then(() => VSS.notifyLoadSucceeded());
         });
       } else {
-        this.setState({ reports: this.props.dummy })
+          this.setState({ reports: this.props.dummy })
       }
     }
 

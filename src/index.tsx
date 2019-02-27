@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { initializeIcons } from '@uifabric/icons';
 import Repositories from './Repositories';
 import Releases from './Releases';
+import Overview from './Overview';
 
 import './index.css';
 import Builds from './Builds';
@@ -22,6 +23,9 @@ switch (report) {
         break;
     case 'releases':
         element = (<Releases />);
+        break;
+        case 'overview':
+        element = (<Overview />);
         break;
     default:
         element = (<span className="error">No report specified.</span>)
