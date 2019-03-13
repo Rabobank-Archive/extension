@@ -4,9 +4,12 @@ import { initializeIcons } from '@uifabric/icons';
 import Repositories from './Repositories';
 import Releases from './Releases';
 import Overview from './Overview';
+import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
+import { loadTheme } from '@uifabric/styling';
 
 import './index.css';
 import Builds from './Builds';
+loadTheme({}); // <- This is a very important line
 initializeIcons();
 
 // Not using react router because the paths are incompatible
@@ -31,4 +34,4 @@ switch (report) {
         element = (<span className="error">No report specified.</span>)
 }
 
-ReactDOM.render(element, document.getElementById('root'));
+ReactDOM.render(<Fabric>{element}</Fabric>, document.getElementById('root'));

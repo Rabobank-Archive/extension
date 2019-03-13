@@ -6,7 +6,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "rm ./build/static/js/runtime~*",
+    "postbuild": "rimraf ./build/static/js/runtime~*",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
