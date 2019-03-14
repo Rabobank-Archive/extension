@@ -17,114 +17,114 @@ export default class extends React.Component<{}, {}> {
                    name: "[Sample Project]\\Rabobank Project Administrators",
                    permissions: [
                     {
-                        Bit: "1:Bypass rules on work item updates",
-                        ActualValue: 1,
-                        ShouldBe: 1,
-                        IsCompliant: true
+                        bit: "1:Bypass rules on work item updates",
+                        actualValue: 1,
+                        shouldBe: 1,
+                        isCompliant: true
                     },
                     {
-                        Bit: "2:Change process of team project.",
-                        ActualValue: 2,
-                        ShouldBe: 2,
-                        IsCompliant: true
+                        bit: "2:Change process of team project.",
+                        actualValue: 2,
+                        shouldBe: 2,
+                        isCompliant: true
                     },
                     {
-                        Bit: "4:Create tag definition ",
-                        ActualValue: 3,
-                        ShouldBe: 3,
-                        IsCompliant: true
+                        bit: "4:Create tag definition ",
+                        actualValue: 3,
+                        shouldBe: 3,
+                        isCompliant: true
                     },
                     {
-                        Bit: "8:Create test runs ",
-                        ActualValue: 4,
-                        ShouldBe: 4,
-                        IsCompliant: true
+                        bit: "8:Create test runs ",
+                        actualValue: 4,
+                        shouldBe: 4,
+                        isCompliant: true
                     },
                        {
-                           Bit: "16: Delete and restore work item",
-                           ActualValue: 1,
-                           ShouldBe: 2,
-                           IsCompliant: false
+                           bit: "16: Delete and restore work item",
+                           actualValue: 1,
+                           shouldBe: 2,
+                           isCompliant: false
                        },
                        {
-                           Bit: "32: Delete shared Analytics views",
-                           ActualValue: 2,
-                           ShouldBe: 1,
-                           IsCompliant: false
+                           bit: "32: Delete shared Analytics views",
+                           actualValue: 2,
+                           shouldBe: 1,
+                           isCompliant: false
                        },
                        {
-                           Bit: "64: Delete team project ",
-                           ActualValue: 0,
-                           ShouldBe: 0,
-                           IsCompliant: true
+                           bit: "64: Delete team project ",
+                           actualValue: 0,
+                           shouldBe: 0,
+                           isCompliant: true
                        },
                        {
-                        Bit: "128: Delete test runs ",
-                        ActualValue: 0,
-                        ShouldBe: 0,
-                        IsCompliant: true
+                        bit: "128: Delete test runs ",
+                        actualValue: 0,
+                        shouldBe: 0,
+                        isCompliant: true
                     },
                     {
-                     Bit: "256: Edit project-level information ",
-                     ActualValue: 0,
-                     ShouldBe: 0,
-                     IsCompliant: true
+                     bit: "256: Edit project-level information ",
+                     actualValue: 0,
+                     shouldBe: 0,
+                     isCompliant: true
                  },
                  {
-                  Bit: "512: Edit shared Analytics views",
-                  ActualValue: 0,
-                  ShouldBe: 0,
-                  IsCompliant: true
+                  bit: "512: Edit shared Analytics views",
+                  actualValue: 0,
+                  shouldBe: 0,
+                  isCompliant: true
               },
               {
-               Bit: "1024: Manage project properties",
-               ActualValue: 0,
-               ShouldBe: 0,
-               IsCompliant: true
+               bit: "1024: Manage project properties",
+               actualValue: 0,
+               shouldBe: 0,
+               isCompliant: true
            },
            {
-            Bit: "2056: Manage test configurations",
-            ActualValue: 0,
-            ShouldBe: 0,
-            IsCompliant: true
+            bit: "2056: Manage test configurations",
+            actualValue: 0,
+            shouldBe: 0,
+            isCompliant: true
         },
         {
-         Bit: "8: Manage test environments",
-         ActualValue: 0,
-         ShouldBe: 0,
-         IsCompliant: true
+         bit: "8: Manage test environments",
+         actualValue: 0,
+         shouldBe: 0,
+         isCompliant: true
      },
      {
-      Bit: "8: Move work items out of this project",
-      ActualValue: 0,
-      ShouldBe: 0,
-      IsCompliant: true
+      bit: "8: Move work items out of this project",
+      actualValue: 0,
+      shouldBe: 0,
+      isCompliant: true
     },
     {
-     Bit: "8: Permanently delete work items",
-     ActualValue: 0,
-     ShouldBe: 0,
-     IsCompliant: true
+     bit: "8: Permanently delete work items",
+     actualValue: 0,
+     shouldBe: 0,
+     isCompliant: true
     },
     ]
                },
                {
                    name: "[Sample Project]\\ Project Administrators",
                    permissions: [                   {
-                    Bit: "9: Delete test runs ",
-                    ActualValue: 0,
-                    ShouldBe: 0,
-                    IsCompliant: true
+                    bit: "9: Delete test runs ",
+                    actualValue: 0,
+                    shouldBe: 0,
+                    isCompliant: true
                 }]
     
                },
                {
                    name: "[Sample Project]\\ Build Administrators",
                    permissions: [                   {
-                    Bit: "10: Delete test runs ",
-                    ActualValue: 0,
-                    ShouldBe: 0,
-                    IsCompliant: true
+                    bit: "10: Delete test runs ",
+                    actualValue: 0,
+                    shouldBe: 0,
+                    isCompliant: true
                 }]
     
                },
@@ -132,20 +132,20 @@ export default class extends React.Component<{}, {}> {
                    name: "[Sample Project]\\ Release Administrators",
                    permissions: [ 
                        {
-                    Bit: "11: Delete test runs ",
-                    ActualValue: 0,
-                    ShouldBe: 0,
-                    IsCompliant: true
+                    bit: "11: Delete test runs ",
+                    actualValue: 0,
+                    shouldBe: 0,
+                    isCompliant: true
                 },         {
-                    Bit: "12: Delete test runs ",
-                    ActualValue: 0,
-                    ShouldBe: 0,
-                    IsCompliant: true
+                    bit: "12: Delete test runs ",
+                    actualValue: 0,
+                    shouldBe: 0,
+                    isCompliant: true
                 },         {
-                    Bit: "13: Delete test runs ",
-                    ActualValue: 0,
-                    ShouldBe: 0,
-                    IsCompliant: true
+                    bit: "13: Delete test runs ",
+                    actualValue: 0,
+                    shouldBe: 0,
+                    isCompliant: true
                 }]
     
                },
@@ -164,10 +164,10 @@ export default class extends React.Component<{}, {}> {
                {
                    name:"[Sample Project]\\Extra test team",
                    permissions: [                   {
-                    Bit: "14: valt onder repositories ",
-                    ActualValue: 0,
-                    ShouldBe: 0,
-                    IsCompliant: true
+                    bit: "14: valt onder repositories ",
+                    actualValue: 0,
+                    shouldBe: 0,
+                    isCompliant: true
                 }]
                }
            ]

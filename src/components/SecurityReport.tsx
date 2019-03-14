@@ -6,10 +6,10 @@ import { IStyle, DetailsList, DetailsListLayoutMode, SelectionMode, GroupedList,
 
 
 export interface IPermission {
-  Bit : string,
-  ActualValue : Number,
-  ShouldBe :Number,
-  IsCompliant : boolean,
+  bit : string,
+  actualValue : Number,
+  shouldBe :Number,
+  isCompliant : boolean,
 }
 
 export interface IApplicationGroup {
@@ -59,7 +59,7 @@ const columns= [{
   minWidth: 100,
   maxWidth: 100,
   isResizable: true,
-  onRender: (item: any) => <Permission value={item.ActualValue}  />
+  onRender: (item: IPermission) => <Permission value={item.actualValue}  />
 
 },
 {
@@ -69,7 +69,7 @@ const columns= [{
   minWidth: 100,
   maxWidth: 100,
   isResizable: true,
-  onRender: (item: any) => <Permission value={item.ShouldBe}  />
+  onRender: (item: IPermission) => <Permission value={item.shouldBe}  />
 },
 {
   key: 'column4',
@@ -78,7 +78,7 @@ const columns= [{
   minWidth: 50,
   maxWidth: 100,
   isResizable: true,
-  onRender: (item: any) => <Checkmark checked={item.IsCompliant}  />
+  onRender: (item: IPermission) => <Checkmark checked={item.isCompliant}  />
 
 }]; 
 
