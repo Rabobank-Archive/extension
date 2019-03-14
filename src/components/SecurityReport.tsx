@@ -46,7 +46,7 @@ const columns= [{
 },
 {
   key: 'column1',
-  fieldName: 'Bit',
+  fieldName: 'bit',
   name: 'Permission description',
   minWidth: 200,
   maxWidth: 500,
@@ -54,7 +54,7 @@ const columns= [{
 },
 {
   key: 'column2',
-  fieldName: 'ActualValue',
+  fieldName: 'actualValue',
   name: 'Actual value',
   minWidth: 100,
   maxWidth: 100,
@@ -64,7 +64,7 @@ const columns= [{
 },
 {
   key: 'column3',
-  fieldName: 'ShouldBe',
+  fieldName: 'shouldBe',
   name: 'Should be',
   minWidth: 100,
   maxWidth: 100,
@@ -73,7 +73,7 @@ const columns= [{
 },
 {
   key: 'column4',
-  fieldName: 'IsCompliant',
+  fieldName: 'isCompliant',
   name: 'Is compliant ?',
   minWidth: 50,
   maxWidth: 100,
@@ -136,6 +136,7 @@ export default class A<TReport> extends React.Component<IReportProperties<TRepor
     
     return (
       <div >
+      <span className="error">{this.state.error}</span>
       <GroupedList 
         items={applicationGroups}
         onRenderCell={this._onRenderCell}
