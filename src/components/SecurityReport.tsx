@@ -107,15 +107,17 @@ export default class A<TReport> extends React.Component<IReportProperties<TRepor
           console.log("collectionname: " + context.collection.name);
 
           service.getDocument(this.props.document, context.project.name)
-              .then((doc: { namespaces: INamespace[]}) => this.setState(doc), (err: Error) => this.setState({ error: err.message }))
-              .then(() => VSS.notifyLoadSucceeded());
+              .then((doc: { namespaces: INamespace[]}) => 
+              this.setState({ namespaces: doc.namespaces, groups: this._createNamespaces(doc.namespaces)}), 
+              (err: Error) => this.setState({ error: err.message }))
+              .then(() => VSS.notifyLoadSucceeded()).then(() => console.log('everything done now :D'));
+              
       });
     } else {
         console.log('set dummy data')
         this.setState({ namespaces: this.props.dummy, groups: this._createNamespaces(this.props.dummy) })
    }
   }
-
 
   public render(): JSX.Element {
 
@@ -170,7 +172,33 @@ export default class A<TReport> extends React.Component<IReportProperties<TRepor
   </div> );
   }
 
-private static _createApplicationGroups( groups :IApplicationGroup[], startIndex: number, isCollapsed?:boolean)
+
+ _createNamespaces( namespaces: INamespace[], level = 0, isCollapsed?:boolean)
+:IGroup[] {
+
+let counter = 0;
+
+return namespaces.map(function (value, index) {
+  
+  let size = value.applicationGroups.length;
+  counter = counter + size;
+  let childGroups = A._createApplicationGroups(value.applicationGroups, counter - size);
+
+  return {
+        count: size,
+        key: 'namespace_' + index,
+        name: value.name,
+        startIndex: counter,
+        level: level,
+        isCollapsed: isCollapsed,
+        children: childGroups
+    };
+});
+}
+
+
+
+  public static _createApplicationGroups( groups :IApplicationGroup[], startIndex: number, isCollapsed?:boolean)
 :IGroup[] {
 
 
@@ -191,24 +219,4 @@ return groups.map(function (value, index) {
 });
 }
 
-private _createNamespaces( namespaces: INamespace[], level = 0, isCollapsed?:boolean)
-:IGroup[] {
-
-let counter = 0;
-
-return namespaces.map(function (value, index) {
-  
-  let size = value.applicationGroups.length;
-  counter = counter + size;
-  return {
-        count: size,
-        key: 'namespace_' + index,
-        name: value.name,
-        startIndex: counter,
-        level: level,
-        isCollapsed: isCollapsed,
-        children: A._createApplicationGroups(value.applicationGroups, counter - size)
-    };
-});
-}
 }
