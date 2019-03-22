@@ -47,7 +47,7 @@ export default class<TReport> extends React.Component<IReportProperties<TReport>
                 <DetailsList 
                     items={this.state.reports} 
                     columns={this.state.columns} 
-                    layoutMode={DetailsListLayoutMode.justified} 
+                    layoutMode={DetailsListLayoutMode.fixedColumns} 
                     selectionMode={SelectionMode.none} />
             </div>
         )

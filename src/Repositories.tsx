@@ -20,7 +20,7 @@ export default class extends React.Component<{}, {}> {
           fieldName: 'repository',
           name: 'Repository',
           minWidth: 250,
-          maxWidth: 400,
+          maxWidth: 250,
           isResizable: true,
       },
       {
@@ -28,7 +28,7 @@ export default class extends React.Component<{}, {}> {
           fieldName: 'hasRequiredReviewerPolicy',
           name: 'Required Reviewer Policy',
           minWidth: 50,
-          maxWidth: 250,
+          maxWidth: 200,
           isResizable: true,
           data: Boolean,
           onRender: (item: IReport) => <Checkmark checked={item.hasRequiredReviewerPolicy} />
@@ -37,7 +37,7 @@ export default class extends React.Component<{}, {}> {
           key: 'column3',
           fieldName: 'date',
           name: 'Checked',
-          minWidth: 50,
+          minWidth: 100,
           isResizable: true,
           onRender: (item: IReport) => <div>{moment(item.date).fromNow()}</div>
       }];

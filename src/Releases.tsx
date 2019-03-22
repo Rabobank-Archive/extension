@@ -2,6 +2,7 @@ import * as React from 'react';
 import moment from 'moment';
 import Checkmark from './components/Checkmark';
 import Report from './components/Report';
+import { IColumn } from 'office-ui-fabric-react';
 
 interface IReport {
     pipeline: string,
@@ -10,7 +11,8 @@ interface IReport {
     environment: string,
     createdDate: string,
     hasApprovalOptions: boolean,
-    usesProductionEndpoints: boolean
+    usesProductionEndpoints: boolean,
+    hasBranchFilterForAllArtifacts: boolean
 }
 
 export default class extends React.Component<{}, {}> {
@@ -19,12 +21,12 @@ export default class extends React.Component<{}, {}> {
     }
     
     render() {
-      const columns= [{
+      const columns : IColumn[] = [{
           key: 'column1',
           fieldName: 'pipeline',
           name: 'Pipeline',
           minWidth: 250,
-          maxWidth: 400,
+          maxWidth: 250,
           isResizable: true,
       },
       {
@@ -32,7 +34,7 @@ export default class extends React.Component<{}, {}> {
           fieldName: 'release',
           name: 'Release',
           minWidth: 50,
-          maxWidth: 250,
+          maxWidth: 150,
           isResizable: true,
       },
       {
@@ -40,7 +42,7 @@ export default class extends React.Component<{}, {}> {
           fieldName: 'environment',
           name: 'Environment',
           minWidth: 50,
-          maxWidth: 250,
+          maxWidth: 150,
           isResizable: true,
       },
       {
@@ -53,24 +55,41 @@ export default class extends React.Component<{}, {}> {
           onRender: (item: IReport) => <div>{moment(item.createdDate).fromNow()}</div>
       },
       {
+          key: 'column6',
+          fieldName: 'usesProductionEndpoints',
+          name: 'Production Endpoints',
+          minWidth: 125,
+          maxWidth: 125,
+          headerClassName: 'center',
+          className: 'center',
+          isResizable: true,
+          data: Boolean,
+          isMultiline: true,
+          onRender: (item: IReport) => <Checkmark checked={item.usesProductionEndpoints} />
+      },
+      {
           key: 'column5',
           fieldName: 'hasApprovalOptions',
           name: 'Approval',
           minWidth: 50,
           maxWidth: 50,
+          headerClassName: 'center',
+          className: 'center',
           isResizable: true,
           data: Boolean,
           onRender: (item: IReport) => <Checkmark checked={item.hasApprovalOptions} />
       },
       {
-          key: 'column6',
-          fieldName: 'usesProductionEndpoints',
-          name: 'Production Endpoints',
-          minWidth: 50,
-          maxWidth: 50,
+          key: 'column7',
+          fieldName: 'hasBranchFilterForAllArtifacts',
+          name: 'Branch Filters',
+          minWidth: 100,
+          maxWidth: 100,
+          headerClassName: 'center',
+          className: 'center',
           isResizable: true,
           data: Boolean,
-          onRender: (item: IReport) => <Checkmark checked={item.usesProductionEndpoints} />
+          onRender: (item: IReport) => <Checkmark checked={item.hasBranchFilterForAllArtifacts} />
       }];
     
       const dummy: IReport[] =[{
@@ -80,7 +99,8 @@ export default class extends React.Component<{}, {}> {
         createdDate: "2019-02-12T11:39:12.9157118Z",
         usesProductionEndpoints: true,
         hasApprovalOptions: false,
-        pipeline: "TAS Azure DevOps Extensions"
+        pipeline: "TAS Azure DevOps Extensions",
+        hasBranchFilterForAllArtifacts: true
       },
       {
         release: "Release-199",
@@ -89,7 +109,8 @@ export default class extends React.Component<{}, {}> {
         createdDate: "2019-02-12T11:34:18.8188815Z",
         usesProductionEndpoints: true,
         hasApprovalOptions: false,
-        pipeline: "TAS Azure DevOps Extensions"
+        pipeline: "TAS Azure DevOps Extensions",
+        hasBranchFilterForAllArtifacts: false
       }];
 
       return (<div>
