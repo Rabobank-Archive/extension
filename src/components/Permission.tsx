@@ -23,7 +23,7 @@ switch (this.props.value)
         text = "Deny";
         break;
     case 3:
-        text = "Allow (Inhertied)";
+        text = "Allow (Inherited)";
         break;
     case 4:
         text = "Deny (Inherited)";

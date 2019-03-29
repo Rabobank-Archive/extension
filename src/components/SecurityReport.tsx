@@ -1,9 +1,14 @@
- import * as React from 'react';
+import * as React from 'react';
 import Permission from './Permission';
 import Checkmark from './Checkmark';
 
-import { IStyle, DetailsList, DetailsListLayoutMode, SelectionMode, GroupedList, IGroup, IGroupDividerProps, IRenderFunction, IGroupHeaderProps} from 'office-ui-fabric-react';
+import { DetailsList, DetailsListLayoutMode, SelectionMode, GroupedList, IGroup, IRenderFunction, IGroupHeaderProps, Stack} from 'office-ui-fabric-react';
+import { getTheme, mergeStyleSets, IRawStyle } from 'office-ui-fabric-react/lib/Styling';
 
+
+interface Compliancy {
+  isCompliant?: boolean
+}
 
 export interface IPermission {
   bit : string,
@@ -14,12 +19,14 @@ export interface IPermission {
 
 export interface IApplicationGroup {
   name: string,
+  isCompliant?: boolean,
   permissions: IPermission[],
 }
 
 export interface INamespace {
   key: string,
   name: string,
+  isCompliant?: boolean,
   description: string,
   applicationGroups: IApplicationGroup[],
 } 
@@ -34,7 +41,6 @@ interface IState<TReport> {
   error: string,
   groups: IGroup[],
 }
-
 
 const columns= [{
   key: 'column0',
@@ -143,24 +149,50 @@ export default class A<TReport> extends React.Component<IReportProperties<TRepor
         groups={this.state.groups}
         groupProps={ {
           onRenderHeader: this.onRenderHeader,
-          showEmptyGroups: true,
+          showEmptyGroups: true,   
         } }
         />
         </div>
     );
   }
 
-  private onRenderHeader(props?:IGroupDividerProps,defaultRender?:IRenderFunction<IGroupHeaderProps>) {
+  private onRenderHeader(props?:IGroupHeaderProps,defaultRender?:IRenderFunction<IGroupHeaderProps>) {
 
-    const headerCountStyle:IStyle = { display: 'none' };
+    if(!props){
+      return <div></div>;
+    }
+
     return (
-      <span>
-        {defaultRender? 
-          defaultRender({...props, styles: {headerCount: headerCountStyle  }}): 
-        '' }
-      </span>
-    );
+       <div>
+         {defaultRender? 
+         defaultRender({...props, 
+          onRenderTitle: A._onRenderTitle
+        }): '' }
+       </div>
+    )
 }
+
+private static _onRenderTitle = (props?: IGroupHeaderProps): JSX.Element | null => {
+  const { group } = props!;
+  if (!group) {
+    return null;
+  }
+  
+  if((group.data as Compliancy).isCompliant !== undefined){
+    return (
+      <Stack horizontal disableShrink>
+      <span>{group.name}</span>
+        <Stack.Item align="end" >
+        <Checkmark checked = {(group.data as Compliancy).isCompliant! } ></Checkmark>
+          </Stack.Item>
+      </Stack>)
+  }
+  return (
+    <div >
+      <span>{group.name}</span>
+    </div>
+  );
+};
 
   private _onRenderCell(nestingDepth?: number, item?: any, itemIndex?: number): JSX.Element {
     return (<div >
@@ -179,39 +211,46 @@ export default class A<TReport> extends React.Component<IReportProperties<TRepor
 
 let counter = 0;
 
-return namespaces.map(function (value, index) {
+return namespaces.map(function (namespace, index) {
   
-  let size = value.applicationGroups.length;
+  let size = namespace.applicationGroups.length;
   counter = counter + size;
-  let childGroups = A._createApplicationGroups(value.applicationGroups, counter - size);
-
+  let childGroups = A._createApplicationGroups(namespace.applicationGroups, counter - size);
+  
+  let compliance: Compliancy = {
+    isCompliant: namespace.isCompliant 
+  };
   return {
         count: size,
         key: 'namespace_' + index,
-        name: value.name,
+        name: namespace.name,
         startIndex: counter,
         level: level,
+        data: compliance,
         isCollapsed: isCollapsed,
         children: childGroups
     };
 });
 }
 
-
-
   public static _createApplicationGroups( groups :IApplicationGroup[], startIndex: number, isCollapsed?:boolean)
 :IGroup[] {
 
 
-return groups.map(function (value, index) {
+return groups.map(function (group, index) {
   let count = 1;
   
   startIndex = startIndex +  count;  
   
+  let compliance: Compliancy = {
+    isCompliant: group.isCompliant
+  };
+  
   return {
         count: count,
         key: ''+ index,
-        name: value.name,
+        name: group.name,
+        data: compliance,
         startIndex: startIndex - count,
         level: 2,
         isCollapsed: isCollapsed,

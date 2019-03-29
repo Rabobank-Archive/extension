@@ -11,10 +11,12 @@ export default class extends React.Component<{}, {}> {
         const dummy: INamespace[] = [{
            key:"key",
            name :"Global Project Permissions (sampledata)",
+           isCompliant: true,
            description:"Global Project Permissions",
            applicationGroups: [
                {
                    name: "[Sample Project]\\Rabobank Project Administrators",
+                   isCompliant: true,
                    permissions: [
                     {
                         bit: "1:Bypass rules on work item updates",
@@ -110,6 +112,7 @@ export default class extends React.Component<{}, {}> {
                },
                {
                    name: "[Sample Project]\\ Project Administrators",
+                   isCompliant: false,
                    permissions: [                   {
                     bit: "9: Delete test runs ",
                     actualValue: 0,
