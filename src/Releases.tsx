@@ -116,8 +116,9 @@ export default class extends React.Component<{}, {}> {
       return (<div>
             <div>
                 <h1>Release compliancy</h1>
-                <p>For feedback and questions, please contact the TAS/Proton team. We would ❤ getting in touch on how to improve distinguishing production endpoints!</p>
+                <p>We would ❤ getting in touch on how to improve distinguishing production endpoints, so join us on our <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">sprint review</a> @UC-T15!</p>
                 <p>More information on the <a href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Release" target="_blank">how &amp; why</a> of manual approvals and securing service endpoints with Azure Pipelines or <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</a> in general.</p>
+                <p>If you still have questions or need assistance on your pipelines, create a <a href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</a>.</p>
             </div>
             <Report columns={columns} document="Releases" dummy={dummy} />
         </div>);

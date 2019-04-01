@@ -56,9 +56,9 @@ export default class extends React.Component<{}, {}> {
       return (<div>
           <div>
               <h1>Compliancy</h1>
-              <img src="rabobank.png" alt="rabobank logo" className="logo" />
-              <p>For feedback and questions, please contact the TAS/Proton team.</p>
+              <p>We would ❤ getting in touch on the pull request workflow, so join us on our <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">sprint review</a> @UC-T15!</p>
               <p>More information on the <a href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Repositories" target="_blank">how &amp; why</a> of branching policies with Azure Repos or <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</a> in general.</p>
+              <p>If you still have questions or need assistance on your repositories, create a <a href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</a>.</p>
           </div>
           <hr />
           <Report columns={columns} document="GitRepositories" dummy={dummy}  />
