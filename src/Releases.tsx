@@ -13,7 +13,7 @@ interface IReport {
     hasApprovalOptions: boolean,
     usesProductionEndpoints: boolean,
     hasBranchFilterForAllArtifacts: boolean,
-    usesManagedAgentsOnly: boolean
+    usesManagedAgentsOnly?: boolean
 }
 
 export default class extends React.Component<{}, {}> {
@@ -102,7 +102,11 @@ export default class extends React.Component<{}, {}> {
         className: 'center',
         isResizable: true,
         data: Boolean,
-          onRender: (item: IReport) => <Checkmark checked={item.usesManagedAgentsOnly} />
+          onRender: (item: IReport) => {
+              if (item.usesManagedAgentsOnly !== undefined) {
+                <Checkmark checked={item.usesManagedAgentsOnly} />
+              }
+          }
         }];
     
       const dummy: IReport[] =[{
