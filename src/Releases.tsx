@@ -13,7 +13,7 @@ interface IReport {
     hasApprovalOptions: boolean,
     usesProductionEndpoints: boolean,
     hasBranchFilterForAllArtifacts: boolean,
-    usesManagedAgentsOnly?: boolean
+    usesManagedAgentsOnly: boolean | null
 }
 
 export default class extends React.Component<{}, {}> {
@@ -102,11 +102,7 @@ export default class extends React.Component<{}, {}> {
         className: 'center',
         isResizable: true,
         data: Boolean,
-          onRender: (item: IReport) => {
-              if (item.usesManagedAgentsOnly !== undefined) {
-                <Checkmark checked={item.usesManagedAgentsOnly} />
-              }
-          }
+        onRender: (item: IReport) => <Checkmark checked={item.usesManagedAgentsOnly} />
         }];
     
       const dummy: IReport[] =[{
@@ -118,7 +114,7 @@ export default class extends React.Component<{}, {}> {
         hasApprovalOptions: false,
         pipeline: "TAS Azure DevOps Extensions",
         hasBranchFilterForAllArtifacts: true,
-        usesManagedAgentsOnly: true
+        usesManagedAgentsOnly: false
       },
       {
         release: "Release-199",
@@ -130,6 +126,17 @@ export default class extends React.Component<{}, {}> {
         pipeline: "TAS Azure DevOps Extensions",
         hasBranchFilterForAllArtifacts: false,
         usesManagedAgentsOnly: true
+      },
+      {
+        release: "Release-199",
+        environment: "raboweb-test",
+        releaseId: "2374",
+        createdDate: "2019-02-12T11:34:18.8188815Z",
+        usesProductionEndpoints: true,
+        hasApprovalOptions: false,
+        pipeline: "TAS Azure DevOps Extensions",
+        hasBranchFilterForAllArtifacts: false,
+        usesManagedAgentsOnly: null
       }];
 
       return (<div>

@@ -3,7 +3,7 @@ import * as React from 'react'
 import './Checkmark.css'
 
 interface ICheckmark {
-    checked: boolean
+    checked: boolean | null
 }
 
 export default class extends React.Component<ICheckmark, {}> {
@@ -12,8 +12,16 @@ export default class extends React.Component<ICheckmark, {}> {
     }
 
     public render() {
-        return ( this.props.checked ? 
-            <Icon iconName="CheckMark" className="ms-IconExample" /> : 
-            <Icon iconName="Cancel" className="ms-IconExample" />)
+
+        switch(this.props.checked)
+        {
+            case true:
+                return <Icon iconName="CheckMark" className="ms-IconExample" />;
+            case false:
+                return <Icon iconName="Cancel" className="ms-IconExample" />;
+            case null:
+            default:
+                return <Icon iconName="Unknown" className="ms-IconExample" />;
+        }
     }
 }
