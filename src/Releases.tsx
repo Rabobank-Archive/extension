@@ -13,7 +13,8 @@ interface IReport {
     hasApprovalOptions: boolean,
     usesProductionEndpoints: boolean,
     hasBranchFilterForAllArtifacts: boolean,
-    usesManagedAgentsOnly: boolean | null
+    usesManagedAgentsOnly: boolean | null,
+    allArtifactsAreFromBuild: boolean | null
 }
 
 export default class extends React.Component<{}, {}> {
@@ -96,14 +97,27 @@ export default class extends React.Component<{}, {}> {
         key: 'column8',
         fieldName: 'usesManagedAgentsOnly',
         name: 'Uses Managed Agents',
-        minWidth: 100,
-        maxWidth: 100,
+        minWidth: 125,
+        maxWidth: 125,
         headerClassName: 'center',
         className: 'center',
         isResizable: true,
         data: Boolean,
         onRender: (item: IReport) => <Checkmark checked={item.usesManagedAgentsOnly} />
-        }];
+      },
+      {
+        key: 'column9',
+        fieldName: 'allArtifactsAreFromBuild',
+        name: 'Artifacts are from build',
+        minWidth: 150,
+        maxWidth: 150,
+        headerClassName: 'center',
+        className: 'center',
+        isResizable: true,
+        data: Boolean,
+          onRender: (item: IReport) => <Checkmark checked={item.allArtifactsAreFromBuild} />
+      }
+      ];
     
       const dummy: IReport[] =[{
         release: "Release-200",
@@ -114,7 +128,8 @@ export default class extends React.Component<{}, {}> {
         hasApprovalOptions: false,
         pipeline: "TAS Azure DevOps Extensions",
         hasBranchFilterForAllArtifacts: true,
-        usesManagedAgentsOnly: false
+        usesManagedAgentsOnly: false,
+        allArtifactsAreFromBuild: false
       },
       {
         release: "Release-199",
@@ -125,7 +140,8 @@ export default class extends React.Component<{}, {}> {
         hasApprovalOptions: false,
         pipeline: "TAS Azure DevOps Extensions",
         hasBranchFilterForAllArtifacts: false,
-        usesManagedAgentsOnly: true
+        usesManagedAgentsOnly: true,
+        allArtifactsAreFromBuild: true
       },
       {
         release: "Release-199",
@@ -136,7 +152,8 @@ export default class extends React.Component<{}, {}> {
         hasApprovalOptions: false,
         pipeline: "TAS Azure DevOps Extensions",
         hasBranchFilterForAllArtifacts: false,
-        usesManagedAgentsOnly: null
+        usesManagedAgentsOnly: null,
+        allArtifactsAreFromBuild: null
       }];
 
       return (<div>
