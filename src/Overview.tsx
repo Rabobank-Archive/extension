@@ -65,7 +65,7 @@ export default class extends React.Component<{}, {}> {
                     <p>We would ❤ getting in touch on how to have a secure setup that works out for you, so join us on our <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">bi-weekly sprint review</a> @UC-T15!</p>
                     <p>More information on the effective <a href="https://confluence.dev.rabobank.nl/display/vsts/Azure+DevOps+Project+group+permissions" target="_blank">Azure Devops Project group permissions</a> that are used for the secure setup.</p>
                 </div>
-                <Report columns={columns} document="ProjectOverview" dummy={dummy} />
+                <Report columns={columns} document="globalpermissions" dummy={dummy} />
             </div>)
     }
 }
