@@ -7,7 +7,7 @@ import { IColumn, Button } from 'office-ui-fabric-react';
 interface IProjectRule {
     description: string,
     status: boolean,
-    fixUrl: string | undefined
+    reconcileUrl: string | undefined
 }
 export default class extends React.Component<{}, {}> {
     constructor(props: {}) {
@@ -34,28 +34,28 @@ export default class extends React.Component<{}, {}> {
         },
         {
             key: 'column3',
-            fieldName: 'fix',
+            fieldName: 'reconcileUrl',
             name: '',
-            minWidth: 50,
-            maxWidth: 50,
+            minWidth: 75,
+            maxWidth: 75,
             isResizable: true,
-            // onRender: (item: IProjectRule) => !item.status ? <Button text="fix" disabled={!item.fixUrl} /> : <span />
+            onRender: (item: IProjectRule) => !item.status ? <Button onClick={() => { fetch(item.reconcileUrl || ''); item.status = true; }} text="Reconcile" disabled={!item.reconcileUrl} /> : <span />
         }];
 
         const dummy: IProjectRule[] = [{
             description: "No one should be able to delete the Team Project",
             status: true,
-            fixUrl: undefined
+            reconcileUrl: undefined
         },
         {
             description: "Some rule that cannot autofix",
             status: false,
-            fixUrl: undefined
+            reconcileUrl: undefined
         },
         {
             description: "Just some dummy other rule",
             status: false,
-            fixUrl: 'google.nl'
+            reconcileUrl: 'https://google.nl'
         }];
 
         return (
