@@ -1,16 +1,22 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import { initializeIcons } from '@uifabric/icons';
 import Repositories from './Repositories';
 import Releases from './Releases';
 import Overview from './Overview';
-import { AzDoService, DummyAzDoService, IAzDoService } from './services/AzDoService'
-import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
-import { loadTheme } from '@uifabric/styling';
+import Builds from './Builds';
+
+import { IAzDoService } from './services/IAzDoService'
+import { AzDoService } from "./services/AzDoService";
+import { DummyAzDoService } from "./services/DummyAzDoService";
+
 import * as SDK from "azure-devops-extension-sdk";
+import { Page } from "azure-devops-ui/Page"
+
+import { loadTheme } from '@uifabric/styling';
+import { initializeIcons } from '@uifabric/icons';
 
 import './index.css';
-import Builds from './Builds';
+
 loadTheme({}); // <- This is a very important line
 initializeIcons();
 
@@ -18,7 +24,7 @@ if(process.env.NODE_ENV !== "production")
 {
     let azDoService: IAzDoService = new DummyAzDoService(); 
     let element: JSX.Element = GetRootElement(azDoService);
-    ReactDOM.render(<Fabric>{element}</Fabric>, document.getElementById('root'));
+    ReactDOM.render(element, document.getElementById('root'));
 } else {
     SDK.init();
 
@@ -26,7 +32,7 @@ if(process.env.NODE_ENV !== "production")
         let azDoService: IAzDoService = new AzDoService(); 
         let element: JSX.Element = GetRootElement(azDoService);
         
-        ReactDOM.render(<Fabric>{element}</Fabric>, document.getElementById('root'));
+        ReactDOM.render(<Page>{element}</Page>, document.getElementById('root'));
         SDK.notifyLoadSucceeded();
     });
 }
@@ -39,13 +45,13 @@ function GetRootElement(azDoService: IAzDoService) {
     const report = window.location.hash.substr(1);
     switch (report) {
         case 'builds':
-            element = (<Builds azDoService={azDoService} />);
+            element = (<Page><Builds azDoService={azDoService} /></Page>);
             break;
         case 'repositories':
-            element = (<Repositories azDoService={azDoService} />);
+            element = (<Page><Repositories azDoService={azDoService} /></Page>);
             break;
         case 'releases':
-            element = (<Releases azDoService={azDoService} />);
+            element = (<Page><Releases azDoService={azDoService} /></Page>);
             break;
         case 'overview':
             element = (<Overview azDoService={azDoService} />);

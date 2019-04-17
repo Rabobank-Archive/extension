@@ -1,4 +1,4 @@
-import { IExtensionDocument, IProjectRule, IReleaseReport, IBuildReport, IRepositoryReport } from "./AzDoService";
+import { IExtensionDocument, IProjectRule, IReleaseReport, IBuildReport, IRepositoryReport } from "./IAzDoService";
 
 export const DummyProjectRulesReport: IExtensionDocument<IProjectRule> = {
     date: new Date(),

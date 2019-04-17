@@ -2,7 +2,7 @@ import * as React from 'react';
 import moment from 'moment';
 import Checkmark from './components/Checkmark';
 import Report from './components/Report';
-import { IAzDoService, IRepositoryReport } from './services/AzDoService';
+import { IAzDoService, IRepositoryReport } from './services/IAzDoService';
 import { IColumn } from 'office-ui-fabric-react';
 
 interface IRepositoriesProps {

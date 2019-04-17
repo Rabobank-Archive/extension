@@ -2,7 +2,7 @@ import * as React from 'react';
 import moment from 'moment';
 import Checkmark from './components/Checkmark';
 import Report from './components/Report';
-import { IExtensionDocument, IAzDoService, IBuildReport } from './services/AzDoService';
+import { IExtensionDocument, IAzDoService, IBuildReport } from './services/IAzDoService';
 
 interface IBuildProps {
     azDoService: IAzDoService
@@ -12,7 +12,7 @@ export default class extends React.Component<IBuildProps, {}> {
     constructor(props: IBuildProps) {
         super(props);
     }
-    
+
     render() {
         const columns= [{
             key: 'column1',

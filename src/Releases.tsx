@@ -3,7 +3,7 @@ import moment from 'moment';
 import Checkmark from './components/Checkmark';
 import Report from './components/Report';
 import { IColumn } from 'office-ui-fabric-react';
-import { IAzDoService, IExtensionDocument, IReleaseReport } from './services/AzDoService';
+import { IAzDoService, IExtensionDocument, IReleaseReport } from './services/IAzDoService';
 
 interface IReleaseProps {
     azDoService: IAzDoService
@@ -13,7 +13,7 @@ export default class extends React.Component<IReleaseProps, {}> {
     constructor(props: IReleaseProps) {
         super(props);
     }
-    
+
     render() {
       const columns : IColumn[] = [
           {
