@@ -2,6 +2,7 @@ import { IExtensionDocument, IProjectRule, IReleaseReport, IBuildReport, IReposi
 
 export const DummyProjectRulesReport: IExtensionDocument<IProjectRule> = {
     date: new Date(),
+    token: "asdf",
     reports: [
         {
             description: "No one should be able to delete the Team Project",
@@ -16,13 +17,14 @@ export const DummyProjectRulesReport: IExtensionDocument<IProjectRule> = {
         {
             description: "Just some dummy other rule",
             status: false,
-            reconcileUrl: 'https://google.nl'
+            reconcileUrl: 'https://postb.in/lNkyJSYE'
         }
     ]
 };
 
 export const DummyBuildReport: IExtensionDocument<IBuildReport> = {
     date: new Date(),
+    token: undefined,
     reports: [{
         id: '1234',
         pipeline: 'auto-lst',
@@ -43,6 +45,7 @@ export const DummyBuildReport: IExtensionDocument<IBuildReport> = {
 
 export const DummyReleaseReport: IExtensionDocument<IReleaseReport> = {
     date: new Date(),
+    token: undefined,
     reports: [
         {
             release: "Release-200",
@@ -85,6 +88,7 @@ export const DummyReleaseReport: IExtensionDocument<IReleaseReport> = {
 
 export const DummyRepositoriesReport: IExtensionDocument<IRepositoryReport> = {
     date: new Date(),
+    token: undefined,
     reports: [
         {
             "repository": "investment-application-messages",

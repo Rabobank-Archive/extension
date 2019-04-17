@@ -34,7 +34,8 @@ export interface IRepositoryReport {
 
 export interface IExtensionDocument<TReport> {
     date: Date,
-    reports: TReport[]
+    reports: TReport[],
+    token: string | undefined
 }
 
 export interface IAzDoService {
