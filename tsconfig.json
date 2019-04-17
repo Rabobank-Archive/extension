@@ -19,7 +19,6 @@
     "noEmit": true,
     "jsx": "preserve",
     "types": [
-      "vss-web-extension-sdk"
     ]
   },
   "include": [

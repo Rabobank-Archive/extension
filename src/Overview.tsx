@@ -1,16 +1,15 @@
 import * as React from 'react';
-import moment from 'moment';
 import Checkmark from './components/Checkmark';
 import Report from './components/Report';
+import { IAzDoService, IProjectRule, IExtensionDocument } from './services/AzDoService'
 import { IColumn, Button } from 'office-ui-fabric-react';
 
-interface IProjectRule {
-    description: string,
-    status: boolean,
-    reconcileUrl: string | undefined
+interface IOverviewProps {
+    azDoService: IAzDoService
 }
-export default class extends React.Component<{}, {}> {
-    constructor(props: {}) {
+
+export default class extends React.Component<IOverviewProps, {}> {
+    constructor(props: IOverviewProps) {
         super(props);
     }
 
@@ -42,22 +41,6 @@ export default class extends React.Component<{}, {}> {
             onRender: (item: IProjectRule) => !item.status ? <Button onClick={() => { fetch(item.reconcileUrl || ''); item.status = true; }} text="Reconcile" disabled={!item.reconcileUrl} /> : <span />
         }];
 
-        const dummy: IProjectRule[] = [{
-            description: "No one should be able to delete the Team Project",
-            status: true,
-            reconcileUrl: undefined
-        },
-        {
-            description: "Some rule that cannot autofix",
-            status: false,
-            reconcileUrl: undefined
-        },
-        {
-            description: "Just some dummy other rule",
-            status: false,
-            reconcileUrl: 'https://google.nl'
-        }];
-
         return (
             <div>
                 <div>
@@ -65,7 +48,7 @@ export default class extends React.Component<{}, {}> {
                     <p>We would ❤ getting in touch on how to have a secure setup that works out for you, so join us on our <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">bi-weekly sprint review</a> @UC-T15!</p>
                     <p>More information on the effective <a href="https://confluence.dev.rabobank.nl/display/vsts/Azure+DevOps+Project+group+permissions" target="_blank">Azure Devops Project group permissions</a> that are used for the secure setup.</p>
                 </div>
-                <Report columns={columns} document="globalpermissions" dummy={dummy} />
+                <Report columns={columns} reports={async () => (await this.props.azDoService.GetReportsFromDocumentStorage<IProjectRule>("globalpermissions")).reports} />            
             </div>)
     }
 }

@@ -1,18 +1,16 @@
-/// <reference types="vss-web-extension-sdk" />
-
 import * as React from 'react';
 import { DetailsList, IColumn, DetailsListLayoutMode, SelectionMode } from 'office-ui-fabric-react';
 
 interface IState<TReport> {
     reports: TReport[],
     columns: IColumn[],
+    isLoading: boolean,
     error: string
 }
 
 interface IReportProperties<TReport> {
   columns: IColumn[],
-  document: string,
-  dummy: TReport[]
+  reports: () => Promise<TReport[]>
 }
 
 export default class<TReport> extends React.Component<IReportProperties<TReport>, IState<TReport>> {
@@ -23,32 +21,29 @@ export default class<TReport> extends React.Component<IReportProperties<TReport>
         this.state = {
             reports: [],
             error: '',
-            columns: this.props.columns
+            columns: this.props.columns,
+            isLoading: true
         };
     }
-   
-    componentDidMount() {
-      if (typeof VSS !== 'undefined') {
-        VSS.getService<IExtensionDataService>(VSS.ServiceIds.ExtensionData).then((service) => {
-            var context = VSS.getWebContext();
-            service.getDocument(this.props.document, context.project.name)
-                .then((doc: { reports: TReport[]}) => this.setState(doc), (err: Error) => this.setState({ error: err.message }))
-                .then(() => VSS.notifyLoadSucceeded());
-        });
-      } else {
-          this.setState({ reports: this.props.dummy })
-      }
+
+    async componentDidMount() {
+        const reports = await this.props.reports();
+        this.setState({ reports, isLoading: false });
     }
 
     public render() {
+        const component = this.state.isLoading 
+            ? <span>Loading...</span> 
+            : <DetailsList 
+                items={this.state.reports} 
+                columns={this.state.columns} 
+                layoutMode={DetailsListLayoutMode.fixedColumns} 
+                selectionMode={SelectionMode.none}  />
+
         return (
             <div>
                 <span className="error">{this.state.error}</span>
-                <DetailsList 
-                    items={this.state.reports} 
-                    columns={this.state.columns} 
-                    layoutMode={DetailsListLayoutMode.fixedColumns} 
-                    selectionMode={SelectionMode.none} />
+                { component }
             </div>
         )
     }
