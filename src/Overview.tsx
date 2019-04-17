@@ -20,7 +20,8 @@ interface IStatusIndicatorData {
 interface ITableItem extends ISimpleTableCell {
     description: string,
     status: number,
-    reconcileUrl: string
+    reconcileUrl: string,
+    token: string
 }
 
 interface IOverviewProps {
@@ -88,7 +89,7 @@ export default class extends React.Component<IOverviewProps, {}> {
             ? <Button
                 primary={true}
                 iconProps = {{ iconName: "TriggerAuto" }}
-                onClick={() => { fetch(tableItem.reconcileUrl || ''); }} 
+                onClick={() => fetch(tableItem.reconcileUrl, { headers: { Authorization: `Bearer ${tableItem.token}` }}) } 
                 text="Reconcile" disabled={(tableItem.reconcileUrl == "")} />
             : "";
 
