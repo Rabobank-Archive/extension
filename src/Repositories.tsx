@@ -2,7 +2,7 @@ import * as React from 'react';
 import moment from 'moment';
 import Checkmark from './components/Checkmark';
 import Report from './components/Report';
-import { IAzDoService, IRepositoryReport } from './services/IAzDoService';
+import { IAzDoService, IRepositoryReport, IExtensionDocument } from './services/IAzDoService';
 import { IColumn } from 'office-ui-fabric-react';
 
 interface IRepositoriesProps {
@@ -51,7 +51,7 @@ export default class extends React.Component<IRepositoriesProps, {}> {
                     <p>If you still have questions or need assistance on your repositories, create a <a href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</a>.</p>
                 </div>
                 <hr />
-                <Report columns={columns} reports={async () => (await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoryReport>("GitRepositories")).reports} />
+                <Report columns={columns} reports={async () => (await this.props.azDoService.GetReportsFromDocumentStorage<IExtensionDocument<IRepositoryReport>>("GitRepositories")).reports} />
             </div>)
     }
 }

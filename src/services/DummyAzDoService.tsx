@@ -3,23 +3,23 @@ import { IAzDoService, IExtensionDocument } from './IAzDoService';
 import { IExtensionDataService } from 'azure-devops-extension-api';
 
 export class DummyAzDoService implements IAzDoService {
-    public async GetReportsFromDocumentStorage<TReport>(documentCollectionName: string): Promise<IExtensionDocument<TReport>> 
+    public async GetReportsFromDocumentStorage<TReport>(documentCollectionName: string): Promise<TReport> 
     { 
-        return Promise.resolve<IExtensionDocument<TReport>>(loadData(documentCollectionName));
+        return Promise.resolve<TReport>(loadData(documentCollectionName));
     }
 }
 
-function loadData<TReport>(documentCollectionName: string) : IExtensionDocument<TReport> {
+function loadData<TReport>(documentCollectionName: string) : TReport {
     switch (documentCollectionName) {
         case "globalpermissions":
-            return DummyProjectRulesReport as unknown as IExtensionDocument<TReport>;
+            return DummyProjectRulesReport as unknown as TReport;
         case "BuildReports":
-            return DummyBuildReport as unknown as IExtensionDocument<TReport>;
+            return DummyBuildReport as unknown as TReport;
         case "Releases":
-            return DummyReleaseReport as unknown as IExtensionDocument<TReport>;
+            return DummyReleaseReport as unknown as TReport;
         case "GitRepositories":
-            return DummyRepositoriesReport as unknown as IExtensionDocument<TReport>;
+            return DummyRepositoriesReport as unknown as TReport;
     }
 
-    return { date: new Date(Date.now()), reports: [], token: '' }
+    throw Error(`unsupported collection ${documentCollectionName}`);
 }

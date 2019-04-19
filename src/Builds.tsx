@@ -78,7 +78,7 @@ export default class extends React.Component<IBuildProps, {}> {
                     <p>More information on the <a href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Build" target="_blank">how &amp; why</a> of storing artifacts secure with Azure Pipelines or <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</a> in general.</p>
                     <p>If you still have questions or need assistance on your pipelines, create a <a href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</a>.</p>
                 </div>
-                <Report columns={columns} reports={async () => (await this.props.azDoService.GetReportsFromDocumentStorage<IBuildReport>("BuildReports")).reports} />
+                <Report columns={columns} reports={async () => (await this.props.azDoService.GetReportsFromDocumentStorage<IExtensionDocument<IBuildReport>>("BuildReports")).reports} />
             </div>);
     }  
 }

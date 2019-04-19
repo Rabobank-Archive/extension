@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IAzDoService, IProjectRule, IExtensionDocument } from './services/IAzDoService';
+import { IAzDoService, IProjectRule, IExtensionDocument, IOverviewReport } from './services/IAzDoService';
 
 import { Button } from "azure-devops-ui/Button";
 import { ITableColumn, ISimpleTableCell, renderSimpleCell, SimpleTableCell, Table } from "azure-devops-ui/Table"
@@ -20,28 +20,32 @@ interface IOverviewProps {
     azDoService: IAzDoService
 }
 
-interface IOverViewState extends IExtensionDocument<IProjectRule> {
-    isLoading: boolean
-}
-
-export default class extends React.Component<IOverviewProps, IOverViewState> {
+export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean }> {
     private itemProvider = new ObservableArray<any>();
 
     constructor(props: IOverviewProps) {
         super(props);
         this.state = {
-            date: new Date(0),
-            reports: [], 
-            token: undefined,
+            report: {
+                date: new Date(0),
+                reports: [], 
+                token: '',
+                rescanUrl: ''
+            },
             isLoading: true
         }
     }
 
     async componentDidMount() {
-        const data = await this.props.azDoService.GetReportsFromDocumentStorage<IProjectRule>("globalpermissions");
-        this.itemProvider.push(...data.reports.map<ITableItem>(x => ({ description: x.description, reconcileUrl: x.reconcileUrl || '', status: x.status ? Statuses.Success : Statuses.Failed, token: data.token || '' })));
+        const report = await this.props.azDoService.GetReportsFromDocumentStorage<IOverviewReport>("globalpermissions");
+        this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
+             description: x.description, 
+             reconcileUrl: x.reconcileUrl, 
+             status: x.status ? Statuses.Success : Statuses.Failed, 
+             token: report.token
+        })));
 
-        this.setState({ isLoading: false });
+        this.setState({ isLoading: false, report: report });
     }
 
     private renderCheckmark(
@@ -127,7 +131,13 @@ export default class extends React.Component<IOverviewProps, IOverViewState> {
                     <Card>
                         { this.state.isLoading ?
                             <div>Loading...</div> :
-                            <Table<ITableItem> columns={columns} itemProvider={this.itemProvider} behaviors={[]} />
+                            <div>
+                                <Button 
+                                    iconProps = {{ iconName: "TriggerAuto" }}
+                                    onClick={() => fetch(this.state.report.rescanUrl, { headers: { Authorization: `Bearer ${this.state.report.token}` }}) } 
+                                    text="Rescan" />
+                                <Table<ITableItem> columns={columns} itemProvider={this.itemProvider} behaviors={[]} />
+                            </div>
                         }
                     </Card>
                 </div>

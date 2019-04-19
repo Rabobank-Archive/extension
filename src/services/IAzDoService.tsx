@@ -1,7 +1,7 @@
 export interface IProjectRule {
     description: string,
     status: boolean,
-    reconcileUrl: string | undefined
+    reconcileUrl: string
 }
 
 export interface IReleaseReport {
@@ -33,13 +33,17 @@ export interface IRepositoryReport {
 }
 
 export interface IExtensionDocument<TReport> {
+    reports: TReport[]
+}
+
+export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
     date: Date,
-    reports: TReport[],
-    token: string | undefined
+    token: string,
+    rescanUrl: string
 }
 
 export interface IAzDoService {
-    GetReportsFromDocumentStorage<TReport>(documentCollectionName: string) : Promise<IExtensionDocument<TReport>>;
+    GetReportsFromDocumentStorage<TReport>(documentCollectionName: string) : Promise<TReport>;
 }
 
 
