@@ -1,25 +1,17 @@
 import * as React from 'react';
-import Checkmark from './components/Checkmark';
-import Report from './components/NewReport';
-import { IAzDoService, IProjectRule, IExtensionDocument } from './services/IAzDoService'
+import { IAzDoService, IProjectRule, IExtensionDocument } from './services/IAzDoService';
 
 import { Button } from "azure-devops-ui/Button";
-import { ITableColumn, ISimpleTableCell, renderSimpleCell, SimpleTableCell, ColumnFill } from "azure-devops-ui/Table"
-import { ObservableValue } from 'azure-devops-ui/Core/Observable';
+import { ITableColumn, ISimpleTableCell, renderSimpleCell, SimpleTableCell, Table } from "azure-devops-ui/Table"
+import { ObservableValue, ObservableArray } from 'azure-devops-ui/Core/Observable';
 import { Page } from 'azure-devops-ui/Page';
-import { Header, TitleSize } from 'azure-devops-ui/Header'
+import { Header } from 'azure-devops-ui/Header'
 import { Card } from 'azure-devops-ui/Card'
 import { Status, Statuses, StatusSize, IStatusProps } from "azure-devops-ui/Status";
-import { Tooltip } from "azure-devops-ui/TooltipEx";
-
-interface IStatusIndicatorData {
-    statusProps: IStatusProps;
-    label: string;
-}
 
 interface ITableItem extends ISimpleTableCell {
     description: string,
-    status: number,
+    status: IStatusProps,
     reconcileUrl: string,
     token: string
 }
@@ -28,69 +20,57 @@ interface IOverviewProps {
     azDoService: IAzDoService
 }
 
-function getStatusIndicatorData(status: number): IStatusIndicatorData {
-    const indicatorData: IStatusIndicatorData = {
-        label: "Success",
-        statusProps: Statuses.Success
-    };
-
-    if(status > 0)
-    {
-        indicatorData.statusProps = Statuses.Success;
-        indicatorData.label = "Running";
-    } else {
-        indicatorData.statusProps = Statuses.Failed;
-        indicatorData.label = "Failed";
-    }
-
-    return indicatorData;
+interface IOverViewState extends IExtensionDocument<IProjectRule> {
+    isLoading: boolean
 }
 
-export default class extends React.Component<IOverviewProps, {}> {
+export default class extends React.Component<IOverviewProps, IOverViewState> {
+    private itemProvider = new ObservableArray<any>();
+
     constructor(props: IOverviewProps) {
         super(props);
+        this.state = {
+            date: new Date(0),
+            reports: [], 
+            token: undefined,
+            isLoading: true
+        }
+    }
+
+    async componentDidMount() {
+        const data = await this.props.azDoService.GetReportsFromDocumentStorage<IProjectRule>("globalpermissions");
+        this.itemProvider.push(...data.reports.map<ITableItem>(x => ({ description: x.description, reconcileUrl: x.reconcileUrl || '', status: x.status ? Statuses.Success : Statuses.Failed, token: data.token || '' })));
+
+        this.setState({ isLoading: false });
     }
 
     private renderCheckmark(
-        rowIndex: number,
+        _rowIndex: number,
         columnIndex: number,
         tableColumn: ITableColumn<ITableItem>,
         tableItem: ITableItem
     ): JSX.Element {
-        return (
-            <SimpleTableCell
-                columnIndex={columnIndex}
-                tableColumn={tableColumn}
-                key={"col-" + columnIndex}
-                contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden"
-            >
-                <Status
-                    {...getStatusIndicatorData(tableItem.status).statusProps}
-                    className="icon-large-margin"
-                    size={StatusSize.l}
-                />
-                <div className="flex-row scroll-hidden">
-                    <Tooltip overflowOnly={true}>
-                        <span className="text-ellipsis">{tableItem.name}</span>
-                    </Tooltip>
-                </div>
-            </SimpleTableCell>
-        );
+        return (<SimpleTableCell columnIndex={columnIndex} key={tableColumn.id}>
+            <Status
+                {...tableItem.status}
+                className="icon-large-margin"
+                size={StatusSize.l}
+            />
+        </SimpleTableCell>);
     }
     
     private renderReconcileButton(
-        rowIndex: number,
+        _rowIndex: number,
         columnIndex: number,
         tableColumn: ITableColumn<ITableItem>,
-        tableItem: ITableItem
+        item: ITableItem
     ): JSX.Element {
-
-        let button = tableItem.status == 0
+        let content = item.status != Statuses.Success
             ? <Button
                 primary={true}
                 iconProps = {{ iconName: "TriggerAuto" }}
-                onClick={() => fetch(tableItem.reconcileUrl, { headers: { Authorization: `Bearer ${tableItem.token}` }}) } 
-                text="Reconcile" disabled={(tableItem.reconcileUrl == "")} />
+                onClick={() => fetch(item.reconcileUrl, { headers: { Authorization: `Bearer ${item.token}` }}) } 
+                text="Reconcile" disabled={(item.reconcileUrl == "")} />
             : "";
 
         return (
@@ -98,11 +78,9 @@ export default class extends React.Component<IOverviewProps, {}> {
                 columnIndex={columnIndex}
                 tableColumn={tableColumn}
                 key={"col-" + columnIndex}
-                contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden"
-            >
-            {button}
-            </SimpleTableCell>
-        );
+                contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden">
+                {content}
+            </SimpleTableCell>);
     }
 
     render() {
@@ -131,7 +109,7 @@ export default class extends React.Component<IOverviewProps, {}> {
                 id: 'reconcileUrl',
                 name: '',
                 width: new ObservableValue(130),
-                renderCell: this.renderReconcileButton 
+                renderCell: this.renderReconcileButton
             }
         ];
 
@@ -147,7 +125,10 @@ export default class extends React.Component<IOverviewProps, {}> {
                     <p>We would ❤ getting in touch on how to have a secure setup that works out for you, so join us on our <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">bi-weekly sprint review</a> @UC-T15!</p>
                     <p>More information on the effective <a href="https://confluence.dev.rabobank.nl/display/vsts/Azure+DevOps+Project+group+permissions" target="_blank">Azure Devops Project group permissions</a> that are used for the secure setup.</p>
                     <Card>
-                        <Report columns={columns} reports={async () => (await this.props.azDoService.GetReportsFromDocumentStorage<IProjectRule>("globalpermissions")).reports} />
+                        { this.state.isLoading ?
+                            <div>Loading...</div> :
+                            <Table<ITableItem> columns={columns} itemProvider={this.itemProvider} behaviors={[]} />
+                        }
                     </Card>
                 </div>
             </Page>);

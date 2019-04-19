@@ -17,7 +17,7 @@ export const DummyProjectRulesReport: IExtensionDocument<IProjectRule> = {
         {
             description: "Just some dummy other rule",
             status: false,
-            reconcileUrl: 'https://postb.in/lNkyJSYE'
+            reconcileUrl: 'https://azdoanalyticsdev.azurewebsites.net/api/reconcile/raboweb-test/GitDemo/globalpermissions/NobodyCanDeleteTheTeamProject'
         }
     ]
 };
