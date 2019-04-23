@@ -23,7 +23,7 @@ export const DummyProjectRulesReport: IOverviewReport = {
     ]
 };
 
-export const DummyBuildReport: IExtensionDocument<IBuildReport> = {
+export const DummyBuildReport: IBuildReport = {
     reports: [{
         id: '1234',
         pipeline: 'auto-lst',

@@ -4,6 +4,15 @@ export interface IProjectRule {
     reconcileUrl: string
 }
 
+export interface IBuildRule {
+    id: string
+    pipeline: string
+    createdDate: string,
+    artifactsStoredSecure: boolean
+    usesFortify: boolean
+    usesSonarQube: boolean
+}
+
 export interface IReleaseReport {
     pipeline: string,
     release: string,
@@ -15,15 +24,6 @@ export interface IReleaseReport {
     hasBranchFilterForAllArtifacts: boolean,
     usesManagedAgentsOnly: boolean | null,
     allArtifactsAreFromBuild: boolean | null
-}
-
-export interface IBuildReport {
-    id: string
-    pipeline: string
-    createdDate: string,
-    artifactsStoredSecure: boolean
-    usesFortify: boolean
-    usesSonarQube: boolean
 }
 
 export interface IRepositoryReport {
@@ -40,6 +40,9 @@ export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
     date: Date,
     token: string,
     rescanUrl: string
+}
+
+export interface IBuildReport extends IExtensionDocument<IBuildRule> {
 }
 
 export interface IAzDoService {

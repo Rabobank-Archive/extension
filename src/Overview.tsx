@@ -5,7 +5,7 @@ import { Button } from "azure-devops-ui/Button";
 import { ITableColumn, ISimpleTableCell, renderSimpleCell, SimpleTableCell, Table } from "azure-devops-ui/Table"
 import { ObservableValue, ObservableArray } from 'azure-devops-ui/Core/Observable';
 import { Page } from 'azure-devops-ui/Page';
-import { Header } from 'azure-devops-ui/Header'
+import { Header, TitleSize } from 'azure-devops-ui/Header'
 import { Card } from 'azure-devops-ui/Card'
 import { Status, Statuses, StatusSize, IStatusProps } from "azure-devops-ui/Status";
 
@@ -54,13 +54,14 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         tableColumn: ITableColumn<ITableItem>,
         tableItem: ITableItem
     ): JSX.Element {
-        return (<SimpleTableCell columnIndex={columnIndex} key={tableColumn.id}>
-            <Status
-                {...tableItem.status}
-                className="icon-large-margin"
-                size={StatusSize.l}
-            />
-        </SimpleTableCell>);
+        return (
+            <SimpleTableCell columnIndex={columnIndex} key={tableColumn.id}>
+                <Status
+                    {...tableItem.status}
+                    className="icon-large-margin"
+                    size={StatusSize.l}
+                />
+            </SimpleTableCell>);
     }
     
     private renderReconcileButton(
@@ -113,7 +114,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
             <Page>
                 <Header
                     title={"Project compliancy"}
-                    titleSize={0}
+                    titleSize={TitleSize.Medium}
                     titleIconProps={{ iconName: "OpenSource" }}
                 />
 
