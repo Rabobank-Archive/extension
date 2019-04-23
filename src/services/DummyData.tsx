@@ -29,14 +29,14 @@ export const DummyBuildReport: IBuildReport = {
         pipeline: 'auto-lst',
         createdDate: "2019-02-12T11:34:18.8188815Z",
         artifactsStoredSecure: true,
-        usesFortify: false,
-        usesSonarQube: true
+        usesFortify: true,
+        usesSonarQube: false
     },
     {
         id: '2435',
-        pipeline: 'auto-lst',
+        pipeline: 'SM9',
         createdDate: "2019-01-12T11:34:18.8188815Z",
-        artifactsStoredSecure: true,
+        artifactsStoredSecure: false,
         usesFortify: false,
         usesSonarQube: true
     }]

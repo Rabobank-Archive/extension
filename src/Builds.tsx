@@ -9,6 +9,7 @@ import { Card } from 'azure-devops-ui/Card'
 import { Status, Statuses, StatusSize, IStatusProps } from "azure-devops-ui/Status";
 
 import { IAzDoService, IBuildReport } from './services/IAzDoService';
+import { sortingBehavior } from './components/TableSortingBehavior'
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string,
@@ -43,7 +44,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
              buildId: x.id,
              createdDate: x.createdDate,
              usesFortify: x.usesFortify ? Statuses.Success : Statuses.Failed,
-             usesSonarQube: x.usesSonarQube ? Statuses.Success : Statuses.Success,
+             usesSonarQube: x.usesSonarQube ? Statuses.Success : Statuses.Failed,
              artifactsStoredSecure: x.artifactsStoredSecure ? Statuses.Success : Statuses.Failed
         })));
 
@@ -125,19 +126,31 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 id: 'usesFortify',
                 name: 'Fortify',
                 width: new ObservableValue(75),
-                renderCell: this.renderCheckmark
+                renderCell: this.renderCheckmark,
+                sortProps: {
+                    ariaLabelAscending: "Sorted A to Z",
+                    ariaLabelDescending: "Sorted Z to A"
+                }
             },
             {
                 id: 'usesSonarQube',
                 name: 'SonarQube',
                 width: new ObservableValue(75),
-                renderCell: this.renderCheckmark
+                renderCell: this.renderCheckmark,
+                sortProps: {
+                    ariaLabelAscending: "Sorted A to Z",
+                    ariaLabelDescending: "Sorted Z to A"
+                }
             },
             {
                 id: 'artifactsStoredSecure',
                 name: 'Artifact Secure',
                 width: new ObservableValue(75),
-                renderCell: this.renderCheckmark
+                renderCell: this.renderCheckmark,
+                sortProps: {
+                    ariaLabelAscending: "Sorted A to Z",
+                    ariaLabelDescending: "Sorted Z to A"
+                }
             },
         ];
 
@@ -157,7 +170,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                     <Card>
                         { this.state.isLoading ?
                             <div>Loading...</div> :
-                            <Table<ITableItem> columns={columns}  itemProvider={this.itemProvider} behaviors={[]} />
+                            <Table<ITableItem> columns={columns}  itemProvider={this.itemProvider} behaviors={[ sortingBehavior(this.itemProvider, columns) ]} />
                         }
                     </Card>
                 </div>
