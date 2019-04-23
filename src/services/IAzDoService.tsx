@@ -13,7 +13,7 @@ export interface IBuildRule {
     usesSonarQube: boolean
 }
 
-export interface IReleaseReport {
+export interface IReleaseRule {
     pipeline: string,
     release: string,
     releaseId: string,
@@ -43,6 +43,9 @@ export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
 }
 
 export interface IBuildReport extends IExtensionDocument<IBuildRule> {
+}
+
+export interface IReleaseReport extends IExtensionDocument<IReleaseRule> {
 }
 
 export interface IAzDoService {

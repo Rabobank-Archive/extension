@@ -42,7 +42,7 @@ export const DummyBuildReport: IBuildReport = {
     }]
 };
 
-export const DummyReleaseReport: IExtensionDocument<IReleaseReport> = {
+export const DummyReleaseReport: IReleaseReport = {
     reports: [
         {
             release: "Release-200",
