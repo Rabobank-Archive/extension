@@ -93,21 +93,13 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
                 id: 'description',
                 name: "Description",
                 renderCell: renderSimpleCell,
-                width: new ObservableValue(450),
-                sortProps: {
-                    ariaLabelAscending: "Sorted A to Z",
-                    ariaLabelDescending: "Sorted Z to A"
-                }
+                width: new ObservableValue(450)
             },
             {
                 id: 'status',
                 name: 'Status',
                 width: new ObservableValue(75),
-                renderCell: this.renderCheckmark,
-                sortProps: {
-                    ariaLabelAscending: "Sorted A to Z",
-                    ariaLabelDescending: "Sorted Z to A"
-                }
+                renderCell: this.renderCheckmark
             },
             {
                 id: 'reconcileUrl',
