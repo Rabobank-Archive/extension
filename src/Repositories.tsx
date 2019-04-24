@@ -6,7 +6,7 @@ import { ObservableArray, ObservableValue } from 'azure-devops-ui/Core/Observabl
 import { Header, TitleSize } from 'azure-devops-ui/Header';
 import { Card } from 'azure-devops-ui/Card';
 import { Page } from 'azure-devops-ui/Page';
-import { sortingBehavior } from './components/TableSortingBehavior';
+import { sortingBehavior, onSize } from './components/TableBehaviors';
 import { renderCheckmark, renderDate } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
 
@@ -50,6 +50,7 @@ export default class extends React.Component<IRepositoriesProps, { report: IRepo
                 id: 'repository',
                 name: "Repository",
                 renderCell: renderSimpleCell,
+                onSize: onSize,
                 width: new ObservableValue(250),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -60,6 +61,7 @@ export default class extends React.Component<IRepositoriesProps, { report: IRepo
                 id: 'hasRequiredReviewerPolicy',
                 name: "Required Reviewer Policy",
                 renderCell: renderCheckmark,
+                onSize: onSize,
                 width: new ObservableValue(100),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -70,6 +72,7 @@ export default class extends React.Component<IRepositoriesProps, { report: IRepo
                 id: 'date',
                 name: "Checked",
                 renderCell: renderDate,
+                onSize: onSize,
                 width: new ObservableValue(100),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",

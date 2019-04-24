@@ -6,7 +6,7 @@ import { ObservableArray, ObservableValue } from 'azure-devops-ui/Core/Observabl
 import { Card } from 'azure-devops-ui/Card';
 import { Page } from 'azure-devops-ui/Page';
 import { Header, TitleSize } from 'azure-devops-ui/Header';
-import { sortingBehavior } from './components/TableSortingBehavior';
+import { sortingBehavior, onSize } from './components/TableBehaviors';
 import { renderDate, renderCheckmark } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
 
@@ -61,6 +61,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'pipeline',
                 name: 'Pipeline',
+                onSize: onSize,
                 renderCell: renderSimpleCell,
                 width: new ObservableValue(250),
                 sortProps: {
@@ -71,6 +72,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'release',
                 name: "Release",
+                onSize: onSize,
                 renderCell: renderSimpleCell,
                 width: new ObservableValue(150),
                 sortProps: {
@@ -81,6 +83,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'environment',
                 name: "Environment",
+                onSize: onSize,
                 renderCell: renderSimpleCell,
                 width: new ObservableValue(150),
                 sortProps: {
@@ -91,6 +94,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'createdDate',
                 name: 'Created',
+                onSize: onSize,
                 width: new ObservableValue(100),
                 renderCell: renderDate,
                 sortProps: {
@@ -101,6 +105,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'usesProductionEndpoints',
                 name: 'Production Endpoints',
+                onSize: onSize,
                 renderCell: renderCheckmark,
                 width: new ObservableValue(150),
                 sortProps: {
@@ -111,6 +116,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'hasApprovalOptions',
                 name: 'Approval',
+                onSize: onSize,
                 renderCell: renderCheckmark,
                 width: new ObservableValue(80),
                 sortProps: {
@@ -121,6 +127,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'hasBranchFilterForAllArtifacts',
                 name: 'Branch Filters',
+                onSize: onSize,
                 renderCell: renderCheckmark,
                 width: new ObservableValue(100),
                 sortProps: {
@@ -131,6 +138,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'usesManagedAgentsOnly',
                 name: 'Uses Managed Agents',
+                onSize: onSize,
                 renderCell: renderCheckmark,
                 width: new ObservableValue(150),
                 sortProps: {
@@ -141,6 +149,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'allArtifactsAreFromBuild',
                 name: 'Artifacts are from build',
+                onSize: onSize,
                 renderCell: renderCheckmark,
                 width: new ObservableValue(250),
                 sortProps: {

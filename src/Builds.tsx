@@ -8,7 +8,7 @@ import { Card } from 'azure-devops-ui/Card'
 import { Statuses, StatusSize, IStatusProps } from "azure-devops-ui/Status";
 
 import { IAzDoService, IBuildReport } from './services/IAzDoService';
-import { sortingBehavior } from './components/TableSortingBehavior'
+import { sortingBehavior, onSize } from './components/TableBehaviors'
 import { renderDate, renderCheckmark } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
 
@@ -57,6 +57,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
             {
                 id: 'pipeline',
                 name: "Pipeline",
+                onSize: onSize,
                 renderCell: renderSimpleCell,
                 width: new ObservableValue(450),
                 sortProps: {
@@ -67,6 +68,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
             {
                 id: 'buildId',
                 name: 'Build',
+                onSize: onSize,
                 width: new ObservableValue(75),
                 renderCell: renderSimpleCell,
                 sortProps: {
@@ -77,6 +79,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
             {
                 id: 'createdDate',
                 name: 'Created',
+                onSize: onSize,
                 width: new ObservableValue(130),
                 renderCell: renderDate,
                 sortProps: {
@@ -87,6 +90,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
             {
                 id: 'usesFortify',
                 name: 'Fortify',
+                onSize: onSize,
                 width: new ObservableValue(75),
                 renderCell: renderCheckmark,
                 sortProps: {
@@ -97,6 +101,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
             {
                 id: 'usesSonarQube',
                 name: 'SonarQube',
+                onSize: onSize,
                 width: new ObservableValue(75),
                 renderCell: renderCheckmark,
                 sortProps: {
@@ -107,6 +112,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
             {
                 id: 'artifactsStoredSecure',
                 name: 'Artifact Secure',
+                onSize: onSize,
                 width: new ObservableValue(75),
                 renderCell: renderCheckmark,
                 sortProps: {

@@ -1,6 +1,5 @@
 import { ColumnSorting, SortOrder, sortItems, ITableColumn } from "azure-devops-ui/Table";
-import { ObservableArray } from "azure-devops-ui/Core/Observable";
-
+import { ObservableArray, ObservableValue } from "azure-devops-ui/Core/Observable";
 
 export function sortingBehavior(itemProvider: ObservableArray<any>, columns: ITableColumn<any>[])
 { 
@@ -24,6 +23,10 @@ export function sortingBehavior(itemProvider: ObservableArray<any>, columns: ITa
         }
     );
     return sortingBehavior
+}
+
+export function onSize(event: MouseEvent, columnIndex: number, width: number, column: ITableColumn<any>) {
+    (column.width as ObservableValue<number>).value = width;
 }
 
 function sortFunctions(columns: ITableColumn<any>[]): ((item1: any, item2: any) => number)[] {

@@ -10,6 +10,7 @@ import { Card } from 'azure-devops-ui/Card'
 import { Statuses, IStatusProps } from "azure-devops-ui/Status";
 import { renderCheckmark } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
+import { onSize } from './components/TableBehaviors';
 
 interface ITableItem extends ISimpleTableCell {
     description: string,
@@ -80,17 +81,20 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
                 id: 'description',
                 name: "Description",
                 renderCell: renderSimpleCell,
+                onSize: onSize,
                 width: new ObservableValue(450)
             },
             {
                 id: 'status',
                 name: 'Status',
+                onSize: onSize,
                 width: new ObservableValue(75),
                 renderCell: renderCheckmark
             },
             {
                 id: 'reconcileUrl',
                 name: '',
+                onSize: onSize,
                 width: new ObservableValue(130),
                 renderCell: this.renderReconcileButton
             }
