@@ -1,58 +1,142 @@
 import * as React from 'react';
 import moment from 'moment';
-import Checkmark from './components/Checkmark';
-import Report from './components/Report';
-import { IAzDoService, IRepositoryReport, IExtensionDocument } from './services/IAzDoService';
-import { IColumn } from 'office-ui-fabric-react';
+import { IAzDoService, IRepositoryReport } from './services/IAzDoService';
+import { ISimpleTableCell, ITableColumn, renderSimpleCell, Table, SimpleTableCell } from 'azure-devops-ui/Table';
+import { IStatusProps, Statuses, Status, StatusSize } from 'azure-devops-ui/Status';
+import { ObservableArray, ObservableValue } from 'azure-devops-ui/Core/Observable';
+import { Header, TitleSize } from 'azure-devops-ui/Header';
+import { Card } from 'azure-devops-ui/Card';
+import { Page } from 'azure-devops-ui/Page';
+import { sortingBehavior } from './components/TableSortingBehavior';
+
+interface ITableItem extends ISimpleTableCell {
+    repository: string,
+    hasRequiredReviewerPolicy: IStatusProps,
+    date: string
+}
 
 interface IRepositoriesProps {
     azDoService: IAzDoService
 }
 
-export default class extends React.Component<IRepositoriesProps, {}> {
+export default class extends React.Component<IRepositoriesProps, { report: IRepositoryReport, isLoading: boolean }> {
+    private itemProvider = new ObservableArray<any>();
+    
     constructor(props: IRepositoriesProps) {
         super(props);
+        this.state = {
+            report: {
+                reports: []
+            },
+            isLoading: true
+        }
+    }
+
+    async componentDidMount() {
+        const report = await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoryReport>("GitRepositories");
+        this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
+            repository: x.repository,
+            date: x.date,
+            hasRequiredReviewerPolicy: x.hasRequiredReviewerPolicy ? Statuses.Success : Statuses.Failed,
+        })));
+
+        this.setState({ isLoading: false, report: report });    
+    }
+
+    private renderDate(
+        _rowIndex: number,
+        columnIndex: number,
+        tableColumn: ITableColumn<ITableItem>,
+        item: ITableItem
+    ): JSX.Element {
+
+        return (
+            <SimpleTableCell
+                columnIndex={columnIndex}
+                tableColumn={tableColumn}
+                key={"col-" + columnIndex} >
+                {moment(item.date).fromNow()}
+            </SimpleTableCell>
+        )
+    }
+
+    private renderCheckmark(
+        _rowIndex: number,
+        columnIndex: number,
+        tableColumn: ITableColumn<ITableItem>,
+        item: ITableItem
+    ): JSX.Element {
+        let value = item[tableColumn.id] as IStatusProps;
+
+        return (
+            <SimpleTableCell
+                columnIndex={columnIndex}
+                tableColumn={tableColumn}
+                key={"col-" + columnIndex} >
+                <Status
+                    {...value}
+                    className="icon-large-margin"
+                    size={StatusSize.l}
+                />
+            </SimpleTableCell>
+        )
     }
 
     render() {
-        const columns: IColumn[] = [{
-            key: 'column1',
-            fieldName: 'repository',
-            name: 'Repository',
-            minWidth: 250,
-            maxWidth: 250,
-            isResizable: true,
-        },
-        {
-            key: 'column2',
-            fieldName: 'hasRequiredReviewerPolicy',
-            name: 'Required Reviewer Policy',
-            minWidth: 50,
-            maxWidth: 200,
-            isResizable: true,
-            data: Boolean,
-            onRender: (item: IRepositoryReport) => <Checkmark checked={item.hasRequiredReviewerPolicy} />
-        },
-        {
-            key: 'column3',
-            fieldName: 'date',
-            name: 'Checked',
-            minWidth: 100,
-            isResizable: true,
-            onRender: (item: IRepositoryReport) => <div>{moment(item.date).fromNow()}</div>
-        }];
+        const columns: ITableColumn<ITableItem>[] = [
+            {
+                id: 'repository',
+                name: "Repository",
+                renderCell: renderSimpleCell,
+                width: new ObservableValue(250),
+                sortProps: {
+                    ariaLabelAscending: "Sorted A to Z",
+                    ariaLabelDescending: "Sorted Z to A"
+                }
+            },
+            {
+                id: 'hasRequiredReviewerPolicy',
+                name: "Required Reviewer Policy",
+                renderCell: this.renderCheckmark,
+                width: new ObservableValue(100),
+                sortProps: {
+                    ariaLabelAscending: "Sorted A to Z",
+                    ariaLabelDescending: "Sorted Z to A"
+                }
+            },
+            {
+                id: 'date',
+                name: "Checked",
+                renderCell: this.renderDate,
+                width: new ObservableValue(100),
+                sortProps: {
+                    ariaLabelAscending: "Sorted A to Z",
+                    ariaLabelDescending: "Sorted Z to A"
+                }
+            },
+        ]
 
         return (
-            <div>
-                <div>
-                    <h1>Compliancy</h1>
+            <Page>
+                <Header
+                    title={"Repository compliancy"}
+                    titleSize={TitleSize.Medium}
+                    titleIconProps={{ iconName: "OpenSource" }}
+                />
+                <div className="page-content page-content-top">
                     <p>We would ❤ getting in touch on the pull request workflow, so join us on our <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">sprint review</a> @UC-T15!</p>
                     <p>More information on the <a href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Repositories" target="_blank">how &amp; why</a> of branching policies with Azure Repos or <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</a> in general.</p>
                     <p>If you still have questions or need assistance on your repositories, create a <a href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</a>.</p>
+
+                    <Card>
+                        { this.state.isLoading ?
+                            <div>Loading...</div> :
+                            <Table<ITableItem> columns={columns}  itemProvider={this.itemProvider} behaviors={[ sortingBehavior(this.itemProvider, columns) ]} />
+                        }
+                    </Card>
                 </div>
-                <hr />
-                <Report columns={columns} reports={async () => (await this.props.azDoService.GetReportsFromDocumentStorage<IExtensionDocument<IRepositoryReport>>("GitRepositories")).reports} />
-            </div>)
+            </Page>
+        );
     }
 }
 

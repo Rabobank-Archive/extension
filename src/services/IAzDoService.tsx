@@ -4,6 +4,12 @@ export interface IProjectRule {
     reconcileUrl: string
 }
 
+export interface IRepositoryRule {
+    repository: string,
+    hasRequiredReviewerPolicy: boolean,
+    date: string
+}
+
 export interface IBuildRule {
     id: string
     pipeline: string
@@ -26,12 +32,6 @@ export interface IReleaseRule {
     allArtifactsAreFromBuild: boolean | null
 }
 
-export interface IRepositoryReport {
-    repository: string,
-    hasRequiredReviewerPolicy: boolean,
-    date: string
-}
-
 export interface IExtensionDocument<TReport> {
     reports: TReport[]
 }
@@ -40,6 +40,9 @@ export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
     date: Date,
     token: string,
     rescanUrl: string
+}
+
+export interface IRepositoryReport extends IExtensionDocument<IRepositoryRule> {
 }
 
 export interface IBuildReport extends IExtensionDocument<IBuildRule> {

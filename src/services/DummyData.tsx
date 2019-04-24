@@ -83,7 +83,7 @@ export const DummyReleaseReport: IReleaseReport = {
     ]
 };
 
-export const DummyRepositoriesReport: IExtensionDocument<IRepositoryReport> = {
+export const DummyRepositoriesReport: IRepositoryReport = {
     reports: [
         {
             "repository": "investment-application-messages",
