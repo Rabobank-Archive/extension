@@ -9,6 +9,7 @@ import { Header, TitleSize } from 'azure-devops-ui/Header'
 import { Card } from 'azure-devops-ui/Card'
 import { Statuses, IStatusProps } from "azure-devops-ui/Status";
 import { renderCheckmark } from './components/TableRenderers';
+import { Link } from 'azure-devops-ui/Link';
 
 interface ITableItem extends ISimpleTableCell {
     description: string,
@@ -104,8 +105,8 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
                 />
 
                 <div className="page-content page-content-top">
-                    <p>We would ❤ getting in touch on how to have a secure setup that works out for you, so join us on our <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">bi-weekly sprint review</a> @UC-T15!</p>
-                    <p>More information on the effective <a href="https://confluence.dev.rabobank.nl/display/vsts/Azure+DevOps+Project+group+permissions" target="_blank">Azure Devops Project group permissions</a> that are used for the secure setup.</p>
+                    <p>We would ❤ getting in touch on how to have a secure setup that works out for you, so join us on our <Link href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">bi-weekly sprint review</Link> @UC-T15!</p>
+                    <p>More information on the effective <Link href="https://confluence.dev.rabobank.nl/display/vsts/Azure+DevOps+Project+group+permissions" target="_blank">Azure Devops Project group permissions</Link> that are used for the secure setup.</p>
                     <Card>
                         { this.state.isLoading ?
                             <div>Loading...</div> :

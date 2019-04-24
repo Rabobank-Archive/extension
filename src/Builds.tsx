@@ -10,6 +10,7 @@ import { Statuses, StatusSize, IStatusProps } from "azure-devops-ui/Status";
 import { IAzDoService, IBuildReport } from './services/IAzDoService';
 import { sortingBehavior } from './components/TableSortingBehavior'
 import { renderDate, renderCheckmark } from './components/TableRenderers';
+import { Link } from 'azure-devops-ui/Link';
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string,
@@ -124,9 +125,9 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 />
 
                 <div className="page-content page-content-top">
-                    <p>We would ❤ getting in touch on how to improve analyzing builds and stuff, so join us on our <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">sprint review</a> @UC-T15!</p>
-                    <p>More information on the <a href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Build" target="_blank">how &amp; why</a> of storing artifacts secure with Azure Pipelines or <a href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</a> in general.</p>
-                    <p>If you still have questions or need assistance on your pipelines, create a <a href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</a>.</p>
+                    <p>We would ❤ getting in touch on how to improve analyzing builds and stuff, so join us on our <Link href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">sprint review</Link> @UC-T15!</p>
+                    <p>More information on the <Link href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Build" target="_blank">how &amp; why</Link> of storing artifacts secure with Azure Pipelines or <Link href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</Link> in general.</p>
+                    <p>If you still have questions or need assistance on your pipelines, create a <Link href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</Link>.</p>
                     
                     <Card>
                         { this.state.isLoading ?
