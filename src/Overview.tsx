@@ -11,6 +11,7 @@ import { Statuses, IStatusProps } from "azure-devops-ui/Status";
 import { renderCheckmark } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
 import { onSize } from './components/TableBehaviors';
+import ReconcileButton from './components/ReconcileButton';
 
 interface ITableItem extends ISimpleTableCell {
     description: string,
@@ -41,6 +42,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
 
     async componentDidMount() {
         const report = await this.props.azDoService.GetReportsFromDocumentStorage<IOverviewReport>("globalpermissions");
+
         this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
              description: x.description, 
              reconcileUrl: x.reconcileUrl, 
@@ -58,11 +60,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         item: ITableItem
     ): JSX.Element {
         let content = item.status != Statuses.Success
-            ? <Button
-                primary={true}
-                iconProps = {{ iconName: "TriggerAuto" }}
-                onClick={() => fetch(item.reconcileUrl, { headers: { Authorization: `Bearer ${item.token}` }}) } 
-                text="Reconcile" disabled={(item.reconcileUrl == "")} />
+            ? <ReconcileButton reconcilableItem={item} />
             : "";
 
         return (

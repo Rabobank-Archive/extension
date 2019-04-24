@@ -37,13 +37,13 @@ function GetRootElement(azDoService: IAzDoService) {
     const report = window.location.hash.substr(1);
     switch (report) {
         case 'builds':
-            element = (<Page><Builds azDoService={azDoService} /></Page>);
+            element = (<Builds azDoService={azDoService} />);
             break;
         case 'repositories':
-            element = (<Page><Repositories azDoService={azDoService} /></Page>);
+            element = (<Repositories azDoService={azDoService} />);
             break;
         case 'releases':
-            element = (<Page><Releases azDoService={azDoService} /></Page>);
+            element = (<Releases azDoService={azDoService} />);
             break;
         case 'overview':
             element = (<Overview azDoService={azDoService} />);
