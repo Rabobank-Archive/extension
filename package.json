@@ -24,7 +24,6 @@
     "azure-devops-extension-sdk": "^2.0.7",
     "azure-devops-ui": "^1.150.1",
     "moment": "^2.24.0",
-    "office-ui-fabric-react": "^6.167.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-scripts": "2.1.5"

@@ -12,14 +12,6 @@ import { DummyAzDoService } from "./services/DummyAzDoService";
 import * as SDK from "azure-devops-extension-sdk";
 import { Page } from "azure-devops-ui/Page"
 
-import { loadTheme } from '@uifabric/styling';
-import { initializeIcons } from '@uifabric/icons';
-
-import './index.css';
-
-loadTheme({}); // <- This is a very important line
-initializeIcons();
-
 if(process.env.NODE_ENV !== "production")
 {
     let azDoService: IAzDoService = new DummyAzDoService(); 
