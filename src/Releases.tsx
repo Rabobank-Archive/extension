@@ -1,13 +1,13 @@
 import * as React from 'react';
-import moment from 'moment';
-import { IAzDoService, IExtensionDocument, IReleaseReport } from './services/IAzDoService';
-import { ISimpleTableCell, ITableColumn, SimpleTableCell, renderSimpleCell, Table } from 'azure-devops-ui/Table';
-import { IStatusProps, Statuses, Status, StatusSize } from 'azure-devops-ui/Status';
+import { IAzDoService, IReleaseReport } from './services/IAzDoService';
+import { ISimpleTableCell, ITableColumn, renderSimpleCell, Table } from 'azure-devops-ui/Table';
+import { IStatusProps, Statuses } from 'azure-devops-ui/Status';
 import { ObservableArray, ObservableValue } from 'azure-devops-ui/Core/Observable';
 import { Card } from 'azure-devops-ui/Card';
 import { Page } from 'azure-devops-ui/Page';
 import { Header, TitleSize } from 'azure-devops-ui/Header';
 import { sortingBehavior } from './components/TableSortingBehavior';
+import { renderDate, renderCheckmark } from './components/TableRenderers';
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string,
@@ -55,45 +55,6 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
         this.setState({ isLoading: false, report: report });    
     }
 
-    private renderDate(
-        _rowIndex: number,
-        columnIndex: number,
-        tableColumn: ITableColumn<ITableItem>,
-        item: ITableItem
-    ): JSX.Element {
-
-        return (
-            <SimpleTableCell
-                columnIndex={columnIndex}
-                tableColumn={tableColumn}
-                key={"col-" + columnIndex} >
-                {moment(item.createdDate).fromNow()}
-            </SimpleTableCell>
-        )
-    }
-
-    private renderCheckmark(
-        _rowIndex: number,
-        columnIndex: number,
-        tableColumn: ITableColumn<ITableItem>,
-        item: ITableItem
-    ): JSX.Element {
-        let value = item[tableColumn.id] as IStatusProps;
-
-        return (
-            <SimpleTableCell
-                columnIndex={columnIndex}
-                tableColumn={tableColumn}
-                key={"col-" + columnIndex} >
-                <Status
-                    {...value}
-                    className="icon-large-margin"
-                    size={StatusSize.l}
-                />
-            </SimpleTableCell>
-        )
-    }
-
     render() {
         const columns: ITableColumn<ITableItem>[] = [
             {
@@ -130,7 +91,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
                 id: 'createdDate',
                 name: 'Created',
                 width: new ObservableValue(100),
-                renderCell: this.renderDate,
+                renderCell: renderDate,
                 sortProps: {
                     ariaLabelAscending: "Sorted Oldest to Newest",
                     ariaLabelDescending: "Sorted Newest to Oldest"
@@ -139,7 +100,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'usesProductionEndpoints',
                 name: 'Production Endpoints',
-                renderCell: this.renderCheckmark,
+                renderCell: renderCheckmark,
                 width: new ObservableValue(150),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -149,7 +110,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'hasApprovalOptions',
                 name: 'Approval',
-                renderCell: this.renderCheckmark,
+                renderCell: renderCheckmark,
                 width: new ObservableValue(80),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -159,7 +120,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'hasBranchFilterForAllArtifacts',
                 name: 'Branch Filters',
-                renderCell: this.renderCheckmark,
+                renderCell: renderCheckmark,
                 width: new ObservableValue(100),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -169,7 +130,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'usesManagedAgentsOnly',
                 name: 'Uses Managed Agents',
-                renderCell: this.renderCheckmark,
+                renderCell: renderCheckmark,
                 width: new ObservableValue(150),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -179,7 +140,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             {
                 id: 'allArtifactsAreFromBuild',
                 name: 'Artifacts are from build',
-                renderCell: this.renderCheckmark,
+                renderCell: renderCheckmark,
                 width: new ObservableValue(250),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",

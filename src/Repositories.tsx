@@ -1,13 +1,13 @@
 import * as React from 'react';
-import moment from 'moment';
 import { IAzDoService, IRepositoryReport } from './services/IAzDoService';
-import { ISimpleTableCell, ITableColumn, renderSimpleCell, Table, SimpleTableCell } from 'azure-devops-ui/Table';
-import { IStatusProps, Statuses, Status, StatusSize } from 'azure-devops-ui/Status';
+import { ISimpleTableCell, ITableColumn, renderSimpleCell, Table } from 'azure-devops-ui/Table';
+import { IStatusProps, Statuses } from 'azure-devops-ui/Status';
 import { ObservableArray, ObservableValue } from 'azure-devops-ui/Core/Observable';
 import { Header, TitleSize } from 'azure-devops-ui/Header';
 import { Card } from 'azure-devops-ui/Card';
 import { Page } from 'azure-devops-ui/Page';
 import { sortingBehavior } from './components/TableSortingBehavior';
+import { renderCheckmark, renderDate } from './components/TableRenderers';
 
 interface ITableItem extends ISimpleTableCell {
     repository: string,
@@ -43,45 +43,6 @@ export default class extends React.Component<IRepositoriesProps, { report: IRepo
         this.setState({ isLoading: false, report: report });    
     }
 
-    private renderDate(
-        _rowIndex: number,
-        columnIndex: number,
-        tableColumn: ITableColumn<ITableItem>,
-        item: ITableItem
-    ): JSX.Element {
-
-        return (
-            <SimpleTableCell
-                columnIndex={columnIndex}
-                tableColumn={tableColumn}
-                key={"col-" + columnIndex} >
-                {moment(item.date).fromNow()}
-            </SimpleTableCell>
-        )
-    }
-
-    private renderCheckmark(
-        _rowIndex: number,
-        columnIndex: number,
-        tableColumn: ITableColumn<ITableItem>,
-        item: ITableItem
-    ): JSX.Element {
-        let value = item[tableColumn.id] as IStatusProps;
-
-        return (
-            <SimpleTableCell
-                columnIndex={columnIndex}
-                tableColumn={tableColumn}
-                key={"col-" + columnIndex} >
-                <Status
-                    {...value}
-                    className="icon-large-margin"
-                    size={StatusSize.l}
-                />
-            </SimpleTableCell>
-        )
-    }
-
     render() {
         const columns: ITableColumn<ITableItem>[] = [
             {
@@ -97,7 +58,7 @@ export default class extends React.Component<IRepositoriesProps, { report: IRepo
             {
                 id: 'hasRequiredReviewerPolicy',
                 name: "Required Reviewer Policy",
-                renderCell: this.renderCheckmark,
+                renderCell: renderCheckmark,
                 width: new ObservableValue(100),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -107,7 +68,7 @@ export default class extends React.Component<IRepositoriesProps, { report: IRepo
             {
                 id: 'date',
                 name: "Checked",
-                renderCell: this.renderDate,
+                renderCell: renderDate,
                 width: new ObservableValue(100),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",

@@ -1,15 +1,15 @@
 import * as React from 'react';
-import moment from 'moment';
 
-import { ITableColumn, ISimpleTableCell, renderSimpleCell, SimpleTableCell, Table } from "azure-devops-ui/Table"
+import { ITableColumn, ISimpleTableCell, renderSimpleCell, Table } from "azure-devops-ui/Table"
 import { ObservableValue, ObservableArray } from 'azure-devops-ui/Core/Observable';
 import { Page } from 'azure-devops-ui/Page';
 import { Header, TitleSize } from 'azure-devops-ui/Header'
 import { Card } from 'azure-devops-ui/Card'
-import { Status, Statuses, StatusSize, IStatusProps } from "azure-devops-ui/Status";
+import { Statuses, StatusSize, IStatusProps } from "azure-devops-ui/Status";
 
 import { IAzDoService, IBuildReport } from './services/IAzDoService';
 import { sortingBehavior } from './components/TableSortingBehavior'
+import { renderDate, renderCheckmark } from './components/TableRenderers';
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string,
@@ -51,45 +51,6 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
         this.setState({ isLoading: false, report: report });    
     }
 
-    private renderDate(
-        _rowIndex: number,
-        columnIndex: number,
-        tableColumn: ITableColumn<ITableItem>,
-        item: ITableItem
-    ): JSX.Element {
-
-        return (
-            <SimpleTableCell
-                columnIndex={columnIndex}
-                tableColumn={tableColumn}
-                key={"col-" + columnIndex} >
-                {moment(item.createdDate).fromNow()}
-            </SimpleTableCell>
-        )
-    }
-
-    private renderCheckmark(
-        _rowIndex: number,
-        columnIndex: number,
-        tableColumn: ITableColumn<ITableItem>,
-        item: ITableItem
-    ): JSX.Element {
-        let value = item[tableColumn.id] as IStatusProps;
-
-        return (
-            <SimpleTableCell
-                columnIndex={columnIndex}
-                tableColumn={tableColumn}
-                key={"col-" + columnIndex} >
-                <Status
-                    {...value}
-                    className="icon-large-margin"
-                    size={StatusSize.l}
-                />
-            </SimpleTableCell>
-        )
-    }
-
     render() {
         const columns: ITableColumn<ITableItem>[] = [
             {
@@ -116,7 +77,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 id: 'createdDate',
                 name: 'Created',
                 width: new ObservableValue(130),
-                renderCell: this.renderDate,
+                renderCell: renderDate,
                 sortProps: {
                     ariaLabelAscending: "Sorted Oldest to Newest",
                     ariaLabelDescending: "Sorted Newest to Oldest"
@@ -126,7 +87,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 id: 'usesFortify',
                 name: 'Fortify',
                 width: new ObservableValue(75),
-                renderCell: this.renderCheckmark,
+                renderCell: renderCheckmark,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
@@ -136,7 +97,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 id: 'usesSonarQube',
                 name: 'SonarQube',
                 width: new ObservableValue(75),
-                renderCell: this.renderCheckmark,
+                renderCell: renderCheckmark,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
@@ -146,7 +107,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 id: 'artifactsStoredSecure',
                 name: 'Artifact Secure',
                 width: new ObservableValue(75),
-                renderCell: this.renderCheckmark,
+                renderCell: renderCheckmark,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
