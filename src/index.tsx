@@ -12,21 +12,25 @@ import { DummyAzDoService } from "./services/DummyAzDoService";
 import * as SDK from "azure-devops-extension-sdk";
 import { Page } from "azure-devops-ui/Page"
 
-if(process.env.NODE_ENV !== "production")
-{
-    let azDoService: IAzDoService = new DummyAzDoService(); 
-    let element: JSX.Element = GetRootElement(azDoService);
-    ReactDOM.render(element, document.getElementById('root'));
-} else {
-    SDK.init();
+let azDoService: IAzDoService;
 
+if(process.env.REACT_APP_USE_AZDO_SERVICE == "true") {
+    azDoService = new AzDoService();
+} else {
+    azDoService = new DummyAzDoService(); 
+}
+
+if(process.env.REACT_APP_USE_AZDO_SDK == "true")
+{
+    SDK.init();
     SDK.ready().then(() => {
-        let azDoService: IAzDoService = new AzDoService(); 
         let element: JSX.Element = GetRootElement(azDoService);
-        
         ReactDOM.render(<Page>{element}</Page>, document.getElementById('root'));
         SDK.notifyLoadSucceeded();
     });
+} else {
+    let element: JSX.Element = GetRootElement(azDoService);
+    ReactDOM.render(element, document.getElementById('root'));
 }
 
 function GetRootElement(azDoService: IAzDoService) {
