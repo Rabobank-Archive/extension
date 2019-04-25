@@ -4,6 +4,9 @@ import { IAzDoService, IExtensionDocument } from "./IAzDoService";
 import * as SDK from "azure-devops-extension-sdk";
 
 export class AzDoService implements IAzDoService {
+    public async GetAppToken(): Promise<string> {
+        return await SDK.getAppToken();
+    }
     public async GetReportsFromDocumentStorage<TReport>(documentCollectionName: string): Promise<TReport> {
         const token = await SDK.getAccessToken();
         let dataService = await SDK.getService<IExtensionDataService>("ms.vss-features.extension-data-service");

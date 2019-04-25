@@ -3,6 +3,10 @@ import { IAzDoService, IExtensionDocument } from './IAzDoService';
 import { IExtensionDataService } from 'azure-devops-extension-api';
 
 export class DummyAzDoService implements IAzDoService {
+    public async GetAppToken(): Promise<string> {
+        return "DUMMYTOKEN123";
+    }
+    
     public async GetReportsFromDocumentStorage<TReport>(documentCollectionName: string): Promise<TReport> 
     { 
         return Promise.resolve<TReport>(loadData(documentCollectionName));
