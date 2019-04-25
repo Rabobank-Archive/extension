@@ -3,6 +3,9 @@ import { Button } from 'azure-devops-ui/Button';
 import { ObservableValue } from 'azure-devops-ui/Core/Observable';
 import { Observer } from "azure-devops-ui/Observer";
 import { Dialog } from "azure-devops-ui/Dialog";
+import { MessageCard, MessageCardSeverity } from "azure-devops-ui/MessageCard";
+import { SimpleList, ScrollableList } from 'azure-devops-ui/List';
+import { ArrayItemProvider } from 'azure-devops-ui/Utilities/Provider';
 
 interface IReconcileButtonProps {
     reconcilableItem: {
@@ -11,20 +14,42 @@ interface IReconcileButtonProps {
     }
 }
 
-export default class extends React.Component<IReconcileButtonProps, { }> {
+interface IReconcileButtonState {
+    hasError: Boolean,
+    errorText: string
+}
+
+export default class extends React.Component<IReconcileButtonProps, IReconcileButtonState> {
     private isDialogOpen = new ObservableValue<boolean>(false);
     
     constructor(props: IReconcileButtonProps) {
         super(props);
+        this.state = {
+            hasError: false,
+            errorText: ""
+        }
     }
 
-    private async doReconcileRequest(): Promise<Response> {
-        return await fetch(this.props.reconcilableItem.reconcileUrl, { headers: { Authorization: `Bearer ${this.props.reconcilableItem.token}` }});
+    private async doReconcileRequest(): Promise<void> {
+        try {
+            let url = this.props.reconcilableItem.reconcileUrl;
+            let requestInit: RequestInit = { headers: { Authorization: `Bearer ${this.props.reconcilableItem.token}` }};
+            let response = await fetch(url, requestInit);
+            if(response.ok)
+            {
+                this.isDialogOpen.value = false;
+            } else {
+                this.setState({hasError: true, errorText: "Couldn't fulfill reconcile request." });
+            }
+        } catch {
+            this.setState({hasError: true, errorText: "Couldn't fulfill reconcile request." });
+        }
     }
 
     render () {
         const onDismiss = () => {
             this.isDialogOpen.value = false;
+            this.setState({hasError: false})
         };
 
         return (
@@ -37,6 +62,14 @@ export default class extends React.Component<IReconcileButtonProps, { }> {
                 
                 <Observer isDialogOpen={this.isDialogOpen}>
                     {(props: { isDialogOpen: boolean }) => {
+                        let error = this.state.hasError ?
+                            <MessageCard 
+                                severity={MessageCardSeverity.Error} 
+                                onDismiss={() => {this.setState({hasError: false})}}>
+                                {this.state.errorText}
+                            </MessageCard> :
+                            "";
+
                         return props.isDialogOpen ? (
                             <Dialog
                                 titleProps={{ text: "Confirm reconciliation" }}
@@ -45,12 +78,12 @@ export default class extends React.Component<IReconcileButtonProps, { }> {
                                         text: "Cancel",
                                         onClick: () => {
                                             this.isDialogOpen.value = false;
+                                            this.setState({hasError: false})
                                         }
                                     },
                                     { 
                                         text: "Reconcile",
                                         onClick: () => {
-                                            this.isDialogOpen.value = false;
                                             this.doReconcileRequest();
                                         },
                                         primary: true 
@@ -58,7 +91,15 @@ export default class extends React.Component<IReconcileButtonProps, { }> {
                                 ]}
                                 onDismiss={onDismiss}
                             >
-                                Are you sure?
+                                {error}
+                                <p>Are you sure? Reconciling will make the following changes:</p>
+                                <SimpleList width={"100%"} itemProvider={
+                                    new ArrayItemProvider<string>([
+                                        "Rabobank Project Administrators group is created and added to Project Administrators", 
+                                        "Delete team project permissions of this group is set to deny", 
+                                        "Members of the Project Administrators are moved to Rabobank Project Administrators", 
+                                        "Delete team project permission is set to 'not set' for all other groups"])}
+                                />
                             </Dialog>
                         ) : null;
                     }}
