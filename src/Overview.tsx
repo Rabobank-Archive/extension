@@ -24,7 +24,7 @@ interface IOverviewProps {
     azDoService: IAzDoService
 }
 
-export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean }> {
+export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean, token: string }> {
     private itemProvider = new ObservableArray<any>();
 
     constructor(props: IOverviewProps) {
@@ -33,10 +33,10 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
             report: {
                 date: new Date(0),
                 reports: [], 
-                token: '',
                 rescanUrl: ''
             },
-            isLoading: true
+            isLoading: true,
+            token: ''
         }
     }
 
@@ -51,7 +51,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
              token: token
         })));
 
-        this.setState({ isLoading: false, report: report });
+        this.setState({ isLoading: false, report: report, token: token });
     }
     
     private renderReconcileButton(
@@ -116,7 +116,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
                             <div>
                                 <Button 
                                     iconProps = {{ iconName: "TriggerAuto" }}
-                                    onClick={() => fetch(this.state.report.rescanUrl, { headers: { Authorization: `Bearer ${this.state.report.token}` }}) } 
+                                    onClick={() => fetch(this.state.report.rescanUrl, { headers: { Authorization: `Bearer ${this.state.token}` }}) } 
                                     text="Rescan" />
                                 <Table<ITableItem> columns={columns} itemProvider={this.itemProvider} behaviors={[]} />
                             </div>

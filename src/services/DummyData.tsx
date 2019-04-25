@@ -2,7 +2,6 @@ import { IExtensionDocument, IProjectRule, IReleaseReport, IBuildReport, IReposi
 
 export const DummyProjectRulesReport: IOverviewReport = {
     date: new Date(),
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0IjoiV1YgTmV3IFByb2plY3QgVGVzdCA0Iiwib3JnYW5pemF0aW9uIjoicmFib3dlYi10ZXN0IiwibmJmIjoxNTU1NjQzODQ1LCJleHAiOjE1NTYyNDg2NDUsImlhdCI6MTU1NTY0Mzg0NX0.7KUrGPBMbuBdByj7WClwSyZitPzIq5ulipvV7exrobU",
     rescanUrl: 'https://azdoanalyticsdev.azurewebsites.net/api/scan/raboweb-test/WV%20New%20Project%20Test%204/globalpermissions',
     reports: [
         {

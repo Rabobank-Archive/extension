@@ -38,7 +38,6 @@ export interface IExtensionDocument<TReport> {
 
 export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
     date: Date,
-    token: string,
     rescanUrl: string
 }
 
