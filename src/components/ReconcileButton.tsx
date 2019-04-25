@@ -6,6 +6,7 @@ import { Dialog } from "azure-devops-ui/Dialog";
 import { MessageCard, MessageCardSeverity } from "azure-devops-ui/MessageCard";
 import { SimpleList, ScrollableList } from 'azure-devops-ui/List';
 import { ArrayItemProvider } from 'azure-devops-ui/Utilities/Provider';
+import { Status, Statuses, StatusSize } from 'azure-devops-ui/Status';
 
 interface IReconcileButtonProps {
     reconcilableItem: {
@@ -15,8 +16,9 @@ interface IReconcileButtonProps {
 }
 
 interface IReconcileButtonState {
-    hasError: Boolean,
-    errorText: string
+    hasError: boolean,
+    errorText: string,
+    isReconciling: boolean
 }
 
 export default class extends React.Component<IReconcileButtonProps, IReconcileButtonState> {
@@ -26,30 +28,33 @@ export default class extends React.Component<IReconcileButtonProps, IReconcileBu
         super(props);
         this.state = {
             hasError: false,
-            errorText: ""
+            errorText: "",
+            isReconciling: false
         }
     }
 
     private async doReconcileRequest(): Promise<void> {
         try {
             let url = this.props.reconcilableItem.reconcileUrl;
+            this.setState({ isReconciling: true });
             let requestInit: RequestInit = { headers: { Authorization: `Bearer ${this.props.reconcilableItem.token}` }};
             let response = await fetch(url, requestInit);
             if(response.ok)
             {
                 this.isDialogOpen.value = false;
+                this.setState({ hasError: false, isReconciling: false });
             } else {
-                this.setState({hasError: true, errorText: "Couldn't fulfill reconcile request." });
+                this.setState({ hasError: true, errorText: "Couldn't fulfill reconcile request.", isReconciling: false });
             }
         } catch {
-            this.setState({hasError: true, errorText: "Couldn't fulfill reconcile request." });
+            this.setState({ hasError: true, errorText: "Couldn't fulfill reconcile request.", isReconciling: false });
         }
     }
 
     render () {
         const onDismiss = () => {
             this.isDialogOpen.value = false;
-            this.setState({hasError: false})
+            this.setState({ hasError: false })
         };
 
         return (
@@ -70,6 +75,15 @@ export default class extends React.Component<IReconcileButtonProps, IReconcileBu
                             </MessageCard> :
                             "";
 
+                        let reconcilingSpinner = this.state.isReconciling ?
+                            <Status
+                            {...Statuses.Running}
+                            key="reconciling"
+                            size={StatusSize.xl}
+                            text="Reconciling..."
+                            /> :
+                            "";
+
                         return props.isDialogOpen ? (
                             <Dialog
                                 titleProps={{ text: "Confirm reconciliation" }}
@@ -78,7 +92,7 @@ export default class extends React.Component<IReconcileButtonProps, IReconcileBu
                                         text: "Cancel",
                                         onClick: () => {
                                             this.isDialogOpen.value = false;
-                                            this.setState({hasError: false})
+                                            this.setState({ hasError: false })
                                         }
                                     },
                                     { 
@@ -86,12 +100,14 @@ export default class extends React.Component<IReconcileButtonProps, IReconcileBu
                                         onClick: () => {
                                             this.doReconcileRequest();
                                         },
-                                        primary: true 
+                                        primary: true,
+                                        disabled: this.state.isReconciling
                                     }
                                 ]}
                                 onDismiss={onDismiss}
                             >
                                 {error}
+                                {reconcilingSpinner}
                                 <p>Are you sure? Reconciling will make the following changes:</p>
                                 <SimpleList width={"100%"} itemProvider={
                                     new ArrayItemProvider<string>([
