@@ -42,12 +42,13 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
 
     async componentDidMount() {
         const report = await this.props.azDoService.GetReportsFromDocumentStorage<IOverviewReport>("globalpermissions");
+        const token = await this.props.azDoService.GetAppToken();
 
         this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
              description: x.description, 
              reconcileUrl: x.reconcileUrl, 
              status: x.status ? Statuses.Success : Statuses.Failed, 
-             token: report.token
+             token: token
         })));
 
         this.setState({ isLoading: false, report: report });
