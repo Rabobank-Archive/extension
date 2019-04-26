@@ -25,7 +25,7 @@ export default class extends React.Component<IRepositoriesProps, { isLoading: bo
     }
 
     async componentDidMount() {
-        const report = await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoriesReport>("GitRepositories");
+        const report = await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoriesReport>("repository");
         
         this.setState({ isLoading: false, report: report });    
     }
