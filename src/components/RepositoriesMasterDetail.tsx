@@ -20,6 +20,7 @@ import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { renderString, renderCheckmark } from "./TableRenderers";
 import { IStatusProps, Statuses } from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
+import { Observer } from "azure-devops-ui/Observer";
 
 interface IReportMaster {
     item: string,
@@ -45,10 +46,20 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
         };
         return master;
     });
-    
+    private filteredDataProvider: ObservableArray<IReportMaster> = new ObservableArray<IReportMaster>();
+    private searchValue = new ObservableValue<string>("");
+
     constructor(props: any) {
         super(props);
-        console.log(this.data);
+
+        this.filteredDataProvider.value = this.data;
+
+        this.searchValue.subscribe((value, action) => { 
+            let searchFilter = value; 
+            this.filteredDataProvider.value = this.data.filter((value, index, array) => { 
+                return value.item.includes(searchFilter); 
+            });
+        });
     }
 
     private initialPayload: IMasterDetailsContextLayer<IReportMaster, undefined> = {
@@ -59,7 +70,12 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
             ),
             renderHeader: () => <MasterPanelHeader title={"Repositories"} />,
             renderSearch: () => (
-                <TextField prefixIconProps={{ iconName: "Search" }} placeholder="Search doesn't work" />
+                <TextField 
+                    prefixIconProps={{ iconName: "Search" }}
+                    placeholder="Search..."
+                    onChange={(e, newValue) => (this.searchValue.value = newValue)}
+                    value={this.searchValue}
+                    />
             ),
             hideBackButton: false //somehow this HIDES the back button
         },
@@ -73,20 +89,19 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
     private InitialMasterPanelContent: React.FunctionComponent<{
         initialSelectedMasterItem: IObservableValue<IReportMaster>;
     }> = props => {
-        const [initialItemProvider] = React.useState(new ArrayItemProvider(this.data));
         const [initialSelection] = React.useState(new ListSelection());
     
         React.useEffect(() => {
             bindSelectionToObservable(
                 initialSelection,
-                initialItemProvider,
+                this.filteredDataProvider,
                 props.initialSelectedMasterItem
             );
         });
     
         return (
             <List
-                itemProvider={initialItemProvider}
+                itemProvider={this.filteredDataProvider}
                 selection={initialSelection}
                 renderRow={this.renderInitialRow}
                 width="100%"
