@@ -2,6 +2,10 @@ import { DummyProjectRulesReport, DummyReleaseReport, DummyBuildReport, DummyRep
 import { IAzDoService, IExtensionDocument } from './IAzDoService';
 import { IExtensionDataService } from 'azure-devops-extension-api';
 
+function delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
+
 export class DummyAzDoService implements IAzDoService {
     public async GetAppToken(): Promise<string> {
         return "DUMMYTOKEN123";
@@ -9,6 +13,9 @@ export class DummyAzDoService implements IAzDoService {
     
     public async GetReportsFromDocumentStorage<TReport>(documentCollectionName: string): Promise<TReport> 
     { 
+        // Simulate some waiting time
+        await delay(1000);
+        
         return Promise.resolve<TReport>(loadData(documentCollectionName));
     }
 }

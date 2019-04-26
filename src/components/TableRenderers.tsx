@@ -22,6 +22,24 @@ export function renderDate(
     )
 }
 
+export function renderString(
+    _rowIndex: number,
+    columnIndex: number,
+    tableColumn: ITableColumn<any>,
+    item: any
+): JSX.Element {
+    let value = item[tableColumn.id] as string;
+
+    return (
+        <SimpleTableCell
+            columnIndex={columnIndex}
+            tableColumn={tableColumn}
+            key={"col-" + columnIndex} >
+            {value}
+        </SimpleTableCell>
+    )
+}
+
 export function renderCheckmark(
     _rowIndex: number,
     columnIndex: number,

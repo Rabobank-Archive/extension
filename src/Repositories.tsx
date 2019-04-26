@@ -1,28 +1,33 @@
 import * as React from 'react';
-import { IAzDoService, IRepositoryReport } from './services/IAzDoService';
+import { IAzDoService, IRepositoriesReport } from './services/IAzDoService';
 import { Header, TitleSize } from 'azure-devops-ui/Header';
 import { Card } from 'azure-devops-ui/Card';
 import { Page } from 'azure-devops-ui/Page';
 import { Link } from 'azure-devops-ui/Link';
 import RepositoriesMasterDetail from './components/RepositoriesMasterDetail';
+import { DummyRepositoriesReport } from './services/DummyData';
 
 interface IRepositoriesProps {
     azDoService: IAzDoService
 }
 
-export default class extends React.Component<IRepositoriesProps, { isLoading: boolean }> {
+export default class extends React.Component<IRepositoriesProps, { isLoading: boolean, report: IRepositoriesReport }> {
     
     constructor(props: IRepositoriesProps) {
         super(props);
         this.state = {
-            isLoading: true
+            isLoading: true,
+            report: {
+                date: new Date(),
+                reports: []
+            }
         }
     }
 
     async componentDidMount() {
-        const report = await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoryReport>("GitRepositories");
+        const report = await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoriesReport>("GitRepositories");
         
-        this.setState({ isLoading: false });    
+        this.setState({ isLoading: false, report: report });    
     }
 
     render() {
@@ -41,7 +46,7 @@ export default class extends React.Component<IRepositoriesProps, { isLoading: bo
                     <Card>
                         { this.state.isLoading ?
                             <div>Loading...</div> :
-                            <RepositoriesMasterDetail />
+                            <RepositoriesMasterDetail data={this.state.report.reports}/>
                         }
                     </Card>
                 </div>
