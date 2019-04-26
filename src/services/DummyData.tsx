@@ -90,7 +90,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
             rules: [
                 {
                     description: "Nobody can delete the repository",
-                    status: false
+                    status: true
                 },
                 {
                     description: "Master and release branches are protected",

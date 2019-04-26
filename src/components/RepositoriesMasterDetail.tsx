@@ -16,11 +16,9 @@ import {
     ITableColumn,
     Table} from "azure-devops-ui/Table";
 import { TextField } from "azure-devops-ui/TextField";
-import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { renderString, renderCheckmark } from "./TableRenderers";
-import { IStatusProps, Statuses } from "azure-devops-ui/Status";
+import { IStatusProps, Statuses, Status, StatusSize } from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
-import { Observer } from "azure-devops-ui/Observer";
 
 interface IReportMaster {
     item: string,
@@ -109,6 +107,12 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
         );
     };
 
+    private renderSmallCompliantIcon(item: IReportMaster) : JSX.Element {
+        return item.rules.some((rule) => { return rule.status != Statuses.Success }) ?
+            <div><Status {...Statuses.Failed} className="icon-large-margin" size={StatusSize.s}/>Non-Compliant</div> :
+            <div><Status {...Statuses.Success} className="icon-large-margin" size={StatusSize.s}/>Compliant</div>
+    }
+
     private renderInitialRow = (
         index: number,
         item: IReportMaster,
@@ -126,7 +130,7 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
                     <div className="flex-noshrink" style={{ width: "32px" }} />
                     <div className="flex-column flex-shrink" style={{ minWidth: 0 }}>
                         <div className="primary-text text-ellipsis">{item.item}</div>
-                        <div className="secondary-text">{"Optional Subtitle"}</div>
+                        <div className="secondary-text">{this.renderSmallCompliantIcon(item)}</div>
                     </div>
                 </div>
             </ListItem>
@@ -166,7 +170,7 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
         return (
             <Page>
                 <Header
-                    description={"Optional subtitle"}
+                    description={this.renderSmallCompliantIcon(detailItem)}
                     title={detailItem.item}
                     titleSize={TitleSize.Large}
                 />
