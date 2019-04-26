@@ -4,10 +4,14 @@ export interface IProjectRule {
     reconcileUrl: string
 }
 
+export interface IRepositoryReport {
+    item: string,
+    rules: IRepositoryRule[]
+}
+
 export interface IRepositoryRule {
-    repository: string,
-    hasRequiredReviewerPolicy: boolean,
-    date: string
+    description: string,
+    status: boolean
 }
 
 export interface IBuildRule {
@@ -41,7 +45,8 @@ export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
     rescanUrl: string
 }
 
-export interface IRepositoryReport extends IExtensionDocument<IRepositoryRule> {
+export interface IRepositoriesReport extends IExtensionDocument<IRepositoryReport> {
+    date: Date
 }
 
 export interface IBuildReport extends IExtensionDocument<IBuildRule> {

@@ -1,4 +1,4 @@
-import { IExtensionDocument, IProjectRule, IReleaseReport, IBuildReport, IRepositoryReport, IOverviewReport } from './IAzDoService';
+import { IExtensionDocument, IProjectRule, IReleaseReport, IBuildReport, IRepositoryReport, IOverviewReport, IRepositoriesReport } from './IAzDoService';
 
 export const DummyProjectRulesReport: IOverviewReport = {
     date: new Date(),
@@ -82,17 +82,35 @@ export const DummyReleaseReport: IReleaseReport = {
     ]
 };
 
-export const DummyRepositoriesReport: IRepositoryReport = {
+export const DummyRepositoriesReport: IRepositoriesReport = {
+    date: new Date(),
     reports: [
         {
-            "repository": "investment-application-messages",
-            "hasRequiredReviewerPolicy": true,
-            "date": "2019-02-07T18:30:56.0654773+00:00"
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    status: false
+                },
+                {
+                    description: "Master and release branches are protected",
+                    status: true
+                }
+            ]
+            
         },
         {
-            "repository": "rbo-feature-settings-ked",
-            "hasRequiredReviewerPolicy": true,
-            "date": "2019-02-07T18:30:56.0654773+00:00"
+            item: "rbo-feature-settings-ked",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    status: false
+                },
+                {
+                    description: "Master and release branches are protected",
+                    status: true
+                }
+            ]
         }
     ]
 };

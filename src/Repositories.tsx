@@ -1,86 +1,31 @@
 import * as React from 'react';
 import { IAzDoService, IRepositoryReport } from './services/IAzDoService';
-import { ISimpleTableCell, ITableColumn, renderSimpleCell, Table } from 'azure-devops-ui/Table';
-import { IStatusProps, Statuses } from 'azure-devops-ui/Status';
-import { ObservableArray, ObservableValue } from 'azure-devops-ui/Core/Observable';
 import { Header, TitleSize } from 'azure-devops-ui/Header';
 import { Card } from 'azure-devops-ui/Card';
 import { Page } from 'azure-devops-ui/Page';
-import { sortingBehavior, onSize } from './components/TableBehaviors';
-import { renderCheckmark, renderDate } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
-
-interface ITableItem extends ISimpleTableCell {
-    repository: string,
-    hasRequiredReviewerPolicy: IStatusProps,
-    date: string
-}
+import RepositoriesMasterDetail from './components/RepositoriesMasterDetail';
 
 interface IRepositoriesProps {
     azDoService: IAzDoService
 }
 
-export default class extends React.Component<IRepositoriesProps, { report: IRepositoryReport, isLoading: boolean }> {
-    private itemProvider = new ObservableArray<any>();
+export default class extends React.Component<IRepositoriesProps, { isLoading: boolean }> {
     
     constructor(props: IRepositoriesProps) {
         super(props);
         this.state = {
-            report: {
-                reports: []
-            },
             isLoading: true
         }
     }
 
     async componentDidMount() {
         const report = await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoryReport>("GitRepositories");
-        this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
-            repository: x.repository,
-            date: x.date,
-            hasRequiredReviewerPolicy: x.hasRequiredReviewerPolicy ? Statuses.Success : Statuses.Failed,
-        })));
-
-        this.setState({ isLoading: false, report: report });    
+        
+        this.setState({ isLoading: false });    
     }
 
     render() {
-        const columns: ITableColumn<ITableItem>[] = [
-            {
-                id: 'repository',
-                name: "Repository",
-                renderCell: renderSimpleCell,
-                onSize: onSize,
-                width: new ObservableValue(250),
-                sortProps: {
-                    ariaLabelAscending: "Sorted A to Z",
-                    ariaLabelDescending: "Sorted Z to A"
-                }
-            },
-            {
-                id: 'hasRequiredReviewerPolicy',
-                name: "Required Reviewer Policy",
-                renderCell: renderCheckmark,
-                onSize: onSize,
-                width: new ObservableValue(100),
-                sortProps: {
-                    ariaLabelAscending: "Sorted A to Z",
-                    ariaLabelDescending: "Sorted Z to A"
-                }
-            },
-            {
-                id: 'date',
-                name: "Checked",
-                renderCell: renderDate,
-                onSize: onSize,
-                width: new ObservableValue(100),
-                sortProps: {
-                    ariaLabelAscending: "Sorted A to Z",
-                    ariaLabelDescending: "Sorted Z to A"
-                }
-            },
-        ]
-
         return (
             <Page>
                 <Header
@@ -96,7 +41,7 @@ export default class extends React.Component<IRepositoriesProps, { report: IRepo
                     <Card>
                         { this.state.isLoading ?
                             <div>Loading...</div> :
-                            <Table<ITableItem> columns={columns}  itemProvider={this.itemProvider} behaviors={[ sortingBehavior(this.itemProvider, columns) ]} />
+                            <RepositoriesMasterDetail />
                         }
                     </Card>
                 </div>
