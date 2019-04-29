@@ -27,10 +27,6 @@ interface IOverviewProps {
     azDoService: IAzDoService
 }
 
-function delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
-}
-
 export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean, isRescanning: boolean, token: string }> {
     private itemProvider = new ObservableArray<any>();
 
@@ -48,7 +44,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         }
     }
 
-    async componentDidMount() {
+    private async getReportdata(): Promise<void> {
         const report = await this.props.azDoService.GetReportsFromDocumentStorage<IOverviewReport>("globalpermissions");
         const token = await this.props.azDoService.GetAppToken();
 
@@ -61,16 +57,20 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
 
         this.setState({ isLoading: false, report: report, token: token });
     }
+
+    async componentDidMount() {
+        await this.getReportdata();
+    }
     
     private async doRescanRequest(): Promise<void> {
         try {
             let url = this.state.report.rescanUrl;
             this.setState({ isRescanning: true });
-            await delay(1000);
             let requestInit: RequestInit = { headers: { Authorization: `Bearer ${this.state.token}` }};
             let response = await fetch(url, requestInit);
             if(response.ok)
             {
+                await this.getReportdata();
                 this.setState({ isRescanning: false });
             } else {
                 this.setState({ isRescanning: false });
@@ -147,13 +147,15 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
                                     <div style={{ marginRight: "10px" }}>
                                     { this.state.isRescanning ? 
                                         <Status {...Statuses.Running} key="scanning" size={StatusSize.xl} text="Scanning..." /> :
-                                        <p>Last scanned: <Ago date={this.state.report.date} format={AgoFormat.Extended} /></p>
+                                        <div>Last scanned: <Ago date={this.state.report.date} format={AgoFormat.Extended} /></div>
                                     }
                                     </div>
                                     <Button 
                                         iconProps = {{ iconName: "TriggerAuto" }}
                                         onClick={() => this.doRescanRequest() } 
-                                        text="Rescan" />
+                                        text="Rescan" 
+                                        primary={true}
+                                        disabled={this.state.isRescanning} />
                                  </div>
                                 <Table<ITableItem> columns={columns} itemProvider={this.itemProvider} behaviors={[]} />
                             </div>
