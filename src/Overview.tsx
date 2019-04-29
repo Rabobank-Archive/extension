@@ -13,6 +13,9 @@ import { Link } from 'azure-devops-ui/Link';
 import { onSize } from './components/TableBehaviors';
 import ReconcileButton from './components/ReconcileButton';
 
+import { Ago } from "azure-devops-ui/Ago";
+import { AgoFormat } from 'azure-devops-ui/Utilities/Date';
+
 interface ITableItem extends ISimpleTableCell {
     description: string,
     status: IStatusProps,
@@ -114,11 +117,19 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
                         { this.state.isLoading ?
                             <div>Loading...</div> :
                             <div>
-                                <Button 
-                                    iconProps = {{ iconName: "TriggerAuto" }}
-                                    onClick={() => fetch(this.state.report.rescanUrl, { headers: { Authorization: `Bearer ${this.state.token}` }}) } 
-                                    text="Rescan" />
+                                <div
+                                    className="flex-row flex-center flex-grow scroll-hidden"
+                                    style={{ whiteSpace: "nowrap" }}
+                                >
+                                    <div className="flex-grow" />
+                                    <p style={{ marginRight: "10px" }}>Last scanned: <Ago date={this.state.report.date} format={AgoFormat.Extended} /></p>
+                                    <Button 
+                                        iconProps = {{ iconName: "TriggerAuto" }}
+                                        onClick={() => fetch(this.state.report.rescanUrl, { headers: { Authorization: `Bearer ${this.state.token}` }}) } 
+                                        text="Rescan" />
+                                 </div>
                                 <Table<ITableItem> columns={columns} itemProvider={this.itemProvider} behaviors={[]} />
+                               
                             </div>
                         }
                     </Card>
