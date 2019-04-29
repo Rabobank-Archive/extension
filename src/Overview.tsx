@@ -7,7 +7,7 @@ import { ObservableValue, ObservableArray } from 'azure-devops-ui/Core/Observabl
 import { Page } from 'azure-devops-ui/Page';
 import { Header, TitleSize } from 'azure-devops-ui/Header'
 import { Card } from 'azure-devops-ui/Card'
-import { Statuses, IStatusProps } from "azure-devops-ui/Status";
+import { Statuses, IStatusProps, Status, StatusSize } from "azure-devops-ui/Status";
 import { renderCheckmark } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
 import { onSize } from './components/TableBehaviors';
@@ -27,7 +27,11 @@ interface IOverviewProps {
     azDoService: IAzDoService
 }
 
-export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean, token: string }> {
+function delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
+
+export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean, isRescanning: boolean, token: string }> {
     private itemProvider = new ObservableArray<any>();
 
     constructor(props: IOverviewProps) {
@@ -39,6 +43,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
                 rescanUrl: ''
             },
             isLoading: true,
+            isRescanning: false,
             token: ''
         }
     }
@@ -57,6 +62,24 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         this.setState({ isLoading: false, report: report, token: token });
     }
     
+    private async doRescanRequest(): Promise<void> {
+        try {
+            let url = this.state.report.rescanUrl;
+            this.setState({ isRescanning: true });
+            await delay(1000);
+            let requestInit: RequestInit = { headers: { Authorization: `Bearer ${this.state.token}` }};
+            let response = await fetch(url, requestInit);
+            if(response.ok)
+            {
+                this.setState({ isRescanning: false });
+            } else {
+                this.setState({ isRescanning: false });
+            }
+        } catch {
+            this.setState({ isRescanning: false });
+        }
+    }
+
     private renderReconcileButton(
         _rowIndex: number,
         columnIndex: number,
@@ -119,17 +142,20 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
                             <div>
                                 <div
                                     className="flex-row flex-center flex-grow scroll-hidden"
-                                    style={{ whiteSpace: "nowrap" }}
-                                >
+                                    style={{ whiteSpace: "nowrap" }} >
                                     <div className="flex-grow" />
-                                    <p style={{ marginRight: "10px" }}>Last scanned: <Ago date={this.state.report.date} format={AgoFormat.Extended} /></p>
+                                    <div style={{ marginRight: "10px" }}>
+                                    { this.state.isRescanning ? 
+                                        <Status {...Statuses.Running} key="scanning" size={StatusSize.xl} text="Scanning..." /> :
+                                        <p>Last scanned: <Ago date={this.state.report.date} format={AgoFormat.Extended} /></p>
+                                    }
+                                    </div>
                                     <Button 
                                         iconProps = {{ iconName: "TriggerAuto" }}
-                                        onClick={() => fetch(this.state.report.rescanUrl, { headers: { Authorization: `Bearer ${this.state.token}` }}) } 
+                                        onClick={() => this.doRescanRequest() } 
                                         text="Rescan" />
                                  </div>
                                 <Table<ITableItem> columns={columns} itemProvider={this.itemProvider} behaviors={[]} />
-                               
                             </div>
                         }
                     </Card>
