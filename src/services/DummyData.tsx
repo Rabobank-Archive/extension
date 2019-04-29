@@ -1,4 +1,12 @@
-import { IExtensionDocument, IProjectRule, IReleaseReport, IBuildReport, IRepositoryReport, IOverviewReport, IRepositoriesReport } from './IAzDoService';
+import {
+    IExtensionDocument,
+    IProjectRule,
+    IReleaseReport,
+    IBuildReport,
+    IRepositoryReport,
+    IOverviewReport,
+    IRepositoriesReport
+} from './IAzDoService';
 
 export const DummyProjectRulesReport: IOverviewReport = {
     date: new Date(),
@@ -7,17 +15,39 @@ export const DummyProjectRulesReport: IOverviewReport = {
         {
             description: "No one should be able to delete the Team Project",
             status: true,
-            reconcileUrl: ''
+            reconcile: {
+                impact: [
+                    "Rabobank Project Administrators group is created and added to Project Administrators",
+                    "Delete team project permissions of the Rabobank Project Administrators group is set to deny",
+                    "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                    "Delete team project permission is set to 'not set' for all other groups"
+                ],
+                url: 'http://something.com'
+            }
         },
         {
             description: "Some rule that cannot autofix",
             status: false,
-            reconcileUrl: ''
+            reconcile: {
+                impact: [
+                    "Typ gewoon blablabal wat mij betreft zet je er",
+                    "henkie is een test",
+                ],
+                url: ''
+            }
         },
         {
             description: "Just some dummy other rule",
             status: false,
-            reconcileUrl: 'https://azdoanalyticsdev.azurewebsites.net/api/reconcile/raboweb-test/GitDemo/globalpermissions/NobodyCanDeleteTheTeamProject'
+            reconcile: {
+                impact: [
+                    "Dit is een test data zin, om te checken of blablablabal",
+                    "Dit is een test data zin, om te checken of blablablabal",
+                    "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                    "Delete team project permission is set to 'not set' for all other groups"
+                ],
+                url: 'http://something.com'
+            }
         }
     ]
 };
@@ -31,14 +61,14 @@ export const DummyBuildReport: IBuildReport = {
         usesFortify: true,
         usesSonarQube: false
     },
-    {
-        id: '2435',
-        pipeline: 'SM9',
-        createdDate: "2019-01-12T11:34:18.8188815Z",
-        artifactsStoredSecure: false,
-        usesFortify: false,
-        usesSonarQube: true
-    }]
+        {
+            id: '2435',
+            pipeline: 'SM9',
+            createdDate: "2019-01-12T11:34:18.8188815Z",
+            artifactsStoredSecure: false,
+            usesFortify: false,
+            usesSonarQube: true
+        }]
 };
 
 export const DummyReleaseReport: IReleaseReport = {
@@ -97,7 +127,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
                     status: true
                 }
             ]
-            
+
         },
         {
             item: "rbo-feature-settings-ked",

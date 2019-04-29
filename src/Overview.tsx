@@ -28,7 +28,7 @@ interface IOverviewProps {
 }
 
 export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean, isRescanning: boolean, token: string }> {
-    private itemProvider = new ObservableArray<any>();
+    private itemProvider = new ObservableArray<ITableItem>();
 
     constructor(props: IOverviewProps) {
         super(props);
@@ -51,8 +51,8 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         this.itemProvider.removeAll();
         
         this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
-             description: x.description, 
-             reconcileUrl: x.reconcileUrl, 
+             description: x.description,
+             reconcileUrl: x.reconcile.url, 
              status: x.status ? Statuses.Success : Statuses.Failed, 
              token: token
         })));
