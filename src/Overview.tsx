@@ -48,6 +48,8 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         const report = await this.props.azDoService.GetReportsFromDocumentStorage<IOverviewReport>("globalpermissions");
         const token = await this.props.azDoService.GetAppToken();
 
+        this.itemProvider.removeAll();
+        
         this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
              description: x.description, 
              reconcileUrl: x.reconcileUrl, 
