@@ -8,7 +8,7 @@ import { Page } from 'azure-devops-ui/Page';
 import { Header, TitleSize } from 'azure-devops-ui/Header'
 import { Card } from 'azure-devops-ui/Card'
 import { Statuses, IStatusProps, Status, StatusSize } from "azure-devops-ui/Status";
-import { renderCheckmark } from './components/TableRenderers';
+import { renderCheckmark, renderString } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
 import { onSize } from './components/TableBehaviors';
 import ReconcileButton from './components/ReconcileButton';
@@ -16,10 +16,11 @@ import ReconcileButton from './components/ReconcileButton';
 import { Ago } from "azure-devops-ui/Ago";
 import { AgoFormat } from 'azure-devops-ui/Utilities/Date';
 
-interface ITableItem extends ISimpleTableCell {
+interface ITableItem {
     description: string,
     status: IStatusProps,
     reconcileUrl: string,
+    reconcileImpact: string[],
     token: string
 }
 
@@ -52,7 +53,8 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         
         this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
              description: x.description,
-             reconcileUrl: x.reconcile.url, 
+             reconcileUrl: x.reconcile.url,
+             reconcileImpact: x.reconcile.impact,
              status: x.status ? Statuses.Success : Statuses.Failed, 
              token: token
         })));
@@ -107,7 +109,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
             {
                 id: 'description',
                 name: "Description",
-                renderCell: renderSimpleCell,
+                renderCell: renderString,
                 onSize: onSize,
                 width: new ObservableValue(450)
             },

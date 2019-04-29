@@ -4,13 +4,14 @@ import { ObservableValue } from 'azure-devops-ui/Core/Observable';
 import { Observer } from "azure-devops-ui/Observer";
 import { Dialog } from "azure-devops-ui/Dialog";
 import { MessageCard, MessageCardSeverity } from "azure-devops-ui/MessageCard";
-import { SimpleList, ScrollableList } from 'azure-devops-ui/List';
+import { SimpleList, ScrollableList, List } from 'azure-devops-ui/List';
 import { ArrayItemProvider } from 'azure-devops-ui/Utilities/Provider';
 import { Status, Statuses, StatusSize } from 'azure-devops-ui/Status';
 
 interface IReconcileButtonProps {
     reconcilableItem: {
         reconcileUrl: string,
+        reconcileImpact: string[],
         token: string
     }
 }
@@ -110,12 +111,12 @@ export default class extends React.Component<IReconcileButtonProps, IReconcileBu
                                 {reconcilingSpinner}
                                 <p>Are you sure? Reconciling will make the following changes:</p>
                                 <SimpleList width={"100%"} itemProvider={
-                                    new ArrayItemProvider<string>([
-                                        "Rabobank Project Administrators group is created and added to Project Administrators", 
-                                        "Delete team project permissions of this group is set to deny", 
-                                        "Members of the Project Administrators are moved to Rabobank Project Administrators", 
-                                        "Delete team project permission is set to 'not set' for all other groups"])}
+                                    new ArrayItemProvider<string>(this.props.reconcilableItem.reconcileImpact)}
                                 />
+                                
+                                <MessageCard severity={MessageCardSeverity.Warning} >
+                                You need to have "Manage project properties" permissions!
+                            </MessageCard>
                             </Dialog>
                         ) : null;
                     }}
