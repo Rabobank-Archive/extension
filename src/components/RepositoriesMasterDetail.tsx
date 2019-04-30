@@ -19,6 +19,7 @@ import { TextField } from "azure-devops-ui/TextField";
 import { renderString, renderCheckmark } from "./TableRenderers";
 import { IStatusProps, Statuses, Status, StatusSize } from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
+import { Checkbox } from "azure-devops-ui/Checkbox";
 
 interface IReportMaster {
     item: string,
@@ -46,6 +47,8 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
     });
     private filteredDataProvider: ObservableArray<IReportMaster> = new ObservableArray<IReportMaster>();
     private searchValue = new ObservableValue<string>("");
+    private showCompliantRepos = new ObservableValue<boolean>(true);
+    private showNonCompliantRepos = new ObservableValue<boolean>(true);
 
     constructor(props: any) {
         super(props);
@@ -53,10 +56,22 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
         this.filteredDataProvider.value = this.data;
 
         this.searchValue.subscribe((value, action) => { 
-            let searchFilter = value; 
-            this.filteredDataProvider.value = this.data.filter((value, index, array) => { 
-                return value.item.includes(searchFilter); 
-            });
+            this.filterRepositoriesList(value, this.showCompliantRepos.value, this.showNonCompliantRepos.value);
+        });
+
+        this.showCompliantRepos.subscribe((value, action) => {
+            this.filterRepositoriesList(this.searchValue.value, value, this.showNonCompliantRepos.value);
+        });
+
+        this.showNonCompliantRepos.subscribe((value, action) => {
+            this.filterRepositoriesList(this.searchValue.value, this.showCompliantRepos.value, value);
+        });
+    }
+
+    private filterRepositoriesList(searchFilter: string, showCompliantRepos: boolean, showNonCompliantRepos: boolean) {
+        this.filteredDataProvider.value = this.data.filter((value, index, array) => { 
+            return value.item.includes(searchFilter) 
+                && ((showCompliantRepos && this.isCompliant(value)) || (showNonCompliantRepos && !this.isCompliant(value)));
         });
     }
 
@@ -68,12 +83,30 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
             ),
             renderHeader: () => <MasterPanelHeader title={"Repositories"} />,
             renderSearch: () => (
-                <TextField 
-                    prefixIconProps={{ iconName: "Search" }}
-                    placeholder="Search..."
-                    onChange={(e, newValue) => (this.searchValue.value = newValue)}
-                    value={this.searchValue}
-                    />
+                <div>
+                    <TextField 
+                        prefixIconProps={{ iconName: "Search" }}
+                        placeholder="Search..."
+                        onChange={(e, newValue) => (this.searchValue.value = newValue)}
+                        value={this.searchValue}
+                        />
+                    <div
+                        className="flex-row flex-center flex-grow scroll-hidden"
+                        style={{ marginTop: "5px" }} >
+                        <Checkbox
+                            onChange={(event, checked) => (this.showCompliantRepos.value = checked)}
+                            checked={this.showCompliantRepos}
+                            label="Compliant"
+                        />
+                        <div style={{ marginRight: "10px" }}></div>
+                        <Checkbox
+                            onChange={(event, checked) => (this.showNonCompliantRepos.value = checked)}
+                            checked={this.showNonCompliantRepos}
+                            label="Non-compliant"
+                        />
+                        <div className="flex-grow" />
+                    </div>
+                </div>
             ),
             hideBackButton: false //somehow this HIDES the back button
         },
@@ -107,10 +140,14 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
         );
     };
 
+    private isCompliant(item: IReportMaster): boolean {
+        return !item.rules.some((rule) => { return rule.status != Statuses.Success });
+    }
+
     private renderSmallCompliantIcon(item: IReportMaster) : JSX.Element {
-        return item.rules.some((rule) => { return rule.status != Statuses.Success }) ?
-            <div><Status {...Statuses.Failed} className="icon-large-margin" size={StatusSize.s}/>Non-Compliant</div> :
-            <div><Status {...Statuses.Success} className="icon-large-margin" size={StatusSize.s}/>Compliant</div>
+        return  this.isCompliant(item) ?
+            <div><Status {...Statuses.Success} className="icon-large-margin" size={StatusSize.s}/>Compliant</div> :
+            <div><Status {...Statuses.Failed} className="icon-large-margin" size={StatusSize.s}/>Non-compliant</div>
     }
 
     private renderInitialRow = (
