@@ -28,7 +28,7 @@ function loadData<TReport>(documentCollectionName: string) : TReport {
             return DummyBuildReport as unknown as TReport;
         case "Releases":
             return DummyReleaseReport as unknown as TReport;
-        case "GitRepositories":
+        case "repository":
             return DummyRepositoriesReport as unknown as TReport;
     }
 
