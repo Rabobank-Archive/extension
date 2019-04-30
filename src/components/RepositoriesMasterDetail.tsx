@@ -170,7 +170,6 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
         return (
             <Page>
                 <Header
-                    description={this.renderSmallCompliantIcon(detailItem)}
                     title={detailItem.item}
                     titleSize={TitleSize.Large}
                 />
