@@ -11,6 +11,7 @@ import {
 export const DummyProjectRulesReport: IOverviewReport = {
     date: new Date(),
     rescanUrl: 'https://azdoanalyticsdev.azurewebsites.net/api/scan/raboweb-test/WV%20New%20Project%20Test%204/globalpermissions',
+    hasReconcilePermissionUrl: 'https://azdoanalyticsdev.azurewebsites.net/api/reconcile/raboweb-test/WV%20New%20Project%20Test%204/haspermission',
     reports: [
         {
             description: "No one should be able to delete the Team Project",
