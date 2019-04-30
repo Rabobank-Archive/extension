@@ -113,10 +113,6 @@ export default class extends React.Component<IReconcileButtonProps, IReconcileBu
                                 <SimpleList width={"100%"} itemProvider={
                                     new ArrayItemProvider<string>(this.props.reconcilableItem.reconcileImpact)}
                                 />
-                                
-                                <MessageCard severity={MessageCardSeverity.Warning} >
-                                You need to have "Manage project properties" permissions!
-                            </MessageCard>
                             </Dialog>
                         ) : null;
                     }}
