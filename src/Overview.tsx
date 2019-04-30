@@ -55,7 +55,8 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         try {
             let response = await fetch(report.hasReconcilePermissionUrl, requestInit);
             let responseJson = await response.json();
-            this.setState({ hasReconcilePermission: responseJson["hasPermission"] as boolean});
+            console.log(responseJson);
+            this.setState({ hasReconcilePermission: responseJson as boolean});
             console.log("Has permission to reconcile:" + this.state.hasReconcilePermission);
         } catch {
             // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
