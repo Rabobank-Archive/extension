@@ -19,6 +19,7 @@ import { AgoFormat } from 'azure-devops-ui/Utilities/Date';
 interface ITableItem {
     description: string,
     status: IStatusProps,
+    hasReconcilePermission: boolean,
     reconcileUrl: string,
     reconcileImpact: string[],
     token: string
@@ -28,7 +29,7 @@ interface IOverviewProps {
     azDoService: IAzDoService
 }
 
-export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean, isRescanning: boolean, hasReconcilePermission: boolean, token: string }> {
+export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean, isRescanning: boolean, token: string }> {
     private itemProvider = new ObservableArray<ITableItem>();
 
     constructor(props: IOverviewProps) {
@@ -42,7 +43,6 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
             },
             isLoading: true,
             isRescanning: false,
-            hasReconcilePermission: false,
             token: ''
         }
     }
@@ -51,13 +51,15 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         const report = await this.props.azDoService.GetReportsFromDocumentStorage<IOverviewReport>("globalpermissions");
         const token = await this.props.azDoService.GetAppToken();
 
+        let hasReconcilePermission: boolean = false;
+
         let requestInit: RequestInit = { headers: { Authorization: `Bearer ${token}` }};
         try {
             let response = await fetch(report.hasReconcilePermissionUrl, requestInit);
             let responseJson = await response.json();
             console.log(responseJson);
-            this.setState({ hasReconcilePermission: responseJson as boolean});
-            console.log("Has permission to reconcile:" + this.state.hasReconcilePermission);
+            hasReconcilePermission = responseJson as boolean;
+            console.log("Has permission to reconcile:" + hasReconcilePermission);
         } catch {
             // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
         }
@@ -66,6 +68,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         
         this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
              description: x.description,
+             hasReconcilePermission: hasReconcilePermission,
              reconcileUrl: x.reconcile.url,
              reconcileImpact: x.reconcile.impact,
              status: x.status ? Statuses.Success : Statuses.Failed, 
@@ -103,7 +106,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         tableColumn: ITableColumn<ITableItem>,
         item: ITableItem
     ): JSX.Element {
-        let content = item.status != Statuses.Success && this.state.hasReconcilePermission
+        let content = item.status != Statuses.Success && item.hasReconcilePermission
             ? <ReconcileButton reconcilableItem={item} />
             : "";
 
