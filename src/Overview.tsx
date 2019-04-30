@@ -28,7 +28,7 @@ interface IOverviewProps {
     azDoService: IAzDoService
 }
 
-export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean, isRescanning: boolean, token: string }> {
+export default class extends React.Component<IOverviewProps, { report: IOverviewReport, isLoading: boolean, isRescanning: boolean, hasReconcilePermission: boolean, token: string }> {
     private itemProvider = new ObservableArray<ITableItem>();
 
     constructor(props: IOverviewProps) {
@@ -37,10 +37,12 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
             report: {
                 date: new Date(0),
                 reports: [], 
-                rescanUrl: ''
+                rescanUrl: '',
+                hasReconcilePermissionUrl: '',
             },
             isLoading: true,
             isRescanning: false,
+            hasReconcilePermission: false,
             token: ''
         }
     }
@@ -48,6 +50,16 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
     private async getReportdata(): Promise<void> {
         const report = await this.props.azDoService.GetReportsFromDocumentStorage<IOverviewReport>("globalpermissions");
         const token = await this.props.azDoService.GetAppToken();
+
+        let requestInit: RequestInit = { headers: { Authorization: `Bearer ${token}` }};
+        try {
+            let response = await fetch(report.hasReconcilePermissionUrl, requestInit);
+            let responseJson = await response.json();
+            this.setState({ hasReconcilePermission: responseJson["hasPermission"] as boolean});
+            console.log("Has permission to reconcile:" + this.state.hasReconcilePermission);
+        } catch {
+            // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
+        }
 
         this.itemProvider.removeAll();
         
@@ -90,7 +102,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         tableColumn: ITableColumn<ITableItem>,
         item: ITableItem
     ): JSX.Element {
-        let content = item.status != Statuses.Success
+        let content = item.status != Statuses.Success && this.state.hasReconcilePermission
             ? <ReconcileButton reconcilableItem={item} />
             : "";
 
