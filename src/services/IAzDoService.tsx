@@ -16,7 +16,11 @@ export interface IRepositoryReport {
 export interface IRepositoryRule {
     description: string,
     why: string,
-    status: boolean
+    status: boolean,
+    reconcile: {
+        impact: string[],
+        url: string
+    } | undefined
 }
 
 export interface IBuildRule {
@@ -52,7 +56,8 @@ export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
 }
 
 export interface IRepositoriesReport extends IExtensionDocument<IRepositoryReport> {
-    date: Date
+    date: Date,
+    hasReconcilePermissionUrl: string
 }
 
 export interface IBuildReport extends IExtensionDocument<IBuildRule> {

@@ -115,6 +115,7 @@ export const DummyReleaseReport: IReleaseReport = {
 
 export const DummyRepositoriesReport: IRepositoriesReport = {
     date: new Date(),
+    hasReconcilePermissionUrl: 'some-url',
     reports: [
         {
             item: "investment-application-messages",
@@ -122,12 +123,20 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
                 {
                     description: "Nobody can delete the repository",
                     why: "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the repository.",
-                    status: true
+                    status: true,
+                    reconcile: {
+                        url: '',
+                        impact: ['some impact']
+                    }
                 },
                 {
                     description: "Master and release branches are protected",
                     why: "To enforce the 4-eyes principle, appropriate branch policies should be configured on potential release branches.",
-                    status: true
+                    status: true,
+                    reconcile: {
+                        url: '',
+                        impact: ['some impact']
+                    }
                 }
             ]
 
@@ -138,12 +147,20 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
                 {
                     description: "Nobody can delete the repository",
                     why: "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the repository.",
-                    status: false
+                    status: false,
+                    reconcile: {
+                        url: '',
+                        impact: ['some impact']
+                    }
                 },
                 {
                     description: "Master and release branches are protected",
                     why: "To enforce the 4-eyes principle, appropriate branch policies should be configured on potential release branches.",
-                    status: true
+                    status: true,
+                    reconcile: {
+                        url: '',
+                        impact: ['some impact']
+                    }
                 }
             ]
         }

@@ -14,12 +14,15 @@ import {
 import { Page } from "azure-devops-ui/Page";
 import {
     ITableColumn,
-    Table} from "azure-devops-ui/Table";
+    Table,
+    SimpleTableCell} from "azure-devops-ui/Table";
 import { TextField } from "azure-devops-ui/TextField";
 import { renderCheckmark, renderStringWithWhyTooltip } from "./TableRenderers";
 import { IStatusProps, Statuses, Status, StatusSize } from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
+import { IRepositoryReport, IRepositoryRule } from '../services/IAzDoService';
+import ReconcileButton from "./ReconcileButton";
 
 interface IReportMaster {
     item: string,
@@ -29,18 +32,26 @@ interface IReportMaster {
 interface IReportRule {
     description: string,
     why: string,
-    status: IStatusProps
+    status: IStatusProps,
+    hasReconcilePermission: boolean,
+    reconcileUrl: string,
+    reconcileImpact: string[],
+    token: string
 }
 
-export default class extends React.Component<{ data: { item: string, rules:{ description: string, why: string, status: boolean }[] }[] }, {}> {
+export default class extends React.Component<{ data: { item: string, rules: IRepositoryRule[] }[], hasReconcilePermission: boolean, token: string }, {}> {
     private data: Array<IReportMaster> = this.props.data.map(m => {
         let master: IReportMaster = {
             item: m.item,
-            rules: m.rules.map(r => {
+            rules: m.rules.map(x => {
                 let rule: IReportRule = {
-                    description: r.description,
-                    why: r.why,
-                    status: r.status ? Statuses.Success : Statuses.Failed
+                    description: x.description,
+                    why: x.why,
+                    hasReconcilePermission: this.props.hasReconcilePermission,
+                    reconcileUrl: x.reconcile ? x.reconcile.url : '',
+                    reconcileImpact: x.reconcile ? x.reconcile.impact : [],
+                    status: x.status ? Statuses.Success : Statuses.Failed, 
+                    token: this.props.token
                 }
                 return rule;
             })
@@ -51,6 +62,21 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
     private searchValue = new ObservableValue<string>("");
     private showCompliantRepos = new ObservableValue<boolean>(true);
     private showNonCompliantRepos = new ObservableValue<boolean>(true);
+    
+    renderReconcileButton(rowIndex: number, columnIndex: number, tableColumn: ITableColumn<IReportRule>, item: IReportRule): JSX.Element {
+            let content = item.status != Statuses.Success && item.hasReconcilePermission
+                ? <ReconcileButton reconcilableItem={item} />
+                : "";
+    
+            return (
+                <SimpleTableCell
+                    columnIndex={columnIndex}
+                    tableColumn={tableColumn}
+                    key={"col-" + columnIndex}
+                    contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden">
+                    {content}
+                </SimpleTableCell>);
+        }
 
     constructor(props: any) {
         super(props);
@@ -200,6 +226,14 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
+                }
+            },
+            { 
+                id: "reconcile", 
+                width: new ObservableValue(130), 
+                renderCell: this.renderReconcileButton,
+                sortProps: {
+
                 }
             }
         ];

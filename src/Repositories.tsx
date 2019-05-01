@@ -11,7 +11,7 @@ interface IRepositoriesProps {
     azDoService: IAzDoService
 }
 
-export default class extends React.Component<IRepositoriesProps, { isLoading: boolean, report: IRepositoriesReport }> {
+export default class extends React.Component<IRepositoriesProps, { isLoading: boolean, report: IRepositoriesReport, hasReconcilePermission: boolean, token: string }> {
     
     constructor(props: IRepositoriesProps) {
         super(props);
@@ -19,15 +19,30 @@ export default class extends React.Component<IRepositoriesProps, { isLoading: bo
             isLoading: true,
             report: {
                 date: new Date(),
-                reports: []
-            }
+                reports: [],
+                hasReconcilePermissionUrl: ''
+            },
+            hasReconcilePermission: false,
+            token: ''
         }
     }
 
     async componentDidMount() {
         const report = await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoriesReport>("repository");
-        
-        this.setState({ isLoading: false, report: report });    
+        const token = await this.props.azDoService.GetAppToken();
+
+        let hasReconcilePermission: boolean = false;
+
+        let requestInit: RequestInit = { headers: { Authorization: `Bearer ${token}` }};
+        try {
+            let response = await fetch(report.hasReconcilePermissionUrl, requestInit);
+            let responseJson = await response.json();
+            hasReconcilePermission = responseJson as boolean;
+        } catch {
+            // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
+        }
+
+        this.setState({ isLoading: false, report: report, hasReconcilePermission: hasReconcilePermission, token: token });    
     }
 
     render() {
@@ -46,7 +61,7 @@ export default class extends React.Component<IRepositoriesProps, { isLoading: bo
                     <Card>
                         { this.state.isLoading ?
                             <div>Loading...</div> :
-                            <RepositoriesMasterDetail data={this.state.report.reports}/>
+                            <RepositoriesMasterDetail data={this.state.report.reports} hasReconcilePermission={this.state.hasReconcilePermission} token={this.state.token} />
                         }
                     </Card>
                 </div>
