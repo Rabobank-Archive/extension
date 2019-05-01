@@ -2,13 +2,13 @@ import * as React from 'react';
 import { IAzDoService, IOverviewReport } from './services/IAzDoService';
 
 import { Button } from "azure-devops-ui/Button";
-import { ITableColumn, ISimpleTableCell, renderSimpleCell, SimpleTableCell, Table } from "azure-devops-ui/Table"
+import { ITableColumn, SimpleTableCell, Table } from "azure-devops-ui/Table"
 import { ObservableValue, ObservableArray } from 'azure-devops-ui/Core/Observable';
 import { Page } from 'azure-devops-ui/Page';
 import { Header, TitleSize } from 'azure-devops-ui/Header'
 import { Card } from 'azure-devops-ui/Card'
 import { Statuses, IStatusProps, Status, StatusSize } from "azure-devops-ui/Status";
-import { renderCheckmark, renderString } from './components/TableRenderers';
+import { renderCheckmark, renderStringWithWhyTooltip } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
 import { onSize } from './components/TableBehaviors';
 import ReconcileButton from './components/ReconcileButton';
@@ -18,6 +18,7 @@ import { AgoFormat } from 'azure-devops-ui/Utilities/Date';
 
 interface ITableItem {
     description: string,
+    why: string,
     status: IStatusProps,
     hasReconcilePermission: boolean,
     reconcileUrl: string,
@@ -66,6 +67,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         
         this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
              description: x.description,
+             why: x.why,
              hasReconcilePermission: hasReconcilePermission,
              reconcileUrl: x.reconcile.url,
              reconcileImpact: x.reconcile.impact,
@@ -123,7 +125,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
             {
                 id: 'description',
                 name: "Description",
-                renderCell: renderString,
+                renderCell: renderStringWithWhyTooltip,
                 onSize: onSize,
                 width: new ObservableValue(450)
             },

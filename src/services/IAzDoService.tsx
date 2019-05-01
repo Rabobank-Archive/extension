@@ -1,5 +1,6 @@
 export interface IProjectRule {
     description: string,
+    why: string,
     status: boolean,
     reconcile: {
         impact: string[],
@@ -14,6 +15,7 @@ export interface IRepositoryReport {
 
 export interface IRepositoryRule {
     description: string,
+    why: string,
     status: boolean
 }
 

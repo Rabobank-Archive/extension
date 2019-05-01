@@ -16,7 +16,7 @@ import {
     ITableColumn,
     Table} from "azure-devops-ui/Table";
 import { TextField } from "azure-devops-ui/TextField";
-import { renderString, renderCheckmark } from "./TableRenderers";
+import { renderCheckmark, renderStringWithWhyTooltip } from "./TableRenderers";
 import { IStatusProps, Statuses, Status, StatusSize } from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
@@ -28,16 +28,18 @@ interface IReportMaster {
 
 interface IReportRule {
     description: string,
+    why: string,
     status: IStatusProps
 }
 
-export default class extends React.Component<{ data: { item: string, rules:{ description: string, status: boolean }[] }[] }, {}> {
+export default class extends React.Component<{ data: { item: string, rules:{ description: string, why: string, status: boolean }[] }[] }, {}> {
     private data: Array<IReportMaster> = this.props.data.map(m => {
         let master: IReportMaster = {
             item: m.item,
             rules: m.rules.map(r => {
                 let rule: IReportRule = {
                     description: r.description,
+                    why: r.why,
                     status: r.status ? Statuses.Success : Statuses.Failed
                 }
                 return rule;
@@ -184,7 +186,7 @@ export default class extends React.Component<{ data: { item: string, rules:{ des
                 id: "description",
                 name: "Description",
                 width: new ObservableValue(450),
-                renderCell: renderString,
+                renderCell: renderStringWithWhyTooltip,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"

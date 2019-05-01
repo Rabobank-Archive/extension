@@ -1,6 +1,5 @@
 import { DummyProjectRulesReport, DummyReleaseReport, DummyBuildReport, DummyRepositoriesReport } from './DummyData';
-import { IAzDoService, IExtensionDocument } from './IAzDoService';
-import { IExtensionDataService } from 'azure-devops-extension-api';
+import { IAzDoService } from './IAzDoService';
 
 function delay(ms: number) {
     return new Promise( resolve => setTimeout(resolve, ms) );

@@ -1,5 +1,5 @@
 import { IExtensionDataService, IProjectPageService } from "azure-devops-extension-api";
-import { IAzDoService, IExtensionDocument } from "./IAzDoService";
+import { IAzDoService } from "./IAzDoService";
 
 import * as SDK from "azure-devops-extension-sdk";
 

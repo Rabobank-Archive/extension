@@ -1,9 +1,6 @@
 import {
-    IExtensionDocument,
-    IProjectRule,
     IReleaseReport,
     IBuildReport,
-    IRepositoryReport,
     IOverviewReport,
     IRepositoriesReport
 } from './IAzDoService';
@@ -15,6 +12,7 @@ export const DummyProjectRulesReport: IOverviewReport = {
     reports: [
         {
             description: "No one should be able to delete the Team Project",
+            why: "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the Team Project.",
             status: true,
             reconcile: {
                 impact: [
@@ -28,6 +26,7 @@ export const DummyProjectRulesReport: IOverviewReport = {
         },
         {
             description: "Some rule that cannot autofix",
+            why: "Some rule explanation",
             status: false,
             reconcile: {
                 impact: [
@@ -39,6 +38,7 @@ export const DummyProjectRulesReport: IOverviewReport = {
         },
         {
             description: "Just some dummy other rule",
+            why: "Some other rule explanation",
             status: false,
             reconcile: {
                 impact: [
@@ -121,10 +121,12 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
             rules: [
                 {
                     description: "Nobody can delete the repository",
+                    why: "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the repository.",
                     status: true
                 },
                 {
                     description: "Master and release branches are protected",
+                    why: "To enforce the 4-eyes principle, appropriate branch policies should be configured on potential release branches.",
                     status: true
                 }
             ]
@@ -135,10 +137,12 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
             rules: [
                 {
                     description: "Nobody can delete the repository",
+                    why: "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the repository.",
                     status: false
                 },
                 {
                     description: "Master and release branches are protected",
+                    why: "To enforce the 4-eyes principle, appropriate branch policies should be configured on potential release branches.",
                     status: true
                 }
             ]
