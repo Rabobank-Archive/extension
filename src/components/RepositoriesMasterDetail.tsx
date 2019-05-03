@@ -40,7 +40,7 @@ interface IReportRule {
 }
 
 export default class extends React.Component<{ data: { item: string, rules: IRepositoryRule[] }[], hasReconcilePermission: boolean, token: string }, {}> {
-    private data: Array<IReportMaster> = this.props.data.map(m => {
+    private unfilteredData: Array<IReportMaster> = this.props.data.map(m => {
         let master: IReportMaster = {
             item: m.item,
             rules: m.rules.map(x => {
@@ -58,7 +58,10 @@ export default class extends React.Component<{ data: { item: string, rules: IRep
         };
         return master;
     });
-    private filteredDataProvider: ObservableArray<IReportMaster> = new ObservableArray<IReportMaster>();
+    private filteredDataProvider: ObservableArray<IReportMaster> = new ObservableArray<IReportMaster>([]);
+    private selectedMasterItem: ObservableValue<IReportMaster> = new ObservableValue<IReportMaster>(this.unfilteredData[0]);
+
+
     private searchValue = new ObservableValue<string>("");
     private showCompliantRepos = new ObservableValue<boolean>(true);
     private showNonCompliantRepos = new ObservableValue<boolean>(true);
@@ -81,7 +84,7 @@ export default class extends React.Component<{ data: { item: string, rules: IRep
     constructor(props: any) {
         super(props);
 
-        this.filteredDataProvider.value = this.data;
+        this.filteredDataProvider.value = this.unfilteredData;
 
         this.searchValue.subscribe((value, action) => { 
             this.filterRepositoriesList(value, this.showCompliantRepos.value, this.showNonCompliantRepos.value);
@@ -97,10 +100,11 @@ export default class extends React.Component<{ data: { item: string, rules: IRep
     }
 
     private filterRepositoriesList(searchFilter: string, showCompliantRepos: boolean, showNonCompliantRepos: boolean) {
-        this.filteredDataProvider.value = this.data.filter((value, index, array) => { 
+        this.filteredDataProvider.value = this.unfilteredData.filter((value, index, array) => { 
             return value.item.includes(searchFilter) 
                 && ((showCompliantRepos && this.isCompliant(value)) || (showNonCompliantRepos && !this.isCompliant(value)));
         });
+        this.selectedMasterItem.value = this.filteredDataProvider.value[0];
     }
 
     private initialPayload: IMasterDetailsContextLayer<IReportMaster, undefined> = {
@@ -141,7 +145,7 @@ export default class extends React.Component<{ data: { item: string, rules: IRep
         detailsContent: {
             renderContent: item => <this.InitialDetailView detailItem={item} />
         },
-        selectedMasterItem: new ObservableValue<IReportMaster>(this.data[0]),
+        selectedMasterItem: this.selectedMasterItem,
         parentItem: undefined
     };
 
@@ -237,30 +241,49 @@ export default class extends React.Component<{ data: { item: string, rules: IRep
                 }
             }
         ];
-    
-        let itemProvider = new ObservableArray<IReportRule>(detailItem.rules);
 
-        return (
-            <Page>
-                <Header
-                    title={detailItem.item}
-                    titleSize={TitleSize.Large}
-                />
-                <div className="page-content page-content-top">
-                    <Card
-                        className="bolt-card-no-vertical-padding"
-                        contentProps={{ contentPadding: false }}
-                    >
-                        <Table<IReportRule>
-                            columns={columns}
-                            itemProvider={itemProvider}
-                            showLines={true}
-                            behaviors={[ sortingBehavior(itemProvider, columns) ]}
-                        />
-                    </Card>
-                </div>
-            </Page>
-        );
+        let content: JSX.Element;
+        if( typeof detailItem !== "undefined") {
+            let itemProvider = new ObservableArray<IReportRule>(detailItem.rules);
+
+            content = (
+                <Page>
+                    <Header
+                        title={detailItem.item}
+                        titleSize={TitleSize.Large}
+                    />
+                    <div className="page-content page-content-top">
+                        <Card
+                            className="bolt-card-no-vertical-padding"
+                            contentProps={{ contentPadding: false }}
+                        >
+                            <Table<IReportRule>
+                                columns={columns}
+                                itemProvider={itemProvider}
+                                showLines={true}
+                                behaviors={[ sortingBehavior(itemProvider, columns) ]}
+                            />
+                        </Card>
+                    </div>
+                </Page>);
+        } else {
+            content = (
+                <Page>
+                    <Header
+                        title={"Repository Compliancy"}
+                        titleSize={TitleSize.Large} />
+                    <div className="page-content page-content-top">
+                        <Card
+                            className="bolt-card-no-vertical-padding">
+                            <p>Select a repository on the left to view it's compliancy data.</p>   
+                        </Card>
+                    </div>
+                </Page>
+            )
+        }
+
+
+        return content;
     };
 
     private masterDetailsContext: IMasterDetailsContext = new BaseMasterDetailsContext(

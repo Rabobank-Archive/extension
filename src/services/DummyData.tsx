@@ -125,7 +125,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
                     why: "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the repository.",
                     status: true,
                     reconcile: {
-                        url: '',
+                        url: 'http://some-reconcile-url',
                         impact: ['some impact']
                     }
                 },
@@ -139,7 +139,6 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
                     }
                 }
             ]
-
         },
         {
             item: "rbo-feature-settings-ked",
