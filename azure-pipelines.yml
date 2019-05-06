@@ -1,0 +1,33 @@
+pool: Rabo-Build-Azure-Linux-Preview
+trigger:
+    - master
+variables:
+  packageVersion: '0.1.$(build.buildid)'
+
+steps:
+- script: |
+    npm version $(packageVersion) --no-git-tag-version
+  displayName: 'Set package version'
+
+- script: |
+    npm install
+  displayName: 'npm install'
+
+- script: |
+    npm run build
+  displayName: 'npm run build'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)/build' 
+    includeRootFolder: false 
+    archiveType: 'zip' # Options: zip, 7z, tar, wim
+    archiveFile: '$(Build.ArtifactStagingDirectory)/azdo-extensions-compliancy-frontend.zip' 
+    replaceExistingArchive: true 
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: package'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'Package'
+
