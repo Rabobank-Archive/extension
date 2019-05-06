@@ -57,6 +57,7 @@ export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
 
 export interface IRepositoriesReport extends IExtensionDocument<IRepositoryReport> {
     date: Date,
+    rescanUrl: string,
     hasReconcilePermissionUrl: string
 }
 

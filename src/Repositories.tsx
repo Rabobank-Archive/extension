@@ -6,19 +6,33 @@ import { Page } from 'azure-devops-ui/Page';
 import { Link } from 'azure-devops-ui/Link';
 import RepositoriesMasterDetail from './components/RepositoriesMasterDetail';
 import { DummyRepositoriesReport } from './services/DummyData';
+import { Button } from 'azure-devops-ui/Button';
+import { Status, Statuses, StatusSize } from 'azure-devops-ui/Status';
+import { Ago } from 'azure-devops-ui/Ago';
+import { AgoFormat } from 'azure-devops-ui/Utilities/Date';
 
 interface IRepositoriesProps {
     azDoService: IAzDoService
 }
 
-export default class extends React.Component<IRepositoriesProps, { isLoading: boolean, report: IRepositoriesReport, hasReconcilePermission: boolean, token: string }> {
+interface IState {
+    isLoading: boolean,
+    isRescanning: boolean,
+    report: IRepositoriesReport, 
+    hasReconcilePermission: boolean,
+    token: string
+}
+
+export default class extends React.Component<IRepositoriesProps, IState> {
     
     constructor(props: IRepositoriesProps) {
         super(props);
         this.state = {
             isLoading: true,
+            isRescanning: false,
             report: {
                 date: new Date(),
+                rescanUrl: '',
                 reports: [],
                 hasReconcilePermissionUrl: ''
             },
@@ -28,6 +42,10 @@ export default class extends React.Component<IRepositoriesProps, { isLoading: bo
     }
 
     async componentDidMount() {
+        await this.getReportdata();  
+    }
+
+    async getReportdata(): Promise<void> {
         const report = await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoriesReport>("repository");
         const token = await this.props.azDoService.GetAppToken();
 
@@ -42,7 +60,25 @@ export default class extends React.Component<IRepositoriesProps, { isLoading: bo
             // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
         }
 
-        this.setState({ isLoading: false, report: report, hasReconcilePermission: hasReconcilePermission, token: token });    
+        this.setState({ isLoading: false, report: report, hasReconcilePermission: hasReconcilePermission, token: token });  
+    }
+
+    private async doRescanRequest(): Promise<void> {
+        try {
+            let url = this.state.report.rescanUrl;
+            this.setState({ isRescanning: true });
+            let requestInit: RequestInit = { headers: { Authorization: `Bearer ${this.state.token}` }};
+            let response = await fetch(url, requestInit);
+            if(response.ok)
+            {
+                await this.getReportdata();
+                this.setState({ isRescanning: false });
+            } else {
+                this.setState({ isRescanning: false });
+            }
+        } catch {
+            this.setState({ isRescanning: false });
+        }
     }
 
     render() {
@@ -58,6 +94,23 @@ export default class extends React.Component<IRepositoriesProps, { isLoading: bo
                     <p>More information on the <Link href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Repositories" target="_blank">how &amp; why</Link> of branching policies with Azure Repos or <Link href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</Link> in general.</p>
                     <p>If you still have questions or need assistance on your repositories, create a <Link href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</Link>.</p>
 
+                    <div
+                        className="flex-row flex-center flex-grow scroll-hidden"
+                        style={{ whiteSpace: "nowrap" }} >
+                        <div className="flex-grow" />
+                        <div style={{ marginRight: "10px" }}>
+                        { this.state.isRescanning ? 
+                            <Status {...Statuses.Running} key="scanning" size={StatusSize.xl} text="Scanning..." /> :
+                            <div>Last scanned: <Ago date={this.state.report.date} format={AgoFormat.Extended} /></div>
+                        }
+                        </div>
+                        <Button 
+                            iconProps = {{ iconName: "TriggerAuto" }}
+                            onClick={() => this.doRescanRequest() } 
+                            text="Rescan" 
+                            primary={true}
+                            disabled={this.state.isRescanning} />
+                    </div>
                     <Card>
                         { this.state.isLoading ?
                             <div>Loading...</div> :

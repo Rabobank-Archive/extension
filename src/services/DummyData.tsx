@@ -115,6 +115,7 @@ export const DummyReleaseReport: IReleaseReport = {
 
 export const DummyRepositoriesReport: IRepositoriesReport = {
     date: new Date(),
+    rescanUrl: 'https://reqres.in',
     hasReconcilePermissionUrl: 'some-url',
     reports: [
         {
