@@ -1,7 +1,6 @@
 import * as React from "react";
 import { IAzDoService, IRepositoriesReport } from "./services/IAzDoService";
 import {
-  Header,
   TitleSize,
   CustomHeader,
   HeaderIcon,
@@ -14,8 +13,6 @@ import { Card } from "azure-devops-ui/Card";
 import { Page } from "azure-devops-ui/Page";
 import { Link } from "azure-devops-ui/Link";
 import RepositoriesMasterDetail from "./components/RepositoriesMasterDetail";
-import { DummyRepositoriesReport } from "./services/DummyData";
-import { Button } from "azure-devops-ui/Button";
 import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { Ago } from "azure-devops-ui/Ago";
 import { AgoFormat } from "azure-devops-ui/Utilities/Date";
