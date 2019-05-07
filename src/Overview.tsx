@@ -106,7 +106,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
         tableColumn: ITableColumn<ITableItem>,
         item: ITableItem
     ): JSX.Element {
-        let content = item.status != Statuses.Success && item.hasReconcilePermission
+        let content = item.status !== Statuses.Success && item.hasReconcilePermission
             ? <ReconcileButton reconcilableItem={item} />
             : "";
 
@@ -149,6 +149,7 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
             <Page>
                 <Header
                     title={"Project compliancy"}
+                    // @ts-ignore
                     titleSize={TitleSize.Medium}
                     titleIconProps={{ iconName: "OpenSource" }}
                 />
@@ -166,7 +167,9 @@ export default class extends React.Component<IOverviewProps, { report: IOverview
                                     <div className="flex-grow" />
                                     <div style={{ marginRight: "10px" }}>
                                     { this.state.isRescanning ? 
+                                        // @ts-ignore
                                         <Status {...Statuses.Running} key="scanning" size={StatusSize.xl} text="Scanning..." /> :
+                                        // @ts-ignore
                                         <div>Last scanned: <Ago date={this.state.report.date} format={AgoFormat.Extended} /></div>
                                     }
                                     </div>

@@ -80,6 +80,7 @@ export function renderCheckmark(
             <Status
                 {...value}
                 className="icon-large-margin"
+                // @ts-ignore
                 size={StatusSize.l}
             />
         </SimpleTableCell>

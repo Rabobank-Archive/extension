@@ -5,7 +5,7 @@ import { ObservableValue, ObservableArray } from 'azure-devops-ui/Core/Observabl
 import { Page } from 'azure-devops-ui/Page';
 import { Header, TitleSize } from 'azure-devops-ui/Header'
 import { Card } from 'azure-devops-ui/Card'
-import { Statuses, StatusSize, IStatusProps } from "azure-devops-ui/Status";
+import { Statuses, IStatusProps } from "azure-devops-ui/Status";
 
 import { IAzDoService, IBuildReport } from './services/IAzDoService';
 import { sortingBehavior, onSize } from './components/TableBehaviors'
@@ -126,6 +126,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
             <Page>
                 <Header
                     title={"Build compliancy"}
+                    // @ts-ignore
                     titleSize={TitleSize.Medium}
                     titleIconProps={{ iconName: "OpenSource" }}
                 />

@@ -29,7 +29,7 @@ function loadData<TReport>(documentCollectionName: string) : TReport {
             return DummyReleaseReport as unknown as TReport;
         case "repository":
             return DummyRepositoriesReport as unknown as TReport;
+        default:
+            throw Error(`unsupported collection ${documentCollectionName}`);
     }
-
-    throw Error(`unsupported collection ${documentCollectionName}`);
 }

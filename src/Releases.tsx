@@ -163,6 +163,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             <Page>
                 <Header
                     title={"Release compliancy"}
+                    // @ts-ignore
                     titleSize={TitleSize.Medium}
                     titleIconProps={{ iconName: "OpenSource" }}
                 />

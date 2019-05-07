@@ -104,12 +104,14 @@ export default class extends React.Component<IRepositoriesProps, IState> {
           <HeaderIcon
             className="bolt-table-status-icon-large"
             iconProps={{ iconName: "OpenSource" }}
+            // @ts-ignore
             titleSize={TitleSize.Large}
           />
           <HeaderTitleArea>
             <HeaderTitleRow>
               <HeaderTitle
                 className="text-ellipsis"
+                // @ts-ignore
                 titleSize={TitleSize.Large}
               >
                 Repository compliancy
@@ -117,6 +119,7 @@ export default class extends React.Component<IRepositoriesProps, IState> {
                   <Status
                     {...Statuses.Running}
                     key="scanning"
+                    // @ts-ignore
                     size={StatusSize.l}
                     text="Scanning..."
                   />
@@ -127,7 +130,9 @@ export default class extends React.Component<IRepositoriesProps, IState> {
             </HeaderTitleRow>
             <HeaderDescription>
               Last scanned:{" "}
-              <Ago date={this.state.report.date} format={AgoFormat.Extended} />
+              <Ago date={this.state.report.date} 
+                // @ts-ignore
+                format={AgoFormat.Extended} />
             </HeaderDescription>
           </HeaderTitleArea>
           <HeaderCommandBar

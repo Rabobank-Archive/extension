@@ -21,7 +21,7 @@ import { renderCheckmark, renderStringWithWhyTooltip } from "./TableRenderers";
 import { IStatusProps, Statuses, Status, StatusSize } from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
-import { IRepositoryReport, IRepositoryRule } from '../services/IAzDoService';
+import { IRepositoryRule } from '../services/IAzDoService';
 import ReconcileButton from "./ReconcileButton";
 
 interface IReportMaster {
@@ -67,7 +67,7 @@ export default class extends React.Component<{ data: { item: string, rules: IRep
     private showNonCompliantRepos = new ObservableValue<boolean>(true);
     
     renderReconcileButton(rowIndex: number, columnIndex: number, tableColumn: ITableColumn<IReportRule>, item: IReportRule): JSX.Element {
-            let content = item.status != Statuses.Success && item.hasReconcilePermission
+            let content = item.status !== Statuses.Success && item.hasReconcilePermission
                 ? <ReconcileButton reconcilableItem={item} />
                 : "";
     
@@ -173,12 +173,14 @@ export default class extends React.Component<{ data: { item: string, rules: IRep
     };
 
     private isCompliant(item: IReportMaster): boolean {
-        return !item.rules.some((rule) => { return rule.status != Statuses.Success });
+        return !item.rules.some((rule) => { return rule.status !== Statuses.Success });
     }
 
     private renderSmallCompliantIcon(item: IReportMaster) : JSX.Element {
         return  this.isCompliant(item) ?
+            // @ts-ignore
             <div><Status {...Statuses.Success} className="icon-large-margin" size={StatusSize.s}/>Compliant</div> :
+            // @ts-ignore
             <div><Status {...Statuses.Failed} className="icon-large-margin" size={StatusSize.s}/>Non-compliant</div>
     }
 
@@ -250,6 +252,7 @@ export default class extends React.Component<{ data: { item: string, rules: IRep
                 <Page>
                     <Header
                         title={detailItem.item}
+                        // @ts-ignore
                         titleSize={TitleSize.Large}
                     />
                     <div className="page-content page-content-top">
@@ -271,6 +274,7 @@ export default class extends React.Component<{ data: { item: string, rules: IRep
                 <Page>
                     <Header
                         title={"Repository Compliancy"}
+                        // @ts-ignore
                         titleSize={TitleSize.Large} />
                     <div className="page-content page-content-top">
                         <Card

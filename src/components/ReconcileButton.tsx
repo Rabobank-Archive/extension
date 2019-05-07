@@ -4,7 +4,7 @@ import { ObservableValue } from 'azure-devops-ui/Core/Observable';
 import { Observer } from "azure-devops-ui/Observer";
 import { Dialog } from "azure-devops-ui/Dialog";
 import { MessageCard, MessageCardSeverity } from "azure-devops-ui/MessageCard";
-import { SimpleList, ScrollableList, List } from 'azure-devops-ui/List';
+import { SimpleList } from 'azure-devops-ui/List';
 import { ArrayItemProvider } from 'azure-devops-ui/Utilities/Provider';
 import { Status, Statuses, StatusSize } from 'azure-devops-ui/Status';
 
@@ -64,12 +64,13 @@ export default class extends React.Component<IReconcileButtonProps, IReconcileBu
                     primary={true}
                     iconProps = {{ iconName: "TriggerAuto" }}
                     onClick={() => { this.isDialogOpen.value = true; }} 
-                    text="Reconcile" disabled={(this.props.reconcilableItem.reconcileUrl == "")} />
+                    text="Reconcile" disabled={(this.props.reconcilableItem.reconcileUrl === "")} />
                 
                 <Observer isDialogOpen={this.isDialogOpen}>
                     {(props: { isDialogOpen: boolean }) => {
                         let error = this.state.hasError ?
                             <MessageCard 
+                                // @ts-ignore
                                 severity={MessageCardSeverity.Error} 
                                 onDismiss={() => {this.setState({hasError: false})}}>
                                 {this.state.errorText}
@@ -80,6 +81,7 @@ export default class extends React.Component<IReconcileButtonProps, IReconcileBu
                             <Status
                             {...Statuses.Running}
                             key="reconciling"
+                            // @ts-ignore
                             size={StatusSize.xl}
                             text="Reconciling..."
                             /> :

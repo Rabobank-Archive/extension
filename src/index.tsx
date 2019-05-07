@@ -14,13 +14,13 @@ import { Page } from "azure-devops-ui/Page"
 
 let azDoService: IAzDoService;
 
-if(process.env.REACT_APP_USE_AZDO_SERVICE == "true") {
+if(process.env.REACT_APP_USE_AZDO_SERVICE === "true") {
     azDoService = new AzDoService();
 } else {
     azDoService = new DummyAzDoService(); 
 }
 
-if(process.env.REACT_APP_USE_AZDO_SDK == "true")
+if(process.env.REACT_APP_USE_AZDO_SDK === "true")
 {
     SDK.init();
     SDK.ready().then(() => {
