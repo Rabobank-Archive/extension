@@ -28,7 +28,8 @@ interface IBuildPipelinesProps {
 const filterToggled = new ObservableValue<boolean>(false);
 const selectedTabId = new ObservableValue<string>("home");
 const filter = new Filter();
-const dropdownSelection = new DropdownMultiSelection();
+const pipelineSetupDropdownSelection = new DropdownMultiSelection();
+const lastRunDropdownSelection = new DropdownMultiSelection();
 
 const commandBarItemsAdvanced: IHeaderCommandBarItem[] = [
     {
@@ -256,11 +257,18 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                             >
                                 <KeywordFilterBarItem filterItemKey="keyword" />
                                 <DropdownFilterBarItem
-                                    filterItemKey="status"
+                                    filterItemKey="pipelineSetupStatus"
                                     filter={filter}
                                     items={this.getStatuses().map(this.getStatusListItem)}
-                                    selection={dropdownSelection}
+                                    selection={pipelineSetupDropdownSelection}
                                     placeholder="Status"
+                                />
+                                <DropdownFilterBarItem
+                                    filterItemKey="lastRunStatus"
+                                    filter={filter}
+                                    items={this.getStatuses().map(this.getStatusListItem)}
+                                    selection={lastRunDropdownSelection}
+                                    placeholder="Last Run Status"
                                 />
                             </FilterBar>
                         </div>

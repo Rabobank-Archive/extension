@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IFilter } from 'azure-devops-ui/Utilities/Filter';
+import { IFilter, FILTER_CHANGE_EVENT } from 'azure-devops-ui/Utilities/Filter';
 import { ObservableValue } from 'azure-devops-ui/Core/Observable';
 import { getStatusIndicatorData } from '../BuildPipelines';
 import { Card } from 'azure-devops-ui/Card';
@@ -53,7 +53,7 @@ export default class extends React.Component<IBuildPipelinesListProps, IState> {
 
     private columns: ITableColumn<IPipelineItem>[] = [
         {
-            id: "name",
+            id: "pipeline",
             name: "Pipeline",
             width: new ObservableValue(-33),
             renderCell: renderNameColumn,
@@ -69,6 +69,50 @@ export default class extends React.Component<IBuildPipelinesListProps, IState> {
         { id: "time", width: new ObservableValue(-33), renderCell: renderDateColumn },
         { id: "favorite", width: new ObservableValue(40), renderCell: renderFavoritesColumn }
     ];
+
+    componentDidMount() {
+        this.props.filter.subscribe(this.onFilterChanged, FILTER_CHANGE_EVENT);
+    }
+
+    componentWillUnmount() {
+        this.props.filter.unsubscribe(this.onFilterChanged, FILTER_CHANGE_EVENT);
+    }
+
+    private onFilterChanged = () => {
+        const filteredItems = this.filterItems(this.state.sortedItems);
+        this.setState({
+            filtering: this.props.filter.hasChangesToReset(),
+            filteredItems: filteredItems
+        });
+    };
+
+    private filterItems = (items: IPipelineItem[]) => {
+        if (this.props.filter.hasChangesToReset()) {
+            const filterText = this.props.filter.getFilterItemValue<string>("keyword");
+            const pipelineSetupStatusses = this.props.filter.getFilterItemValue<boolean[]>("pipelineSetupStatus");
+            const lastRunStatusses = this.props.filter.getFilterItemValue<boolean[]>("lastRunStatus");
+
+            console.log(pipelineSetupStatusses);
+            console.log(lastRunStatusses);
+
+            const filteredItems = items.filter(item => {
+                let includeItem = true;
+                if (filterText) {
+                    includeItem = item.name.indexOf(filterText) !== -1;
+                }
+                if (includeItem && pipelineSetupStatusses && pipelineSetupStatusses.length) {
+                    includeItem = pipelineSetupStatusses.some(s => s === item.isCompliant);
+                }
+                if (includeItem && lastRunStatusses && lastRunStatusses.length) {
+                    includeItem = lastRunStatusses.some(s => s === item.lastRunData.isCompliant);
+                }
+                return includeItem;
+            });
+            return filteredItems;
+        } else {
+            return [...items];
+        }
+    };
 
     render() {
         if (this.state.filtering && this.state.filteredItems.length === 0) {
@@ -125,9 +169,10 @@ function renderLastRunColumn(
     tableColumn: ITableColumn<IPipelineItem>,
     tableItem: IPipelineItem
 ): JSX.Element {
-    const { buildNumber, buildName, isCompliant } = tableItem.lastRunData;
+    const { buildId, buildNumber, buildName, isCompliant } = tableItem.lastRunData;
     const text = "#" + buildNumber + " \u00b7 " + buildName;
     const tooltip = `${text}`;
+    const buildLink = "#" + buildId
     return (
         <TwoLineTableCell
             className="bolt-table-cell-content-with-inline-link no-v-padding"
@@ -140,7 +185,7 @@ function renderLastRunColumn(
                         <Link
                             className="fontSizeM font-size-m text-ellipsis bolt-table-link bolt-table-inline-link"
                             excludeTabStop
-                            href="#build"
+                            href={buildLink}
                         >
                             {text}
                         </Link>
@@ -155,24 +200,8 @@ function renderLastRunColumn(
                             excludeTabStop
                             href="#build"
                         >
-                        {CompliancyIcon({ isCompliant: isCompliant})}
+                            {CompliancyIcon({ isCompliant: isCompliant})}
                         </Link>
-                        {/* {ReleaseTypeIcon({ releaseType: releaseType })}
-                        <span className="text-ellipsis" key="release-type-text">
-                            {releaseTypeText}
-                        </span>
-                        <Link
-                            className="monospaced-text text-ellipsis flex-row flex-baseline bolt-table-link bolt-table-inline-link"
-                            excludeTabStop
-                            href="#branch"
-                        >
-                            {Icon({
-                                className: "icon-margin",
-                                iconName: "OpenSource",
-                                key: "branch-name"
-                            })}
-                            {branchName}
-                        </Link> */}
                     </span>
                 </Tooltip>
             }
