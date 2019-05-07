@@ -23,6 +23,10 @@ export interface IRepositoryRule {
     } | undefined
 }
 
+export interface IBuildPipelineSetupReport {
+    date: Date
+}
+
 export interface IBuildRule {
     id: string
     pipeline: string

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IAzDoService } from './services/IAzDoService';
+import { IAzDoService, IBuildPipelineSetupReport } from './services/IAzDoService';
 import { Page } from 'azure-devops-ui/Page';
 import { CustomHeader, HeaderIcon, TitleSize, HeaderTitleArea, HeaderTitleRow, HeaderTitle, HeaderDescription, Header } from 'azure-devops-ui/Header';
 import { HeaderCommandBar, IHeaderCommandBarItem, HeaderCommandBarWithFilter } from 'azure-devops-ui/HeaderCommandBar';
@@ -17,17 +17,9 @@ import { DropdownMultiSelection } from "azure-devops-ui/Utilities/DropdownSelect
 import { IListBoxItem } from 'azure-devops-ui/ListBox';
 
 import { css } from "azure-devops-ui/Util";
-
-enum PipelineStatus {
-    running = "running",
-    succeeded = "succeeded",
-    failed = "failed",
-    warning = "warning"
-}
-
-interface IBuildPipelines {
-
-}
+import { Ago } from 'azure-devops-ui/Ago';
+import { AgoFormat } from 'azure-devops-ui/Utilities/Date';
+import BuildPipelinesList from './components/BuildPipelinesList';
 
 interface IBuildPipelinesProps {
     azDoService: IAzDoService
@@ -122,38 +114,46 @@ const pipelineSetupCommandBarItems: IHeaderCommandBarItem[] = [
     }
 ];
 
-export default class extends React.Component<IBuildPipelinesProps, { report: IBuildPipelines, isLoading: boolean }> {
+interface IState {
+    isLoading: boolean;
+    isRescanning: boolean;
+    pipelineSetupReport: IBuildPipelineSetupReport;
+    hasReconcilePermission: boolean;
+    token: string;
+  }
+
+export default class extends React.Component<IBuildPipelinesProps, IState> {
 
     constructor(props: IBuildPipelinesProps) {
         super(props);
 
         this.state = {
-            report: {
-                reports: []
+            pipelineSetupReport: {
+                date: new Date()
             },
-            isLoading: true
+            isLoading: true,
+            isRescanning: false,
+            hasReconcilePermission: false,
+            token: ""
         }
     }
 
-    private renderStatus = (className?: string) => {
-        return <Status {...Statuses.Success} className={className} size={StatusSize.l} />;
-    };
+    private async doRescanRequest(): Promise<void> {
+    }
 
     private getStatuses = () => {
         return [
-            PipelineStatus.succeeded,
-            PipelineStatus.failed,
-            PipelineStatus.warning,
-            PipelineStatus.running
+            true,
+            false,
         ];
     };
 
-    private getStatusListItem = (status: PipelineStatus): IListBoxItem<PipelineStatus> => {
+    private getStatusListItem = (status: boolean): IListBoxItem<boolean> => {
         const statusDetail = getStatusIndicatorData(status);
 
         return {
             data: status,
-            id: status,
+            id: status ? "true" : "false",
             text: statusDetail.label,
             iconProps: {
                 render: className => (
@@ -190,23 +190,51 @@ export default class extends React.Component<IBuildPipelinesProps, { report: IBu
         return (
             <Surface background={SurfaceBackground.neutral} >
                 <Page className="flex-grow">
-                    <CustomHeader className="bolt-header-with-commandbar">
-                        <HeaderIcon
-                            className="bolt-table-status-icon-large"
-                            iconProps={{ render: this.renderStatus }}
+                <CustomHeader className="bolt-header-with-commandbar">
+                    <HeaderIcon
+                        className="bolt-table-status-icon-large"
+                        iconProps={{ iconName: "OpenSource" }}
+                        titleSize={TitleSize.Large}
+                    />
+                    <HeaderTitleArea>
+                        <HeaderTitleRow>
+                        <HeaderTitle
+                            className="text-ellipsis"
                             titleSize={TitleSize.Large}
-                        />
-                        <HeaderTitleArea>
-                            <HeaderTitleRow>
-                                <HeaderTitle className="text-ellipsis" titleSize={TitleSize.Large}>
-                                    Pipeline compliancy
-                                </HeaderTitle>
-                            </HeaderTitleRow>
-                            <HeaderDescription>
-                                Last scanned: today at 6:27 pm
-                            </HeaderDescription>
-                        </HeaderTitleArea>
-                        <HeaderCommandBar items={pipelineSetupCommandBarItems} />
+                        >
+                            Build Compliancy
+                            {this.state.isRescanning ? (
+                            <Status
+                                {...Statuses.Running}
+                                key="scanning"
+                                size={StatusSize.l}
+                                text="Scanning..."
+                            />
+                            ) : (
+                            ""
+                            )}
+                        </HeaderTitle>
+                        </HeaderTitleRow>
+                        <HeaderDescription>
+                        Last scanned:{" "}
+                        <Ago date={this.state.pipelineSetupReport.date} format={AgoFormat.Extended} />
+                        </HeaderDescription>
+                    </HeaderTitleArea>
+                    <HeaderCommandBar
+                        items={[
+                        {
+                            iconProps: { iconName: "TriggerAuto" },
+                            id: "testCreate",
+                            important: true,
+                            disabled: this.state.isRescanning,
+                            isPrimary: true,
+                            onActivate: () => {
+                            this.doRescanRequest();
+                            },
+                            text: "Rescan"
+                        }
+                        ]}
+                    />
                     </CustomHeader>
 
                     <TabBar
@@ -239,7 +267,7 @@ export default class extends React.Component<IBuildPipelinesProps, { report: IBu
                     </ConditionalChildren>
 
                     <div className="page-content page-content-top">
-
+                        <BuildPipelinesList filter={filter} />
                     </div>
                 </Page>
             </Surface>
@@ -252,28 +280,15 @@ interface IStatusIndicatorData {
     label: string;
 }
 
-function getStatusIndicatorData(status: string): IStatusIndicatorData {
-    status = status || "";
-    status = status.toLowerCase();
-    let indicatorData: IStatusIndicatorData = {
-        statusProps: Statuses.Success,
-        label: "Success"
-    };
-    switch (status) {
-        case PipelineStatus.failed:
-            indicatorData.statusProps = Statuses.Failed;
-            indicatorData.label = "Failed";
-            break;
-        case PipelineStatus.running:
-            indicatorData.statusProps = Statuses.Running;
-            indicatorData.label = "Running";
-            break;
-        case PipelineStatus.warning:
-            indicatorData.statusProps = Statuses.Warning;
-            indicatorData.label = "Warning";
-
-            break;
-    }
-
+export function getStatusIndicatorData(isCompliant: boolean): IStatusIndicatorData {
+    let indicatorData: IStatusIndicatorData = isCompliant ? 
+        {
+            statusProps: Statuses.Success,
+            label: "Compliant"
+        } :
+        {
+            statusProps: Statuses.Failed,
+            label: "Non-Compliant"
+        }
     return indicatorData;
 }
