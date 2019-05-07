@@ -19,7 +19,8 @@
     "noEmit": true,
     "jsx": "preserve",
     "types": [
-      "jest"
+      "jest",
+      "node"
     ]
   },
   "include": [
