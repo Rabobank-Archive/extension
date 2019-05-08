@@ -1,22 +1,9 @@
 import * as React from "react";
 import { IAzDoService, IRepositoriesReport } from "./services/IAzDoService";
-import {
-  TitleSize,
-  CustomHeader,
-  HeaderIcon,
-  HeaderTitleArea,
-  HeaderTitleRow,
-  HeaderTitle,
-  HeaderDescription
-} from "azure-devops-ui/Header";
 import { Card } from "azure-devops-ui/Card";
 import { Page } from "azure-devops-ui/Page";
 import { Link } from "azure-devops-ui/Link";
 import RepositoriesMasterDetail from "./components/RepositoriesMasterDetail";
-import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
-import { Ago } from "azure-devops-ui/Ago";
-import { AgoFormat } from "azure-devops-ui/Utilities/Date";
-import { HeaderCommandBar } from "azure-devops-ui/HeaderCommandBar";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 interface IRepositoriesProps {

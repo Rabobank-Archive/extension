@@ -15,7 +15,7 @@ import { Filter } from "azure-devops-ui/Utilities/Filter";
 import { DropdownMultiSelection } from "azure-devops-ui/Utilities/DropdownSelection";
 
 import BuildPipelinesList from "./components/BuildPipelinesList";
-import PipelineMasterDetail from "./components/RepositoriesMasterDetail";
+import PipelinesMasterDetail from "./components/RepositoriesMasterDetail";
 import {
   getPossibleCompliancyStatuses,
   getCompliancyStatusAsListItem
@@ -59,7 +59,6 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
       selectedTabId: "home"
     };
   }
-
 
   private onSelectedTabChanged = (newTabId: string) => {
     this.setState({ selectedTabId: newTabId });
@@ -152,7 +151,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
 
       case "pipeline":
         return (
-          <PipelineMasterDetail
+          <PipelinesMasterDetail
             hasReconcilePermission={true}
             token="abcdef"
             data={pipelineDummyData}
