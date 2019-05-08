@@ -18,6 +18,7 @@ interface ICompliancyHeaderProps {
   lastScanDate: Date;
   rescanUrl: string;
   token: string;
+  onRescanFinished?: () => Promise<void>;
 }
 
 interface IState {
@@ -41,7 +42,8 @@ export default class extends React.Component<ICompliancyHeaderProps, IState> {
       };
       let response = await fetch(url, requestInit);
       if (response.ok) {
-        //await this.getReportdata();
+        if(this.props.onRescanFinished)
+          await this.props.onRescanFinished();
         this.setState({ isRescanning: false });
       } else {
         this.setState({ isRescanning: false });
