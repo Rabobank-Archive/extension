@@ -2,7 +2,7 @@ import * as React from "react";
 import { IAzDoService, IBuildPipelinesReport } from "./services/IAzDoService";
 import { Page } from "azure-devops-ui/Page";
 import {
-  HeaderCommandBarWithFilter
+  HeaderCommandBarWithFilter, HeaderCommandBar
 } from "azure-devops-ui/HeaderCommandBar";
 import { ConditionalChildren } from "azure-devops-ui/ConditionalChildren";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
@@ -21,12 +21,14 @@ import {
   getCompliancyStatusAsListItem
 } from "./components/CompliancyStatus";
 import CompliancyHeader from "./components/CompliancyHeader";
+import { Observer } from "azure-devops-ui/Observer";
 
 interface IBuildPipelinesProps {
   azDoService: IAzDoService;
 }
 
 const filterToggled = new ObservableValue<boolean>(false);
+const allowFiltering = new ObservableValue<boolean>(true);
 
 const filter = new Filter();
 const pipelineSetupDropdownSelection = new DropdownMultiSelection();
@@ -70,11 +72,16 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
 
   private renderTabBarCommands = () => {
     return (
-      <HeaderCommandBarWithFilter
-        filter={filter}
-        filterToggled={filterToggled}
-        items={[]}
-      />
+      <Observer allowFiltering={allowFiltering}>
+        { allowFiltering.value ? 
+            <HeaderCommandBarWithFilter
+              filter={filter}
+              filterToggled={filterToggled}
+              items={[]}
+            /> :
+            <HeaderCommandBar items={[]}/>
+        }
+      </Observer>
     );
   };
 
@@ -147,9 +154,12 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
 
     switch (selectedTabId) {
       case "home":
+        allowFiltering.value = true;
         return <BuildPipelinesList filter={filter} />;
 
       case "pipelines":
+        allowFiltering.value = false;
+        filterToggled.value = false;
         return (
           <PipelinesMasterDetail
             title="Pipelines"
@@ -160,6 +170,8 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
         );
 
       case "builds":
+        allowFiltering.value = false;
+        filterToggled.value = false;
         return <div>Build data here</div>;
     }
   }
