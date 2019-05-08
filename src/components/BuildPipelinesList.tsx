@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { IFilter, FILTER_CHANGE_EVENT } from 'azure-devops-ui/Utilities/Filter';
 import { ObservableValue } from 'azure-devops-ui/Core/Observable';
-import { getStatusIndicatorData } from '../BuildPipelines';
 import { Card } from 'azure-devops-ui/Card';
 import { Table, ITableColumn, SimpleTableCell, TableCell, TwoLineTableCell } from 'azure-devops-ui/Table';
 import { ArrayItemProvider } from 'azure-devops-ui/Utilities/Provider';
@@ -14,6 +13,7 @@ import { Link } from 'azure-devops-ui/Link';
 import { Icon, IIconProps } from 'azure-devops-ui/Icon';
 import { Ago } from 'azure-devops-ui/Ago';
 import { AgoFormat } from 'azure-devops-ui/Utilities/Date';
+import { getCompliancyStatusIndicatorData } from './CompliancyStatus';
 
 interface IPipelineItem {
     name: string;
@@ -150,7 +150,7 @@ function renderNameColumn(
             contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden"
         >
             <Status
-                {...getStatusIndicatorData(tableItem.isCompliant).statusProps}
+                {...getCompliancyStatusIndicatorData(tableItem.isCompliant).statusProps}
                 className="icon-large-margin"
                 size={StatusSize.l}
             />
