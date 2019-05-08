@@ -87,7 +87,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
       <Surface background={SurfaceBackground.neutral}>
         <Page className="flex-grow">
           <CompliancyHeader
-            headerText="Repository compliance"
+            headerText="Pipeline compliance"
             lastScanDate={this.state.buildPipelinesReport.date}
             rescanUrl={this.state.buildPipelinesReport.rescanUrl}
             token={this.state.token}
@@ -101,7 +101,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             disableSticky={false}
           >
             <Tab id="home" name="Home" />
-            <Tab id="pipeline" name="Pipeline" />
+            <Tab id="pipelines" name="Pipelines" />
             <Tab id="builds" name="Builds" />
           </TabBar>
 
@@ -149,7 +149,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
       case "home":
         return <BuildPipelinesList filter={filter} />;
 
-      case "pipeline":
+      case "pipelines":
         return (
           <PipelinesMasterDetail
             title="Pipelines"

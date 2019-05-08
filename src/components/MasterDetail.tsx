@@ -284,8 +284,6 @@ export default class extends React.Component<{ title: string, data: IItemReport[
                 </Page>
             )
         }
-
-
         return content;
     };
 
