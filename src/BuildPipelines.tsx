@@ -2,20 +2,9 @@ import * as React from "react";
 import { IAzDoService, IBuildPipelinesReport } from "./services/IAzDoService";
 import { Page } from "azure-devops-ui/Page";
 import {
-  CustomHeader,
-  HeaderIcon,
-  TitleSize,
-  HeaderTitleArea,
-  HeaderTitleRow,
-  HeaderTitle,
-  HeaderDescription
-} from "azure-devops-ui/Header";
-import {
-  HeaderCommandBar,
   HeaderCommandBarWithFilter
 } from "azure-devops-ui/HeaderCommandBar";
 import { ConditionalChildren } from "azure-devops-ui/ConditionalChildren";
-import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import { FilterBar } from "azure-devops-ui/FilterBar";
 import { DropdownFilterBarItem } from "azure-devops-ui/Dropdown";
@@ -25,8 +14,6 @@ import { TabBar, Tab } from "azure-devops-ui/Tabs";
 import { Filter } from "azure-devops-ui/Utilities/Filter";
 import { DropdownMultiSelection } from "azure-devops-ui/Utilities/DropdownSelection";
 
-import { Ago } from "azure-devops-ui/Ago";
-import { AgoFormat } from "azure-devops-ui/Utilities/Date";
 import BuildPipelinesList from "./components/BuildPipelinesList";
 import PipelineMasterDetail from "./components/RepositoriesMasterDetail";
 import {
@@ -73,7 +60,6 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
     };
   }
 
-  private async doRescanRequest(): Promise<void> {}
 
   private onSelectedTabChanged = (newTabId: string) => {
     this.setState({ selectedTabId: newTabId });
@@ -93,6 +79,10 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
     );
   };
 
+  private async getData(): Promise<void> {
+
+  }
+
   render() {
     return (
       <Surface background={SurfaceBackground.neutral}>
@@ -102,6 +92,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             lastScanDate={this.state.buildPipelinesReport.date}
             rescanUrl={this.state.buildPipelinesReport.rescanUrl}
             token={this.state.token}
+            onRescanFinished={this.getData}
           />
 
           <TabBar

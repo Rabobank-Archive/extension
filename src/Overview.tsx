@@ -1,21 +1,16 @@
 import * as React from "react";
 import { IAzDoService, IOverviewReport } from "./services/IAzDoService";
 
-import { Button } from "azure-devops-ui/Button";
 import { ITableColumn, SimpleTableCell, Table } from "azure-devops-ui/Table";
 import {
   ObservableValue,
   ObservableArray
 } from "azure-devops-ui/Core/Observable";
 import { Page } from "azure-devops-ui/Page";
-import { Header, TitleSize } from "azure-devops-ui/Header";
 import { Card } from "azure-devops-ui/Card";
 import {
   Statuses,
-  IStatusProps,
-  Status,
-  StatusSize
-} from "azure-devops-ui/Status";
+  IStatusProps} from "azure-devops-ui/Status";
 import {
   renderCheckmark,
   renderStringWithWhyTooltip
@@ -24,8 +19,6 @@ import { Link } from "azure-devops-ui/Link";
 import { onSize } from "./components/TableBehaviors";
 import ReconcileButton from "./components/ReconcileButton";
 
-import { Ago } from "azure-devops-ui/Ago";
-import { AgoFormat } from "azure-devops-ui/Utilities/Date";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 interface ITableItem {
@@ -108,24 +101,6 @@ export default class extends React.Component<
     await this.getReportdata();
   }
 
-  private async doRescanRequest(): Promise<void> {
-    try {
-      let url = this.state.report.rescanUrl;
-      this.setState({ isRescanning: true });
-      let requestInit: RequestInit = {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      };
-      let response = await fetch(url, requestInit);
-      if (response.ok) {
-        await this.getReportdata();
-        this.setState({ isRescanning: false });
-      } else {
-        this.setState({ isRescanning: false });
-      }
-    } catch {
-      this.setState({ isRescanning: false });
-    }
-  }
 
   private renderReconcileButton(
     _rowIndex: number,
@@ -184,6 +159,7 @@ export default class extends React.Component<
           lastScanDate={this.state.report.date}
           rescanUrl={this.state.report.rescanUrl}
           token={this.state.token}
+          onRescanFinished={this.getReportdata}
         />
 
         <div className="page-content page-content-top">

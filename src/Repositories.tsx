@@ -87,6 +87,7 @@ export default class extends React.Component<IRepositoriesProps, IState> {
           lastScanDate={this.state.report.date}
           rescanUrl={this.state.report.rescanUrl}
           token={this.state.token}
+          onRescanFinished={this.getReportdata}
         />
 
         <div className="page-content page-content-top">
