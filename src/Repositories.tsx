@@ -115,24 +115,21 @@ export default class extends React.Component<IRepositoriesProps, IState> {
                 titleSize={TitleSize.Large}
               >
                 Repository compliancy
-                {this.state.isRescanning ? (
-                  <Status
-                    {...Statuses.Running}
-                    key="scanning"
-                    // @ts-ignore
-                    size={StatusSize.l}
-                    text="Scanning..."
-                  />
-                ) : (
-                  ""
-                )}
               </HeaderTitle>
             </HeaderTitleRow>
             <HeaderDescription>
-              Last scanned:{" "}
-              <Ago date={this.state.report.date} 
-                // @ts-ignore
-                format={AgoFormat.Extended} />
+              <div className="flex-row">
+                {this.state.isRescanning ? (
+                  <div>
+                    <Status {...Statuses.Running} key="scanning" size={StatusSize.l} text="Scanning..." />
+                  </div>
+                ) : (
+                  <div>
+                    Last scanned: <Ago date={this.state.report.date} format={AgoFormat.Extended} />
+                  </div>
+                )}
+                <div className="flex-grow" />
+              </div>
             </HeaderDescription>
           </HeaderTitleArea>
           <HeaderCommandBar
