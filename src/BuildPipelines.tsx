@@ -26,7 +26,7 @@ interface IBuildPipelinesProps {
 }
 
 const filterToggled = new ObservableValue<boolean>(false);
-const selectedTabId = new ObservableValue<string>("home");
+
 const filter = new Filter();
 const pipelineSetupDropdownSelection = new DropdownMultiSelection();
 const lastRunDropdownSelection = new DropdownMultiSelection();
@@ -121,6 +121,7 @@ interface IState {
     pipelineSetupReport: IBuildPipelineSetupReport;
     hasReconcilePermission: boolean;
     token: string;
+    selectedTabId: string;
   }
 
 export default class extends React.Component<IBuildPipelinesProps, IState> {
@@ -135,7 +136,8 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             isLoading: true,
             isRescanning: false,
             hasReconcilePermission: false,
-            token: ""
+            token: "",
+            selectedTabId: "home"
         }
     }
 
@@ -170,7 +172,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
     };
 
     private onSelectedTabChanged = (newTabId: string) => {
-        selectedTabId.value = newTabId;
+        this.setState({selectedTabId: newTabId});
     };
 
     private onFilterBarDismissClicked = () => {
@@ -239,7 +241,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                     </CustomHeader>
 
                     <TabBar
-                        selectedTabId={selectedTabId}
+                        selectedTabId={this.state.selectedTabId}
                         onSelectedTabChanged={this.onSelectedTabChanged}
                         renderAdditionalContent={this.renderTabBarCommands}
                         disableSticky={false}
@@ -275,11 +277,28 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                     </ConditionalChildren>
 
                     <div className="page-content page-content-top">
-                        <BuildPipelinesList filter={filter} />
+                        {this.getTabContent()}
+                        
                     </div>
                 </Page>
             </Surface>
         );
+    }
+
+    getTabContent(): React.ReactNode {
+        const { selectedTabId } = this.state;
+
+        switch(selectedTabId) {
+            case "home":
+                return (<BuildPipelinesList filter={filter} />);
+
+            case "pipeline":
+                return (<div>Pipeline data here</div>);
+
+            case "builds":
+                return (<div>Build data here</div>);
+        }
+        
     }
 }
 
