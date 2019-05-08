@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAzDoService, IBuildPipelinesReport } from "./services/IAzDoService";
+import { IAzDoService, IBuildPipelinesReport, IItemReport } from "./services/IAzDoService";
 import { Page } from "azure-devops-ui/Page";
 import {
   HeaderCommandBarWithFilter, HeaderCommandBar
@@ -86,7 +86,32 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
   };
 
   private async getData(): Promise<void> {
+    const buildPipelinesReport = await this.props.azDoService.GetReportsFromDocumentStorage<IBuildPipelinesReport>("buildpipeline");
+    const token = await this.props.azDoService.GetAppToken();
 
+    let hasReconcilePermission: boolean = false;
+
+    let requestInit: RequestInit = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+    try {
+      let response = await fetch(buildPipelinesReport.hasReconcilePermissionUrl, requestInit);
+      let responseJson = await response.json();
+      hasReconcilePermission = responseJson as boolean;
+    } catch {
+      // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
+    }
+
+    this.setState({
+      isLoading: false,
+      buildPipelinesReport: buildPipelinesReport,
+      hasReconcilePermission: hasReconcilePermission,
+      token: token
+    });
+  }
+
+  async componentDidMount() {
+    await this.getData();
   }
 
   render() {
@@ -165,7 +190,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             title="Pipelines"
             hasReconcilePermission={true}
             token="abcdef"
-            data={pipelineDummyData}
+            data={this.state.buildPipelinesReport.reports.sort(compareItemReports)}
           />
         );
 
@@ -177,9 +202,6 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
   }
 }
 
-const pipelineDummyData = [
-  {
-    item: "pipeline 1",
-    rules: []
-  }
-];
+function compareItemReports( a: IItemReport, b: IItemReport ) {
+  return a.item.localeCompare(b.item)
+}
