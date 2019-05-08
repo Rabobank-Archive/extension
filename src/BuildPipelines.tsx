@@ -20,6 +20,7 @@ import { css } from "azure-devops-ui/Util";
 import { Ago } from 'azure-devops-ui/Ago';
 import { AgoFormat } from 'azure-devops-ui/Utilities/Date';
 import BuildPipelinesList from './components/BuildPipelinesList';
+import PipelineMasterDetail from './components/RepositoriesMasterDetail'
 
 interface IBuildPipelinesProps {
     azDoService: IAzDoService
@@ -293,7 +294,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                 return (<BuildPipelinesList filter={filter} />);
 
             case "pipeline":
-                return (<div>Pipeline data here</div>);
+                return (<PipelineMasterDetail hasReconcilePermission={true} token="abcdef" data={pipelineDummyData} />);
 
             case "builds":
                 return (<div>Build data here</div>);
@@ -319,3 +320,12 @@ export function getStatusIndicatorData(isCompliant: boolean): IStatusIndicatorDa
         }
     return indicatorData;
 }
+
+const pipelineDummyData = [
+    {
+        item: "pipeline 1",
+        rules: [
+            
+        ]
+    }
+]
