@@ -3,7 +3,7 @@ import { IAzDoService, IRepositoriesReport } from "./services/IAzDoService";
 import { Card } from "azure-devops-ui/Card";
 import { Page } from "azure-devops-ui/Page";
 import { Link } from "azure-devops-ui/Link";
-import RepositoriesMasterDetail from "./components/RepositoriesMasterDetail";
+import RepositoriesMasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 interface IRepositoriesProps {
@@ -119,6 +119,7 @@ export default class extends React.Component<IRepositoriesProps, IState> {
               <div>Loading...</div>
             ) : (
               <RepositoriesMasterDetail
+                title="Repositories"
                 data={this.state.report.reports}
                 hasReconcilePermission={this.state.hasReconcilePermission}
                 token={this.state.token}
