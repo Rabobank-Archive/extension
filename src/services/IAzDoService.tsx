@@ -1,19 +1,9 @@
-export interface IProjectRule {
-  description: string;
-  why: string;
-  status: boolean;
-  reconcile: {
-    impact: string[];
-    url: string;
-  };
-}
-
-export interface IRepositoryReport {
+export interface IItemReport {
   item: string;
-  rules: IRepositoryRule[];
+  rules: IRule[];
 }
 
-export interface IRepositoryRule {
+export interface IRule {
   description: string;
   why: string;
   status: boolean;
@@ -23,23 +13,6 @@ export interface IRepositoryRule {
         url: string;
       }
     | undefined;
-}
-
-export interface IBuildPipelineRule {
-  description: string;
-  why: string;
-  status: boolean;
-  reconcile:
-    | {
-        impact: string[];
-        url: string;
-      }
-    | undefined;
-}
-
-export interface IBuildPipelineReport {
-  item: string;
-  rules: IBuildPipelineRule[];
 }
 
 export interface IBuildRule {
@@ -68,21 +41,20 @@ export interface IExtensionDocument<TReport> {
   reports: TReport[];
 }
 
-export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
+export interface IOverviewReport extends IExtensionDocument<IRule> {
   date: Date;
   rescanUrl: string;
   hasReconcilePermissionUrl: string;
 }
 
-export interface IRepositoriesReport
-  extends IExtensionDocument<IRepositoryReport> {
+export interface IRepositoriesReport extends IExtensionDocument<IItemReport> {
   date: Date;
   rescanUrl: string;
   hasReconcilePermissionUrl: string;
 }
 
 export interface IBuildPipelinesReport
-  extends IExtensionDocument<IBuildPipelineReport> {
+  extends IExtensionDocument<IItemReport> {
   date: Date;
   rescanUrl: string;
   hasReconcilePermissionUrl: string;

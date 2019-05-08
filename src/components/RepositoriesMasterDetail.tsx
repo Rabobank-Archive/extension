@@ -21,7 +21,7 @@ import { renderCheckmark, renderStringWithWhyTooltip } from "./TableRenderers";
 import { IStatusProps, Statuses, Status, StatusSize } from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
-import { IRepositoryReport, IRepositoryRule } from '../services/IAzDoService';
+import { IItemReport } from '../services/IAzDoService';
 import ReconcileButton from "./ReconcileButton";
 
 interface IReportMaster {
@@ -39,7 +39,7 @@ interface IReportRule {
     token: string
 }
 
-export default class extends React.Component<{ data: { item: string, rules: IRepositoryRule[] }[], hasReconcilePermission: boolean, token: string }, {}> {
+export default class extends React.Component<{ data: IItemReport[], hasReconcilePermission: boolean, token: string }, {}> {
     private unfilteredData: Array<IReportMaster> = this.props.data.map(m => {
         let master: IReportMaster = {
             item: m.item,

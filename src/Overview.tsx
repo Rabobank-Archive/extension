@@ -87,8 +87,8 @@ export default class extends React.Component<
         description: x.description,
         why: x.why,
         hasReconcilePermission: hasReconcilePermission,
-        reconcileUrl: x.reconcile.url,
-        reconcileImpact: x.reconcile.impact,
+        reconcileUrl: x.reconcile!.url,
+        reconcileImpact: x.reconcile!.impact,
         status: x.status ? Statuses.Success : Statuses.Failed,
         token: token
       }))
