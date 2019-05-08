@@ -39,7 +39,7 @@ interface IReportRule {
     token: string
 }
 
-export default class extends React.Component<{ data: IItemReport[], hasReconcilePermission: boolean, token: string }, {}> {
+export default class extends React.Component<{ title: string, data: IItemReport[], hasReconcilePermission: boolean, token: string }, {}> {
     private unfilteredData: Array<IReportMaster> = this.props.data.map(m => {
         let master: IReportMaster = {
             item: m.item,
@@ -113,7 +113,7 @@ export default class extends React.Component<{ data: IItemReport[], hasReconcile
             renderContent: (parentItem, initialSelectedMasterItem) => (
                 <this.InitialMasterPanelContent  initialSelectedMasterItem={initialSelectedMasterItem} />
             ),
-            renderHeader: () => <MasterPanelHeader title={"Repositories"} />,
+            renderHeader: () => <MasterPanelHeader title={this.props.title} />,
             renderSearch: () => (
                 <div>
                     <TextField 
@@ -273,13 +273,12 @@ export default class extends React.Component<{ data: IItemReport[], hasReconcile
             content = (
                 <Page>
                     <Header
-                        title={"Repository Compliancy"}
-                        // @ts-ignore
+                        title={this.props.title}
                         titleSize={TitleSize.Large} />
                     <div className="page-content page-content-top">
                         <Card
                             className="bolt-card-no-vertical-padding">
-                            <p>Select a repository on the left to view it's compliancy data.</p>   
+                            <p>Select an item on the left to view it's compliancy data.</p>   
                         </Card>
                     </div>
                 </Page>
@@ -299,7 +298,7 @@ export default class extends React.Component<{ data: IItemReport[], hasReconcile
     render() {
         return (
             <MasterDetailsContext.Provider value={this.masterDetailsContext}>
-                <div className="flex-row" style={{ width: "100%" }}>
+                <div className="flex-row">
                     <MasterPanel />
                     <DetailsPanel />
                 </div>

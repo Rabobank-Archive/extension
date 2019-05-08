@@ -15,7 +15,7 @@ import { Filter } from "azure-devops-ui/Utilities/Filter";
 import { DropdownMultiSelection } from "azure-devops-ui/Utilities/DropdownSelection";
 
 import BuildPipelinesList from "./components/BuildPipelinesList";
-import PipelinesMasterDetail from "./components/RepositoriesMasterDetail";
+import PipelinesMasterDetail from "./components/MasterDetail";
 import {
   getPossibleCompliancyStatuses,
   getCompliancyStatusAsListItem
@@ -152,6 +152,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
       case "pipeline":
         return (
           <PipelinesMasterDetail
+            title="Pipelines"
             hasReconcilePermission={true}
             token="abcdef"
             data={pipelineDummyData}
