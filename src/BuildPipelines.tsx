@@ -10,7 +10,7 @@ import { FilterBar } from "azure-devops-ui/FilterBar";
 import { DropdownFilterBarItem } from "azure-devops-ui/Dropdown";
 import { KeywordFilterBarItem } from "azure-devops-ui/TextFilterBarItem";
 import { ObservableValue } from "azure-devops-ui/Core/Observable";
-import { TabBar, Tab } from "azure-devops-ui/Tabs";
+// import { TabBar, Tab } from "azure-devops-ui/Tabs";
 import { Filter } from "azure-devops-ui/Utilities/Filter";
 import { DropdownMultiSelection } from "azure-devops-ui/Utilities/DropdownSelection";
 
@@ -58,7 +58,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
       isRescanning: false,
       hasReconcilePermission: false,
       token: "",
-      selectedTabId: "home"
+      selectedTabId: "pipelines"
     };
   }
 
@@ -86,7 +86,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
   };
 
   private async getData(): Promise<void> {
-    const buildPipelinesReport = await this.props.azDoService.GetReportsFromDocumentStorage<IBuildPipelinesReport>("buildpipeline");
+    const buildPipelinesReport = await this.props.azDoService.GetReportsFromDocumentStorage<IBuildPipelinesReport>("buildpipelines");
     const token = await this.props.azDoService.GetAppToken();
 
     let hasReconcilePermission: boolean = false;
@@ -120,14 +120,14 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
       <Surface background={SurfaceBackground.neutral}>
         <Page className="flex-grow">
           <CompliancyHeader
-            headerText="Pipeline compliance"
+            headerText="Build pipeline compliance"
             lastScanDate={this.state.buildPipelinesReport.date}
             rescanUrl={this.state.buildPipelinesReport.rescanUrl}
             token={this.state.token}
             onRescanFinished={this.getData}
           />
 
-          <TabBar
+          {/* <TabBar
             selectedTabId={this.state.selectedTabId}
             onSelectedTabChanged={this.onSelectedTabChanged}
             renderAdditionalContent={this.renderTabBarCommands}
@@ -136,7 +136,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             <Tab id="home" name="Home" />
             <Tab id="pipelines" name="Pipelines" />
             <Tab id="builds" name="Builds" />
-          </TabBar>
+          </TabBar> */}
 
           <ConditionalChildren renderChildren={filterToggled}>
             <div className="page-content-left page-content-right page-content-top">
@@ -168,7 +168,10 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
           </ConditionalChildren>
 
           <div className="page-content page-content-top">
-            {this.getTabContent()}
+            { this.state.isLoading ? 
+              <div>Loading...</div> :  
+              this.getTabContent()
+            }
           </div>
         </Page>
       </Surface>
@@ -184,8 +187,8 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
         return <BuildPipelinesList filter={filter} />;
 
       case "pipelines":
-        allowFiltering.value = false;
-        filterToggled.value = false;
+        // allowFiltering.value = false;
+        // filterToggled.value = false;
         return (
           <PipelinesMasterDetail
             title="Pipelines"
