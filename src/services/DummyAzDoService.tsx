@@ -31,10 +31,7 @@ function loadData<TReport>(documentCollectionName: string) : TReport {
             return DummyRepositoriesReport as unknown as TReport;
         case "buildpipeline":
             return DummyBuildPipelineReport as unknown as TReport;
-<<<<<<< HEAD
         default:
             throw Error(`unsupported collection ${documentCollectionName}`);
-=======
->>>>>>> 985fdae669d7cc42e161e818ec57b5c368e1bca0
     }
 }
