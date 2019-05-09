@@ -10,7 +10,6 @@ import { AzDoService } from "./services/AzDoService";
 import { DummyAzDoService } from "./services/DummyAzDoService";
 
 import * as SDK from "azure-devops-extension-sdk";
-import { Page } from "azure-devops-ui/Page"
 import BuildPipelines from './BuildPipelines';
 
 let azDoService: IAzDoService;

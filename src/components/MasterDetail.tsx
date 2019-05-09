@@ -274,6 +274,7 @@ export default class extends React.Component<{ title: string, data: IItemReport[
                 <Page>
                     <Header
                         title={this.props.title}
+                        // @ts-ignore
                         titleSize={TitleSize.Large} />
                     <div className="page-content page-content-top">
                         <Card

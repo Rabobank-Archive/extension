@@ -59,11 +59,15 @@ export default class extends React.Component<ICompliancyHeaderProps, IState> {
         <HeaderIcon
           className="bolt-table-status-icon-large"
           iconProps={{ iconName: "OpenSource" }}
+          // @ts-ignore
           titleSize={TitleSize.Large}
         />
         <HeaderTitleArea>
           <HeaderTitleRow>
-            <HeaderTitle className="text-ellipsis" titleSize={TitleSize.Large}>
+            <HeaderTitle 
+              className="text-ellipsis" 
+              // @ts-ignore
+              titleSize={TitleSize.Large}>
               {this.props.headerText}
             </HeaderTitle>
           </HeaderTitleRow>
@@ -74,6 +78,7 @@ export default class extends React.Component<ICompliancyHeaderProps, IState> {
                   <Status
                     {...Statuses.Running}
                     key="scanning"
+                    // @ts-ignore
                     size={StatusSize.l}
                     text="Scanning..."
                   />
@@ -83,6 +88,7 @@ export default class extends React.Component<ICompliancyHeaderProps, IState> {
                   Last scanned:{" "}
                   <Ago
                     date={this.props.lastScanDate}
+                    // @ts-ignore
                     format={AgoFormat.Extended}
                   />
                 </div>

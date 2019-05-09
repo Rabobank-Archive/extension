@@ -116,6 +116,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
 
   render() {
     return (
+      // @ts-ignore
       <Surface background={SurfaceBackground.neutral}>
         <Page className="flex-grow">
           <CompliancyHeader
@@ -198,6 +199,9 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
         allowFiltering.value = false;
         filterToggled.value = false;
         return <div>Build data here</div>;
+
+      default:
+          return <div></div>;
     }
   }
 }

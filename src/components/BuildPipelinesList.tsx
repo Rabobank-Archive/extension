@@ -190,6 +190,7 @@ function renderNameColumn(
       <Status
         {...getCompliancyStatusIndicatorData(tableItem.isCompliant).statusProps}
         className="icon-large-margin"
+        // @ts-ignore
         size={StatusSize.l}
       />
       <div className="flex-row scroll-hidden">
@@ -298,6 +299,7 @@ function renderDateColumn(
       {WithIcon({
         className: "fontSize font-size",
         iconProps: { iconName: "Calendar" },
+        // @ts-ignore
         children: <Ago date={date} format={AgoFormat.Extended} />
       })}
     </SimpleTableCell>

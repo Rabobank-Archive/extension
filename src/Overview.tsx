@@ -109,7 +109,7 @@ export default class extends React.Component<
     item: ITableItem
   ): JSX.Element {
     let content =
-      item.status != Statuses.Success && item.hasReconcilePermission ? (
+      item.status !== Statuses.Success && item.hasReconcilePermission ? (
         <ReconcileButton reconcilableItem={item} />
       ) : (
         ""

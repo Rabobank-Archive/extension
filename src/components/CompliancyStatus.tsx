@@ -1,3 +1,4 @@
+import * as React from "react";
 import { IListBoxItem } from "azure-devops-ui/ListBox";
 import { Status, StatusSize, IStatusProps, Statuses } from "azure-devops-ui/Status";
 import { css } from "azure-devops-ui/Util";
@@ -26,6 +27,7 @@ export function getCompliancyStatusAsListItem(status: boolean): IListBoxItem<boo
                 <Status
                     {...statusDetail.statusProps}
                     className={css(className, statusDetail.statusProps.className)}
+                    // @ts-ignore
                     size={StatusSize.m}
                     animated={false}
                 />
