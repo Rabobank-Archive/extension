@@ -1,22 +1,10 @@
 import * as React from "react";
 import { IAzDoService, IRepositoriesReport } from "./services/IAzDoService";
-import {
-  TitleSize,
-  CustomHeader,
-  HeaderIcon,
-  HeaderTitleArea,
-  HeaderTitleRow,
-  HeaderTitle,
-  HeaderDescription
-} from "azure-devops-ui/Header";
 import { Card } from "azure-devops-ui/Card";
 import { Page } from "azure-devops-ui/Page";
 import { Link } from "azure-devops-ui/Link";
-import RepositoriesMasterDetail from "./components/RepositoriesMasterDetail";
-import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
-import { Ago } from "azure-devops-ui/Ago";
-import { AgoFormat } from "azure-devops-ui/Utilities/Date";
-import { HeaderCommandBar } from "azure-devops-ui/HeaderCommandBar";
+import RepositoriesMasterDetail from "./components/MasterDetail";
+import CompliancyHeader from "./components/CompliancyHeader";
 
 interface IRepositoriesProps {
   azDoService: IAzDoService;
@@ -78,79 +66,16 @@ export default class extends React.Component<IRepositoriesProps, IState> {
     });
   }
 
-  private async doRescanRequest(): Promise<void> {
-    try {
-      let url = this.state.report.rescanUrl;
-      this.setState({ isRescanning: true });
-      let requestInit: RequestInit = {
-        headers: { Authorization: `Bearer ${this.state.token}` }
-      };
-      let response = await fetch(url, requestInit);
-      if (response.ok) {
-        await this.getReportdata();
-        this.setState({ isRescanning: false });
-      } else {
-        this.setState({ isRescanning: false });
-      }
-    } catch {
-      this.setState({ isRescanning: false });
-    }
-  }
-
   render() {
     return (
       <Page>
-        <CustomHeader className="bolt-header-with-commandbar">
-          <HeaderIcon
-            className="bolt-table-status-icon-large"
-            iconProps={{ iconName: "OpenSource" }}
-            // @ts-ignore
-            titleSize={TitleSize.Large}
-          />
-          <HeaderTitleArea>
-            <HeaderTitleRow>
-              <HeaderTitle
-                className="text-ellipsis"
-                // @ts-ignore
-                titleSize={TitleSize.Large}
-              >
-                Repository compliancy
-                {this.state.isRescanning ? (
-                  <Status
-                    {...Statuses.Running}
-                    key="scanning"
-                    // @ts-ignore
-                    size={StatusSize.l}
-                    text="Scanning..."
-                  />
-                ) : (
-                  ""
-                )}
-              </HeaderTitle>
-            </HeaderTitleRow>
-            <HeaderDescription>
-              Last scanned:{" "}
-              <Ago date={this.state.report.date} 
-                // @ts-ignore
-                format={AgoFormat.Extended} />
-            </HeaderDescription>
-          </HeaderTitleArea>
-          <HeaderCommandBar
-            items={[
-              {
-                iconProps: { iconName: "TriggerAuto" },
-                id: "testCreate",
-                important: true,
-                disabled: this.state.isRescanning,
-                isPrimary: true,
-                onActivate: () => {
-                  this.doRescanRequest();
-                },
-                text: "Rescan"
-              }
-            ]}
-          />
-        </CustomHeader>
+        <CompliancyHeader
+          headerText="Repository compliance"
+          lastScanDate={this.state.report.date}
+          rescanUrl={this.state.report.rescanUrl}
+          token={this.state.token}
+          onRescanFinished={this.getReportdata}
+        />
 
         <div className="page-content page-content-top">
           <p>
@@ -194,6 +119,7 @@ export default class extends React.Component<IRepositoriesProps, IState> {
               <div>Loading...</div>
             ) : (
               <RepositoriesMasterDetail
+                title="Repositories"
                 data={this.state.report.reports}
                 hasReconcilePermission={this.state.hasReconcilePermission}
                 token={this.state.token}

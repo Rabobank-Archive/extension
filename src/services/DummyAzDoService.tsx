@@ -1,4 +1,4 @@
-import { DummyProjectRulesReport, DummyReleaseReport, DummyBuildReport, DummyRepositoriesReport } from './DummyData';
+import { DummyProjectRulesReport, DummyReleaseReport, DummyBuildReport, DummyRepositoriesReport, DummyBuildPipelineReport as DummyBuildPipelinesReport } from './DummyData';
 import { IAzDoService } from './IAzDoService';
 
 function delay(ms: number) {
@@ -29,6 +29,8 @@ function loadData<TReport>(documentCollectionName: string) : TReport {
             return DummyReleaseReport as unknown as TReport;
         case "repository":
             return DummyRepositoriesReport as unknown as TReport;
+        case "buildpipelines":
+            return DummyBuildPipelinesReport as unknown as TReport;
         default:
             throw Error(`unsupported collection ${documentCollectionName}`);
     }

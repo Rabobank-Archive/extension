@@ -1,76 +1,73 @@
-export interface IProjectRule {
-    description: string,
-    why: string,
-    status: boolean,
-    reconcile: {
-        impact: string[],
-        url: string
-    }
+export interface IItemReport {
+  item: string;
+  rules: IRule[];
 }
 
-export interface IRepositoryReport {
-    item: string,
-    rules: IRepositoryRule[]
-}
-
-export interface IRepositoryRule {
-    description: string,
-    why: string,
-    status: boolean,
-    reconcile: {
-        impact: string[],
-        url: string
-    } | undefined
+export interface IRule {
+  description: string;
+  why: string;
+  status: boolean;
+  reconcile:
+    | {
+        impact: string[];
+        url: string;
+      }
+    | undefined;
 }
 
 export interface IBuildRule {
-    id: string
-    pipeline: string
-    createdDate: string,
-    artifactsStoredSecure: boolean
-    usesFortify: boolean
-    usesSonarQube: boolean
+  id: string;
+  pipeline: string;
+  createdDate: string;
+  artifactsStoredSecure: boolean;
+  usesFortify: boolean;
+  usesSonarQube: boolean;
 }
 
 export interface IReleaseRule {
-    pipeline: string,
-    release: string,
-    releaseId: string,
-    environment: string,
-    createdDate: string,
-    hasApprovalOptions: boolean,
-    usesProductionEndpoints: boolean,
-    hasBranchFilterForAllArtifacts: boolean,
-    usesManagedAgentsOnly: boolean | null,
-    allArtifactsAreFromBuild: boolean | null
+  pipeline: string;
+  release: string;
+  releaseId: string;
+  environment: string;
+  createdDate: string;
+  hasApprovalOptions: boolean;
+  usesProductionEndpoints: boolean;
+  hasBranchFilterForAllArtifacts: boolean;
+  usesManagedAgentsOnly: boolean | null;
+  allArtifactsAreFromBuild: boolean | null;
 }
 
 export interface IExtensionDocument<TReport> {
-    reports: TReport[]
+  reports: TReport[];
 }
 
-export interface IOverviewReport extends IExtensionDocument<IProjectRule> {
-    date: Date,
-    rescanUrl: string,
-    hasReconcilePermissionUrl: string
+export interface IOverviewReport extends IExtensionDocument<IRule> {
+  date: Date;
+  rescanUrl: string;
+  hasReconcilePermissionUrl: string;
 }
 
-export interface IRepositoriesReport extends IExtensionDocument<IRepositoryReport> {
-    date: Date,
-    rescanUrl: string,
-    hasReconcilePermissionUrl: string
+export interface IRepositoriesReport extends IExtensionDocument<IItemReport> {
+  date: Date;
+  rescanUrl: string;
+  hasReconcilePermissionUrl: string;
 }
 
-export interface IBuildReport extends IExtensionDocument<IBuildRule> {
+export interface IBuildPipelinesReport
+  extends IExtensionDocument<IItemReport> {
+  date: Date;
+  rescanUrl: string;
+  hasReconcilePermissionUrl: string;
 }
 
-export interface IReleaseReport extends IExtensionDocument<IReleaseRule> {
-}
+export interface IBuildReport extends IExtensionDocument<IBuildRule> {}
+
+export interface IReleaseReport extends IExtensionDocument<IReleaseRule> {}
 
 export interface IAzDoService {
-    GetReportsFromDocumentStorage<TReport>(documentCollectionName: string): Promise<TReport>;
+  GetReportsFromDocumentStorage<TReport>(
+    documentCollectionName: string
+  ): Promise<TReport>;
 
-    GetAppToken(): Promise<string>;
+  GetAppToken(): Promise<string>;
 }
-
-

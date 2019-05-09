@@ -10,7 +10,7 @@ import { AzDoService } from "./services/AzDoService";
 import { DummyAzDoService } from "./services/DummyAzDoService";
 
 import * as SDK from "azure-devops-extension-sdk";
-import { Page } from "azure-devops-ui/Page"
+import BuildPipelines from './BuildPipelines';
 
 let azDoService: IAzDoService;
 
@@ -25,7 +25,7 @@ if(process.env.REACT_APP_USE_AZDO_SDK === "true")
     SDK.init();
     SDK.ready().then(() => {
         let element: JSX.Element = GetRootElement(azDoService);
-        ReactDOM.render(<Page>{element}</Page>, document.getElementById('root'));
+        ReactDOM.render(element, document.getElementById('root'));
         SDK.notifyLoadSucceeded();
     });
 } else {
@@ -40,6 +40,9 @@ function GetRootElement(azDoService: IAzDoService) {
     let element: JSX.Element;
     const report = window.location.hash.substr(1);
     switch (report) {
+        case 'build-pipelines':
+            element = (<BuildPipelines azDoService={azDoService} />)
+            break;
         case 'builds':
             element = (<Builds azDoService={azDoService} />);
             break;
