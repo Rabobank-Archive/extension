@@ -120,7 +120,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
       <Surface background={SurfaceBackground.neutral}>
         <Page className="flex-grow">
           <CompliancyHeader
-            headerText="Build pipeline compliance"
+            headerText="Build pipeline compliancy"
             lastScanDate={this.state.buildPipelinesReport.date}
             rescanUrl={this.state.buildPipelinesReport.rescanUrl}
             token={this.state.token}

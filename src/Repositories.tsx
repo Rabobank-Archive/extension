@@ -70,7 +70,7 @@ export default class extends React.Component<IRepositoriesProps, IState> {
     return (
       <Page>
         <CompliancyHeader
-          headerText="Repository compliance"
+          headerText="Repository compliancy"
           lastScanDate={this.state.report.date}
           rescanUrl={this.state.report.rescanUrl}
           token={this.state.token}

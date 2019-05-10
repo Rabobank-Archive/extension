@@ -217,7 +217,7 @@ export default class extends React.Component<{ title: string, data: IItemReport[
             {
                 id: "description",
                 name: "Description",
-                width: new ObservableValue(450),
+                width: new ObservableValue(-100),
                 renderCell: renderStringWithWhyTooltip,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
