@@ -4,13 +4,14 @@ import Repositories from './Repositories';
 import Releases from './Releases';
 import Overview from './Overview';
 import Builds from './Builds';
+import BuildPipelines from './BuildPipelines';
+import ReleasePipelines from './ReleasePipelines';
 
 import { IAzDoService } from './services/IAzDoService'
 import { AzDoService } from "./services/AzDoService";
 import { DummyAzDoService } from "./services/DummyAzDoService";
 
 import * as SDK from "azure-devops-extension-sdk";
-import BuildPipelines from './BuildPipelines';
 
 let azDoService: IAzDoService;
 
@@ -42,6 +43,9 @@ function GetRootElement(azDoService: IAzDoService) {
     switch (report) {
         case 'build-pipelines':
             element = (<BuildPipelines azDoService={azDoService} />)
+            break;
+        case 'release-pipelines':
+            element = (<ReleasePipelines azDoService={azDoService} />)
             break;
         case 'builds':
             element = (<Builds azDoService={azDoService} />);

@@ -53,8 +53,13 @@ export interface IRepositoriesReport extends IExtensionDocument<IItemReport> {
   hasReconcilePermissionUrl: string;
 }
 
-export interface IBuildPipelinesReport
-  extends IExtensionDocument<IItemReport> {
+export interface IBuildPipelinesReport extends IExtensionDocument<IItemReport> {
+  date: Date;
+  rescanUrl: string;
+  hasReconcilePermissionUrl: string;
+}
+
+export interface IReleasePipelinesReport extends IExtensionDocument<IItemReport> {
   date: Date;
   rescanUrl: string;
   hasReconcilePermissionUrl: string;

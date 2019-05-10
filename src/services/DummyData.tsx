@@ -3,7 +3,8 @@ import {
   IBuildReport,
   IOverviewReport,
   IRepositoriesReport,
-  IBuildPipelinesReport
+  IBuildPipelinesReport,
+  IReleasePipelinesReport
 } from "./IAzDoService";
 import { ObservableValue } from "azure-devops-ui/Core/Observable";
 import { IPipelineItem } from "../components/BuildPipelinesList";
@@ -179,7 +180,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
   ]
 };
 
-export const DummyBuildPipelineReport: IBuildPipelinesReport = {
+export const DummyBuildPipelinesReport: IBuildPipelinesReport = {
   date: new Date(),
   rescanUrl: "https://reqres.in",
   hasReconcilePermissionUrl: "some-url",
@@ -208,7 +209,7 @@ export const DummyBuildPipelineReport: IBuildPipelinesReport = {
             "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
           status: false,
           reconcile: {
-            url: "",
+            url: "http://some-reconcile-url",
             impact: ["some impact"]
           }
         }
@@ -223,7 +224,7 @@ export const DummyBuildPipelineReport: IBuildPipelinesReport = {
             "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
           status: false,
           reconcile: {
-            url: "",
+            url: "http://some-reconcile-url",
             impact: ["some impact"]
           }
         }
@@ -238,7 +239,75 @@ export const DummyBuildPipelineReport: IBuildPipelinesReport = {
             "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
           status: false,
           reconcile: {
-            url: "",
+            url: "http://some-reconcile-url",
+            impact: ["some impact"]
+          }
+        }
+      ]
+    }
+  ]
+}
+
+export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
+  date: new Date(),
+  rescanUrl: "https://reqres.in",
+  hasReconcilePermissionUrl: "some-url",
+  reports: [
+    {
+      item: "enterprise-distributed-service",
+      rules: [
+        {
+          description: "Nobody can delete the pipeline",
+          why:
+            "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+          status: true,
+          reconcile: {
+            url: "http://some-reconcile-url",
+            impact: ["some impact"]
+          }
+        }
+      ]
+    },
+    {
+      item: "microservice-architecture",
+      rules: [
+        {
+          description: "Nobody can delete the pipeline",
+          why:
+            "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+          status: false,
+          reconcile: {
+            url: "http://some-reconcile-url",
+            impact: ["some impact"]
+          }
+        }
+      ]
+    },
+    {
+      item: "mobile-ios-app",
+      rules: [
+        {
+          description: "Nobody can delete the pipeline",
+          why:
+            "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+          status: false,
+          reconcile: {
+            url: "http://some-reconcile-url",
+            impact: ["some impact"]
+          }
+        }
+      ]
+    },
+    {
+      item: "node-package",
+      rules: [
+        {
+          description: "Nobody can delete the pipeline",
+          why:
+            "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+          status: false,
+          reconcile: {
+            url: "http://some-reconcile-url",
             impact: ["some impact"]
           }
         }
