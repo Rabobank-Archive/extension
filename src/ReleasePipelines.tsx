@@ -111,8 +111,8 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
     return (
       <PipelinesMasterDetail
         title="Pipelines"
-        hasReconcilePermission={false}
-        token="abcdef"
+        hasReconcilePermission={this.state.hasReconcilePermission}
+        token={this.state.token}
         data={this.state.releasePipelinesReport.reports.sort(compareItemReports)}
       />
     );
