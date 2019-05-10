@@ -21,6 +21,8 @@ import ReconcileButton from "./components/ReconcileButton";
 
 import CompliancyHeader from "./components/CompliancyHeader";
 
+import "./css/styles.css"
+
 interface ITableItem {
   description: string;
   why: string;
@@ -162,41 +164,34 @@ export default class extends React.Component<
           onRescanFinished={this.getReportdata}
         />
 
-        <div className="page-content page-content-top">
-          <p>
-            We would ❤ getting in touch on how to have a secure setup that works
-            out for you, so join us on our{" "}
-            <Link
-              href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu"
-              target="_blank"
-            >
-              bi-weekly sprint review
-            </Link>{" "}
-            @UC-T15!
-          </p>
-          <p>
-            More information on the effective{" "}
-            <Link
-              href="https://confluence.dev.rabobank.nl/display/vsts/Azure+DevOps+Project+group+permissions"
-              target="_blank"
-            >
-              Azure Devops Project group permissions
-            </Link>{" "}
-            that are used for the secure setup.
-          </p>
-          <Card>
-            {this.state.isLoading ? (
-              <div>Loading...</div>
-            ) : (
+        <div className="page-content page-content-top flex-row">
+          <div className="flex-grow">
+            <Card>
+              {this.state.isLoading ? (
+                <div>Loading...</div>
+              ) : (
+                <div>
+                  <Table<ITableItem>
+                    columns={columns}
+                    itemProvider={this.itemProvider}
+                    behaviors={[]}
+                  />
+                </div>
+              )}
+            </Card>
+          </div>
+          <div className="flex-grow">
+            <Card className="card-info card-info-overview" titleProps={{ text: "More information"}}>
               <div>
-                <Table<ITableItem>
-                  columns={columns}
-                  itemProvider={this.itemProvider}
-                  behaviors={[]}
-                />
+                <p>
+                  We would ❤ getting in touch on how to have a secure setup that works out for you, so join us on our <Link href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">bi-weekly sprint review</Link> @UC-T15!
+                </p>
+                <p>
+                  More information on the effective <Link href="https://confluence.dev.rabobank.nl/display/vsts/Azure+DevOps+Project+group+permissions" target="_blank">Azure Devops Project group permissions</Link> that are used for the secure setup.
+                </p>
               </div>
-            )}
-          </Card>
+            </Card>
+          </div>
         </div>
       </Page>
     );

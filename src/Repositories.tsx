@@ -5,6 +5,9 @@ import { Page } from "azure-devops-ui/Page";
 import { Link } from "azure-devops-ui/Link";
 import RepositoriesMasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
+import { Surface, SurfaceBackground } from "azure-devops-ui/Surface";
+
+import "./css/styles.css"
 
 interface IRepositoriesProps {
   azDoService: IAzDoService;
@@ -68,66 +71,45 @@ export default class extends React.Component<IRepositoriesProps, IState> {
 
   render() {
     return (
-      <Page>
-        <CompliancyHeader
-          headerText="Repository compliancy"
-          lastScanDate={this.state.report.date}
-          rescanUrl={this.state.report.rescanUrl}
-          token={this.state.token}
-          onRescanFinished={this.getReportdata}
-        />
+      // @ts-ignore
+      <Surface background={SurfaceBackground.neutral}>
+        <Page className="flex-grow">
+          <CompliancyHeader
+            headerText="Repository compliancy"
+            lastScanDate={this.state.report.date}
+            rescanUrl={this.state.report.rescanUrl}
+            token={this.state.token}
+            onRescanFinished={this.getReportdata}
+          />
 
-        <div className="page-content page-content-top">
-          <p>
-            We would ❤ getting in touch on the pull request workflow, so join us
-            on our{" "}
-            <Link
-              href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu"
-              target="_blank"
-            >
-              sprint review
-            </Link>{" "}
-            @UC-T15!
-          </p>
-          <p>
-            More information on the{" "}
-            <Link
-              href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Repositories"
-              target="_blank"
-            >
-              how &amp; why
-            </Link>{" "}
-            of branching policies with Azure Repos or{" "}
-            <Link
-              href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines"
-              target="_blank"
-            >
-              secure pipelines
-            </Link>{" "}
-            in general.
-          </p>
-          <p>
-            If you still have questions or need assistance on your repositories,
-            create a{" "}
-            <Link href="http://tools.rabobank.nl/vsts/request" target="_blank">
-              support request
-            </Link>
-            .
-          </p>
-          <Card>
-            {this.state.isLoading ? (
-              <div>Loading...</div>
-            ) : (
-              <RepositoriesMasterDetail
-                title="Repositories"
-                data={this.state.report.reports}
-                hasReconcilePermission={this.state.hasReconcilePermission}
-                token={this.state.token}
-              />
-            )}
-          </Card>
-        </div>
-      </Page>
+          <div className="page-content page-content-top flex-row">
+            <div className="flex-grow">
+              {this.state.isLoading ? (
+                  <div>Loading...</div>
+                ) : (
+                  <RepositoriesMasterDetail
+                    title="Repositories"
+                    data={this.state.report.reports}
+                    hasReconcilePermission={this.state.hasReconcilePermission}
+                    token={this.state.token}
+                  />
+                )}
+            </div>
+            <div className="flex-grow">
+              <Card className="card-info" titleProps={{ text: "More information" }}>
+                <div>
+                  <p>We would ❤ getting in touch on the pull request workflow, so join us on our <Link href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank"> sprint review</Link> @UC-T15!</p>
+
+                  <p>More information on the <Link href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Repositories" target="_blank">how &amp; why</Link>{" "}
+                  of branching policies with Azure Repos or <Link href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</Link> in general.</p>
+
+                  <p>If you still have questions or need assistance on your repositories, create a <Link href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</Link>.</p>
+                </div>
+              </Card>
+            </div>
+          </div>
+        </Page>
+      </Surface>
     );
   }
 }
