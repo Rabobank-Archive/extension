@@ -41,6 +41,8 @@ export default class extends React.Component<ICompliancyHeaderProps, IState> {
       () => { this.setState({ isRescanning: false }) },
       () => { this.setState({ isRescanning: false }) }
     )
+    if(this.props.onRescanFinished)
+      await this.props.onRescanFinished();
   }
 
   render() {

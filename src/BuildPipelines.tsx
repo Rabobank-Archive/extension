@@ -113,7 +113,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             headerText="Build pipeline compliancy"
             lastScanDate={this.state.buildPipelinesReport.date}
             rescanUrl={this.state.buildPipelinesReport.rescanUrl}
-            onRescanFinished={this.getData}
+            onRescanFinished={async () => { await this.getData() }}
             compliancyCheckerService={this.props.compliancyCheckerService}
           />
 
