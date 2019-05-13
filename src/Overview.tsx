@@ -22,6 +22,7 @@ import ReconcileButton from "./components/ReconcileButton";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 import "./css/styles.css"
+import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
 
 interface ITableItem {
   description: string;
@@ -30,11 +31,12 @@ interface ITableItem {
   hasReconcilePermission: boolean;
   reconcileUrl: string;
   reconcileImpact: string[];
-  token: string;
+  compliancyCheckerService: ICompliancyCheckerService;
 }
 
 interface IOverviewProps {
   azDoService: IAzDoService;
+  compliancyCheckerService: ICompliancyCheckerService;
 }
 
 export default class extends React.Component<
@@ -64,23 +66,9 @@ export default class extends React.Component<
   }
 
   private async getReportdata(): Promise<void> {
-    const report = await this.props.azDoService.GetReportsFromDocumentStorage<
-      IOverviewReport
-    >("globalpermissions");
+    const report = await this.props.azDoService.GetReportsFromDocumentStorage<IOverviewReport>("globalpermissions");
+    const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(report.hasReconcilePermissionUrl);
     const token = await this.props.azDoService.GetAppToken();
-
-    let hasReconcilePermission: boolean = false;
-
-    let requestInit: RequestInit = {
-      headers: { Authorization: `Bearer ${token}` }
-    };
-    try {
-      let response = await fetch(report.hasReconcilePermissionUrl, requestInit);
-      let responseJson = await response.json();
-      hasReconcilePermission = responseJson as boolean;
-    } catch {
-      // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
-    }
 
     this.itemProvider.removeAll();
 
@@ -92,7 +80,7 @@ export default class extends React.Component<
         reconcileUrl: x.reconcile!.url,
         reconcileImpact: x.reconcile!.impact,
         status: x.status ? Statuses.Success : Statuses.Failed,
-        token: token
+        compliancyCheckerService: this.props.compliancyCheckerService
       }))
     );
 
@@ -160,8 +148,8 @@ export default class extends React.Component<
           headerText="Project compliancy"
           lastScanDate={this.state.report.date}
           rescanUrl={this.state.report.rescanUrl}
-          token={this.state.token}
           onRescanFinished={this.getReportdata}
+          compliancyCheckerService={this.props.compliancyCheckerService}
         />
 
         <div className="page-content page-content-top flex-row">

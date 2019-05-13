@@ -8,9 +8,11 @@ import CompliancyHeader from "./components/CompliancyHeader";
 import { Surface, SurfaceBackground } from "azure-devops-ui/Surface";
 
 import "./css/styles.css"
+import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
 
 interface IRepositoriesProps {
   azDoService: IAzDoService;
+  compliancyCheckerService: ICompliancyCheckerService;
 }
 
 interface IState {
@@ -18,7 +20,6 @@ interface IState {
   isRescanning: boolean;
   report: IRepositoriesReport;
   hasReconcilePermission: boolean;
-  token: string;
 }
 
 export default class extends React.Component<IRepositoriesProps, IState> {
@@ -34,7 +35,6 @@ export default class extends React.Component<IRepositoriesProps, IState> {
         hasReconcilePermissionUrl: ""
       },
       hasReconcilePermission: false,
-      token: ""
     };
   }
 
@@ -43,29 +43,13 @@ export default class extends React.Component<IRepositoriesProps, IState> {
   }
 
   async getReportdata(): Promise<void> {
-    const report = await this.props.azDoService.GetReportsFromDocumentStorage<
-      IRepositoriesReport
-    >("repository");
-    const token = await this.props.azDoService.GetAppToken();
-
-    let hasReconcilePermission: boolean = false;
-
-    let requestInit: RequestInit = {
-      headers: { Authorization: `Bearer ${token}` }
-    };
-    try {
-      let response = await fetch(report.hasReconcilePermissionUrl, requestInit);
-      let responseJson = await response.json();
-      hasReconcilePermission = responseJson as boolean;
-    } catch {
-      // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
-    }
-
+    const report = await this.props.azDoService.GetReportsFromDocumentStorage<IRepositoriesReport>("repository");
+    const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(report.hasReconcilePermissionUrl);
+    
     this.setState({
       isLoading: false,
       report: report,
       hasReconcilePermission: hasReconcilePermission,
-      token: token
     });
   }
 
@@ -78,8 +62,8 @@ export default class extends React.Component<IRepositoriesProps, IState> {
             headerText="Repository compliancy"
             lastScanDate={this.state.report.date}
             rescanUrl={this.state.report.rescanUrl}
-            token={this.state.token}
             onRescanFinished={this.getReportdata}
+            compliancyCheckerService={this.props.compliancyCheckerService}
           />
 
           <div className="page-content page-content-top flex-row">
@@ -91,7 +75,7 @@ export default class extends React.Component<IRepositoriesProps, IState> {
                     title="Repositories"
                     data={this.state.report.reports}
                     hasReconcilePermission={this.state.hasReconcilePermission}
-                    token={this.state.token}
+                    compliancyCheckerService={this.props.compliancyCheckerService}
                   />
                 )}
             </div>

@@ -146,7 +146,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
             "To enforce the 4-eyes principle, appropriate branch policies should be configured on potential release branches.",
           status: true,
           reconcile: {
-            url: "",
+            url: "http://some-reconcile-url",
             impact: ["some impact"]
           }
         }
@@ -161,7 +161,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
             "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the repository.",
           status: false,
           reconcile: {
-            url: "",
+            url: "http://some-reconcile-url",
             impact: ["some impact"]
           }
         },
@@ -171,7 +171,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
             "To enforce the 4-eyes principle, appropriate branch policies should be configured on potential release branches.",
           status: true,
           reconcile: {
-            url: "",
+            url: "http://some-reconcile-url",
             impact: ["some impact"]
           }
         }

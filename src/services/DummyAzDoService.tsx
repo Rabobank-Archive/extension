@@ -14,7 +14,9 @@ function delay(ms: number) {
 
 export class DummyAzDoService implements IAzDoService {
     public async GetAppToken(): Promise<string> {
-        return "DUMMYTOKEN123";
+        const token = "DUMMYTOKEN!@#";
+        console.log(`Called 'DummyAzDoService.GetAppToken()', returning '${token}'`)
+        return token;
     }
     
     public async GetReportsFromDocumentStorage<TReport>(documentCollectionName: string): Promise<TReport> 

@@ -7,12 +7,13 @@ import { MessageCard, MessageCardSeverity } from "azure-devops-ui/MessageCard";
 import { SimpleList } from 'azure-devops-ui/List';
 import { ArrayItemProvider } from 'azure-devops-ui/Utilities/Provider';
 import { Status, Statuses, StatusSize } from 'azure-devops-ui/Status';
+import { ICompliancyCheckerService } from '../services/ICompliancyCheckerService';
 
 interface IReconcileButtonProps {
     reconcilableItem: {
         reconcileUrl: string,
         reconcileImpact: string[],
-        token: string
+        compliancyCheckerService: ICompliancyCheckerService
     }
 }
 
@@ -35,21 +36,12 @@ export default class extends React.Component<IReconcileButtonProps, IReconcileBu
     }
 
     private async doReconcileRequest(): Promise<void> {
-        try {
-            let url = this.props.reconcilableItem.reconcileUrl;
-            this.setState({ isReconciling: true });
-            let requestInit: RequestInit = { headers: { Authorization: `Bearer ${this.props.reconcilableItem.token}` }};
-            let response = await fetch(url, requestInit);
-            if(response.ok)
-            {
-                this.isDialogOpen.value = false;
-                this.setState({ hasError: false, isReconciling: false });
-            } else {
-                this.setState({ hasError: true, errorText: "Couldn't fulfill reconcile request.", isReconciling: false });
-            }
-        } catch {
-            this.setState({ hasError: true, errorText: "Couldn't fulfill reconcile request.", isReconciling: false });
-        }
+        this.setState({ isReconciling: true });
+        await this.props.reconcilableItem.compliancyCheckerService.DoReconcileRequest(
+            this.props.reconcilableItem.reconcileUrl,
+            () => { this.isDialogOpen.value = false; this.setState({ hasError: false, isReconciling: false }); },
+            () => { this.setState({ hasError: true, errorText: "Couldn't fulfill reconcile request.", isReconciling: false });}
+        );        
     }
 
     render () {

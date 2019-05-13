@@ -12,13 +12,14 @@ import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { Ago } from "azure-devops-ui/Ago";
 import { AgoFormat } from "azure-devops-ui/Utilities/Date";
 import { HeaderCommandBar } from "azure-devops-ui/HeaderCommandBar";
+import { ICompliancyCheckerService } from "../services/ICompliancyCheckerService";
 
 interface ICompliancyHeaderProps {
   headerText: string;
   lastScanDate: Date;
   rescanUrl: string;
-  token: string;
   onRescanFinished?: () => Promise<void>;
+  compliancyCheckerService: ICompliancyCheckerService;
 }
 
 interface IState {
@@ -34,23 +35,12 @@ export default class extends React.Component<ICompliancyHeaderProps, IState> {
   }
 
   private async doRescanRequest(): Promise<void> {
-    try {
-      let url = this.props.rescanUrl;
-      this.setState({ isRescanning: true });
-      let requestInit: RequestInit = {
-        headers: { Authorization: `Bearer ${this.props.token}` }
-      };
-      let response = await fetch(url, requestInit);
-      if (response.ok) {
-        if(this.props.onRescanFinished)
-          await this.props.onRescanFinished();
-        this.setState({ isRescanning: false });
-      } else {
-        this.setState({ isRescanning: false });
-      }
-    } catch {
-      this.setState({ isRescanning: false });
-    }
+    this.setState({ isRescanning: true });
+    await this.props.compliancyCheckerService.DoRescanRequest(
+      this.props.rescanUrl,
+      () => { this.setState({ isRescanning: false }) },
+      () => { this.setState({ isRescanning: false }) }
+    )
   }
 
   render() {

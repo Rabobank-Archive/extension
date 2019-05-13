@@ -26,9 +26,11 @@ import { Observer } from "azure-devops-ui/Observer";
 import "./css/styles.css"
 import { Link } from "azure-devops-ui/Link";
 import { Card } from "azure-devops-ui/Card";
+import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
 
 interface IBuildPipelinesProps {
   azDoService: IAzDoService;
+  compliancyCheckerService: ICompliancyCheckerService;
 }
 
 const filterToggled = new ObservableValue<boolean>(false);
@@ -43,7 +45,6 @@ interface IState {
   isRescanning: boolean;
   buildPipelinesReport: IBuildPipelinesReport;
   hasReconcilePermission: boolean;
-  token: string;
   selectedTabId: string;
 }
 
@@ -61,7 +62,6 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
       isLoading: true,
       isRescanning: false,
       hasReconcilePermission: false,
-      token: "",
       selectedTabId: "pipelines"
     };
   }
@@ -91,26 +91,12 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
 
   private async getData(): Promise<void> {
     const buildPipelinesReport = await this.props.azDoService.GetReportsFromDocumentStorage<IBuildPipelinesReport>("buildpipelines");
-    const token = await this.props.azDoService.GetAppToken();
-
-    let hasReconcilePermission: boolean = false;
-
-    let requestInit: RequestInit = {
-      headers: { Authorization: `Bearer ${token}` }
-    };
-    try {
-      let response = await fetch(buildPipelinesReport.hasReconcilePermissionUrl, requestInit);
-      let responseJson = await response.json();
-      hasReconcilePermission = responseJson as boolean;
-    } catch {
-      // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
-    }
+    const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(buildPipelinesReport.hasReconcilePermissionUrl);
 
     this.setState({
       isLoading: false,
       buildPipelinesReport: buildPipelinesReport,
       hasReconcilePermission: hasReconcilePermission,
-      token: token
     });
   }
 
@@ -127,8 +113,8 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             headerText="Build pipeline compliancy"
             lastScanDate={this.state.buildPipelinesReport.date}
             rescanUrl={this.state.buildPipelinesReport.rescanUrl}
-            token={this.state.token}
             onRescanFinished={this.getData}
+            compliancyCheckerService={this.props.compliancyCheckerService}
           />
 
           {/* <TabBar
@@ -211,8 +197,8 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
           <PipelinesMasterDetail
             title="Pipelines"
             hasReconcilePermission={this.state.hasReconcilePermission}
-            token={this.state.token}
             data={this.state.buildPipelinesReport.reports.sort(compareItemReports)}
+            compliancyCheckerService={this.props.compliancyCheckerService}
           />
         );
 

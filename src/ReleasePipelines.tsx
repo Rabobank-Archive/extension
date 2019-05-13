@@ -9,9 +9,11 @@ import PipelinesMasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 import "./css/styles.css"
+import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
 
 interface IReleasePipelinesProps {
   azDoService: IAzDoService;
+  compliancyCheckerService: ICompliancyCheckerService;
 }
 
 interface IState {
@@ -19,7 +21,6 @@ interface IState {
   isRescanning: boolean;
   releasePipelinesReport: IBuildPipelinesReport;
   hasReconcilePermission: boolean;
-  token: string;
 }
 
 export default class extends React.Component<IReleasePipelinesProps, IState> {
@@ -36,32 +37,17 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
       isLoading: true,
       isRescanning: false,
       hasReconcilePermission: false,
-      token: ""
     };
   }
 
   private async getData(): Promise<void> {
     const releasePipelinesReport = await this.props.azDoService.GetReportsFromDocumentStorage<IReleasePipelinesReport>("releasepipelines");
-    const token = await this.props.azDoService.GetAppToken();
-
-    let hasReconcilePermission: boolean = false;
-
-    let requestInit: RequestInit = {
-      headers: { Authorization: `Bearer ${token}` }
-    };
-    try {
-      let response = await fetch(releasePipelinesReport.hasReconcilePermissionUrl, requestInit);
-      let responseJson = await response.json();
-      hasReconcilePermission = responseJson as boolean;
-    } catch {
-      // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
-    }
+    const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(releasePipelinesReport.hasReconcilePermissionUrl);
 
     this.setState({
       isLoading: false,
       releasePipelinesReport: releasePipelinesReport,
       hasReconcilePermission: hasReconcilePermission,
-      token: token
     });
   }
 
@@ -78,8 +64,8 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
             headerText="Release pipeline compliancy"
             lastScanDate={this.state.releasePipelinesReport.date}
             rescanUrl={this.state.releasePipelinesReport.rescanUrl}
-            token={this.state.token}
             onRescanFinished={this.getData}
+            compliancyCheckerService={this.props.compliancyCheckerService}
           />
 
           <div className="page-content page-content-top flex-row">
@@ -112,8 +98,8 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
       <PipelinesMasterDetail
         title="Pipelines"
         hasReconcilePermission={this.state.hasReconcilePermission}
-        token={this.state.token}
         data={this.state.releasePipelinesReport.reports.sort(compareItemReports)}
+        compliancyCheckerService={this.props.compliancyCheckerService}
       />
     );
   }
