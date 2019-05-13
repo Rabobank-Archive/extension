@@ -30,7 +30,7 @@ export class CompliancyCheckerService implements ICompliancyCheckerService {
     }    
     
     public async DoReconcileRequest(reconcileUrl: string, onComplete?: () => void, onError?: () => void): Promise<void> {
-        const token = this.azDoService.GetAppToken();
+        const token = await this.azDoService.GetAppToken();
         
         try {
             let requestInit: RequestInit = { headers: { Authorization: `Bearer ${token}` }};
@@ -50,7 +50,7 @@ export class CompliancyCheckerService implements ICompliancyCheckerService {
     }
 
     public async DoRescanRequest(rescanUrl: string, onComplete: () => void, onError: () => void): Promise<void> {
-        const token = this.azDoService.GetAppToken();
+        const token = await this.azDoService.GetAppToken();
 
         try {
             let requestInit: RequestInit = { headers: { Authorization: `Bearer ${token}` }};

@@ -4,8 +4,15 @@ import { IAzDoService } from "./IAzDoService";
 import * as SDK from "azure-devops-extension-sdk";
 
 export class AzDoService implements IAzDoService {
+    private appToken: string | undefined;
+
     public async GetAppToken(): Promise<string> {
-        return await SDK.getAppToken();
+        if(!this.appToken)
+        {
+            this.appToken = await SDK.getAppToken();
+        }
+        
+        return this.appToken;
     }
     public async GetReportsFromDocumentStorage<TReport>(documentCollectionName: string): Promise<TReport> {
         const token = await SDK.getAccessToken();
