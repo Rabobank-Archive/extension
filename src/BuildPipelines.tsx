@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAzDoService, IBuildPipelinesReport, IItemReport } from "./services/IAzDoService";
+import { IAzDoService, IBuildPipelinesReport } from "./services/IAzDoService";
 import { Page } from "azure-devops-ui/Page";
 import {
   HeaderCommandBarWithFilter, HeaderCommandBar
@@ -113,7 +113,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             headerText="Build pipeline compliancy"
             lastScanDate={this.state.buildPipelinesReport.date}
             rescanUrl={this.state.buildPipelinesReport.rescanUrl}
-            onRescanFinished={this.getData}
+            onRescanFinished={async () => { await this.getData() }}
             compliancyCheckerService={this.props.compliancyCheckerService}
           />
 
@@ -197,7 +197,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
           <PipelinesMasterDetail
             title="Pipelines"
             hasReconcilePermission={this.state.hasReconcilePermission}
-            data={this.state.buildPipelinesReport.reports.sort(compareItemReports)}
+            data={this.state.buildPipelinesReport.reports}
             compliancyCheckerService={this.props.compliancyCheckerService}
           />
         );
@@ -211,8 +211,4 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
           return <div></div>;
     }
   }
-}
-
-function compareItemReports( a: IItemReport, b: IItemReport ) {
-  return a.item.localeCompare(b.item)
 }

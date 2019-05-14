@@ -40,6 +40,10 @@ interface IReportRule {
     compliancyCheckerService: ICompliancyCheckerService
 }
 
+function compareItemReports( a: IItemReport, b: IItemReport ) {
+    return a.item.localeCompare(b.item)
+  }
+
 export default class extends React.Component<
 { 
     title: string, 
@@ -47,51 +51,51 @@ export default class extends React.Component<
     hasReconcilePermission: boolean, 
     compliancyCheckerService: ICompliancyCheckerService
 }, {}> {
-    private unfilteredData: Array<IReportMaster> = this.props.data.map(m => {
-        let master: IReportMaster = {
-            item: m.item,
-            rules: m.rules.map(x => {
-                let rule: IReportRule = {
-                    description: x.description,
-                    why: x.why,
-                    hasReconcilePermission: this.props.hasReconcilePermission,
-                    reconcileUrl: x.reconcile ? x.reconcile.url : '',
-                    reconcileImpact: x.reconcile ? x.reconcile.impact : [],
-                    status: x.status ? Statuses.Success : Statuses.Failed, 
-                    compliancyCheckerService: this.props.compliancyCheckerService
-                }
-                return rule;
-            })
-        };
-        return master;
-    });
-    private filteredDataProvider: ObservableArray<IReportMaster> = new ObservableArray<IReportMaster>([]);
-    private selectedMasterItem: ObservableValue<IReportMaster> = new ObservableValue<IReportMaster>(this.unfilteredData[0]);
-
+    private filteredDataProvider: ObservableArray<IReportMaster> = new ObservableArray<IReportMaster>();
+    private selectedMasterItem: ObservableValue<IReportMaster> = new ObservableValue<IReportMaster>(this.ToIReportMasterArray(this.props.data)[0]);
 
     private searchValue = new ObservableValue<string>("");
     private showCompliantRepos = new ObservableValue<boolean>(true);
     private showNonCompliantRepos = new ObservableValue<boolean>(true);
     
+    private ToIReportMasterArray(itemReports: IItemReport[]): Array<IReportMaster> {
+        return itemReports.map(m => {
+            let master: IReportMaster = {
+                item: m.item,
+                rules: m.rules.map(x => {
+                    let rule: IReportRule = {
+                        description: x.description,
+                        why: x.why,
+                        hasReconcilePermission: this.props.hasReconcilePermission,
+                        reconcileUrl: x.reconcile ? x.reconcile.url : '',
+                        reconcileImpact: x.reconcile ? x.reconcile.impact : [],
+                        status: x.status ? Statuses.Success : Statuses.Failed, 
+                        compliancyCheckerService: this.props.compliancyCheckerService
+                    }
+                    return rule;
+                })
+            };
+            return master;
+        });
+    }
+
     renderReconcileButton(rowIndex: number, columnIndex: number, tableColumn: ITableColumn<IReportRule>, item: IReportRule): JSX.Element {
-            let content = item.status !== Statuses.Success && item.hasReconcilePermission
-                ? <ReconcileButton reconcilableItem={item} />
-                : "";
-    
-            return (
-                <SimpleTableCell
-                    columnIndex={columnIndex}
-                    tableColumn={tableColumn}
-                    key={"col-" + columnIndex}
-                    contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden">
-                    {content}
-                </SimpleTableCell>);
-        }
+        let content = item.status !== Statuses.Success && item.hasReconcilePermission
+            ? <ReconcileButton reconcilableItem={item} />
+            : "";
 
-    constructor(props: any) {
-        super(props);
+        return (
+            <SimpleTableCell
+                columnIndex={columnIndex}
+                tableColumn={tableColumn}
+                key={"col-" + columnIndex}
+                contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden">
+                {content}
+            </SimpleTableCell>);
+    }
 
-        this.filteredDataProvider.value = this.unfilteredData;
+    componentDidMount() {
+        this.fillRepositoriesList();
 
         this.searchValue.subscribe((value, action) => { 
             this.filterRepositoriesList(value, this.showCompliantRepos.value, this.showNonCompliantRepos.value);
@@ -106,12 +110,25 @@ export default class extends React.Component<
         });
     }
 
+    componentDidUpdate() {
+        this.fillRepositoriesList();
+    }
+
+    private fillRepositoriesList() {
+        let previouslySelectedItem = this.selectedMasterItem.value;
+        this.filterRepositoriesList(this.searchValue.value, this.showCompliantRepos.value, this.showNonCompliantRepos.value);
+        
+        if(previouslySelectedItem) {
+            let newlySelectedItem = this.filteredDataProvider.value!.find(value => {return value.item === previouslySelectedItem.item});
+            this.selectedMasterItem.value = newlySelectedItem ? newlySelectedItem : this.filteredDataProvider.value[0];
+        }       
+    }
+
     private filterRepositoriesList(searchFilter: string, showCompliantRepos: boolean, showNonCompliantRepos: boolean) {
-        this.filteredDataProvider.value = this.unfilteredData.filter((value, index, array) => { 
+        this.filteredDataProvider.value = this.ToIReportMasterArray(this.props.data.sort(compareItemReports)).filter((value, index, array) => { 
             return value.item.includes(searchFilter) 
                 && ((showCompliantRepos && this.isCompliant(value)) || (showNonCompliantRepos && !this.isCompliant(value)));
         });
-        this.selectedMasterItem.value = this.filteredDataProvider.value[0];
     }
 
     private initialPayload: IMasterDetailsContextLayer<IReportMaster, undefined> = {

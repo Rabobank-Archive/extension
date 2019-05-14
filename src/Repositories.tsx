@@ -62,7 +62,7 @@ export default class extends React.Component<IRepositoriesProps, IState> {
             headerText="Repository compliancy"
             lastScanDate={this.state.report.date}
             rescanUrl={this.state.report.rescanUrl}
-            onRescanFinished={this.getReportdata}
+            onRescanFinished={async () => { await this.getReportdata() }}
             compliancyCheckerService={this.props.compliancyCheckerService}
           />
 
