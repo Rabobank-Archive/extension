@@ -9,13 +9,14 @@ import { Header, TitleSize } from 'azure-devops-ui/Header';
 import { sortingBehavior, onSize } from './components/TableBehaviors';
 import { renderDate, renderCheckmark } from './components/TableRenderers';
 import { Link } from 'azure-devops-ui/Link';
+import './Releases.css'
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string,
     release: string,
     environment: string,
     createdDate: string,
-    usesProductionEndpoints: IStatusProps,
+    usesProductionEndpoints: string,
     hasApprovalOptions: IStatusProps,
     hasBranchFilterForAllArtifacts: IStatusProps,
     usesManagedAgentsOnly: IStatusProps,
@@ -46,7 +47,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
              release: x.release,
              environment: x.environment,
              createdDate: x.createdDate,
-             usesProductionEndpoints: x.usesProductionEndpoints ? Statuses.Success : Statuses.Failed,
+             usesProductionEndpoints: x.usesProductionEndpoints ? "yes" : "no",
              hasApprovalOptions: x.hasApprovalOptions ? Statuses.Success : Statuses.Failed,
              hasBranchFilterForAllArtifacts: x.hasBranchFilterForAllArtifacts ? Statuses.Success : Statuses.Failed,
              usesManagedAgentsOnly: x.usesManagedAgentsOnly ? Statuses.Success : Statuses.Failed,
@@ -63,7 +64,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
                 name: 'Pipeline',
                 onSize: onSize,
                 renderCell: renderSimpleCell,
-                width: new ObservableValue(250),
+                width: -3,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
@@ -74,7 +75,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
                 name: "Release",
                 onSize: onSize,
                 renderCell: renderSimpleCell,
-                width: new ObservableValue(150),
+                width: -2,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
@@ -85,7 +86,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
                 name: "Environment",
                 onSize: onSize,
                 renderCell: renderSimpleCell,
-                width: new ObservableValue(150),
+                width: -2,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
@@ -95,7 +96,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
                 id: 'createdDate',
                 name: 'Created',
                 onSize: onSize,
-                width: new ObservableValue(100),
+                width: -2,
                 renderCell: renderDate,
                 sortProps: {
                     ariaLabelAscending: "Sorted Oldest to Newest",
@@ -104,10 +105,11 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             },
             {
                 id: 'usesProductionEndpoints',
-                name: 'Production Endpoints',
+                name: 'Uses production endpoints',
                 onSize: onSize,
-                renderCell: renderCheckmark,
-                width: new ObservableValue(150),
+                renderCell: renderSimpleCell,
+                className: 'center',
+                width: new ObservableValue(185),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
@@ -115,10 +117,11 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             },
             {
                 id: 'hasApprovalOptions',
-                name: 'Approval',
+                name: 'Approved',
                 onSize: onSize,
                 renderCell: renderCheckmark,
-                width: new ObservableValue(80),
+                className: 'center',
+                width: new ObservableValue(85),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
@@ -126,10 +129,11 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             },
             {
                 id: 'hasBranchFilterForAllArtifacts',
-                name: 'Branch Filters',
+                name: 'Has branch filters',
                 onSize: onSize,
                 renderCell: renderCheckmark,
-                width: new ObservableValue(100),
+                className: 'center',
+                width: new ObservableValue(130),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
@@ -137,10 +141,11 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
             },
             {
                 id: 'usesManagedAgentsOnly',
-                name: 'Uses Managed Agents',
+                name: 'Uses managed agents',
                 onSize: onSize,
                 renderCell: renderCheckmark,
-                width: new ObservableValue(150),
+                className: 'center',
+                width: new ObservableValue(160),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
@@ -151,6 +156,7 @@ export default class extends React.Component<IReleaseProps, {report: IReleaseRep
                 name: 'Artifacts are from build',
                 onSize: onSize,
                 renderCell: renderCheckmark,
+                className: 'center',
                 width: new ObservableValue(250),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
