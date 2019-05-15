@@ -1,10 +1,6 @@
 import * as React from "react";
 import { Card } from "azure-devops-ui/Card";
-import {
-    IObservableValue,
-    ObservableValue,
-    ObservableArray
-} from "azure-devops-ui/Core/Observable";
+import { IObservableValue, ObservableArray, ObservableValue } from "azure-devops-ui/Core/Observable";
 import { Header, TitleSize } from "azure-devops-ui/Header";
 import {
     IListItemDetails,
@@ -25,15 +21,10 @@ import {
     MasterDetailsContext
 } from "azure-devops-ui/MasterDetailsContext";
 import { Page } from "azure-devops-ui/Page";
-import { ITableColumn, Table, SimpleTableCell } from "azure-devops-ui/Table";
+import { ITableColumn, SimpleTableCell, Table } from "azure-devops-ui/Table";
 import { TextField } from "azure-devops-ui/TextField";
 import { renderCheckmark, renderStringWithWhyTooltip } from "./TableRenderers";
-import {
-    IStatusProps,
-    Statuses,
-    Status,
-    StatusSize
-} from "azure-devops-ui/Status";
+import { IStatusProps, Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
 import { IItemReport } from "../services/IAzDoService";
@@ -206,9 +197,7 @@ export default class extends React.Component<
         key: "initial",
         masterPanelContent: {
             renderContent: (parentItem, initialSelectedMasterItem) => (
-                <this.InitialMasterPanelContent
-                    initialSelectedMasterItem={initialSelectedMasterItem}
-                />
+                <InitialMasterPanelContent  initialSelectedMasterItem={initialSelectedMasterItem} />
             ),
             renderHeader: () => <MasterPanelHeader title={this.props.title} />,
             renderSearch: () => (
@@ -253,28 +242,6 @@ export default class extends React.Component<
         parentItem: undefined
     };
 
-    private InitialMasterPanelContent: React.FunctionComponent<{
-        initialSelectedMasterItem: IObservableValue<IReportMaster>;
-    }> = props => {
-        const [initialSelection] = React.useState(new ListSelection());
-
-        React.useEffect(() => {
-            bindSelectionToObservable(
-                initialSelection,
-                this.filteredDataProvider,
-                props.initialSelectedMasterItem
-            );
-        });
-
-        return (
-            <List
-                itemProvider={this.filteredDataProvider}
-                selection={initialSelection}
-                renderRow={this.renderInitialRow}
-                width="100%"
-            />
-        );
-    };
 
     private isCompliant(item: IReportMaster): boolean {
         return !item.rules.some(rule => {
@@ -442,3 +409,26 @@ export default class extends React.Component<
         );
     }
 }
+
+const InitialMasterPanelContent: React.FunctionComponent<{
+    initialSelectedMasterItem: IObservableValue<IReportMaster>;
+}> = props => {
+    const [initialSelection] = React.useState(new ListSelection());
+
+    React.useEffect(() => {
+        bindSelectionToObservable(
+          initialSelection,
+          this.filteredDataProvider,
+          props.initialSelectedMasterItem
+        );
+    });
+
+    return (
+      <List
+        itemProvider={this.filteredDataProvider}
+        selection={initialSelection}
+        renderRow={this.renderInitialRow}
+        width="100%"
+      />
+    );
+};
