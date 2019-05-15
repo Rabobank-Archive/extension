@@ -248,38 +248,6 @@ export default class extends React.Component<
             return rule.status !== Statuses.Success;
         });
     }
-    private renderInitialRow = (
-        index: number,
-        item: IReportMaster,
-        details: IListItemDetails<IReportMaster>,
-        key?: string
-    ): JSX.Element => {
-        return (
-            <ListItem
-                className="master-example-row"
-                key={key || "list-item" + index}
-                index={index}
-                details={details}
-            >
-                <div
-                    className="flex-row flex-center h-scroll-hidden"
-                    style={{ padding: "10px 0px" }}
-                >
-                    <div className="flex-noshrink" style={{ width: "32px" }} />
-                    <div className="flex-column flex-shrink" style={{ minWidth: 0 }}>
-                        <div className="primary-text text-ellipsis">{item.item}</div>
-                        <div className="secondary-text">{this.isCompliant(item) ?
-                          // @ts-ignore
-                          <div><Status {...Statuses.Success} className="icon-large-margin" size={StatusSize.s}/>Compliant
-                          </div> :
-                          // @ts-ignore
-                          <div><Status {...Statuses.Failed} className="icon-large-margin" size={StatusSize.s}/>Non-compliant
-                          </div>}</div>
-                    </div>
-                </div>
-            </ListItem>
-        );
-    };
 
     private InitialDetailView: React.FunctionComponent<{
         detailItem: IReportMaster;
@@ -401,8 +369,38 @@ const InitialMasterPanelContent: React.FunctionComponent<{
       <List
         itemProvider={this.filteredDataProvider}
         selection={initialSelection}
-        renderRow={this.renderInitialRow}
+        renderRow={renderRow}
         width="100%"
       />
+    );
+};
+
+const renderRow = (
+  index: number,
+  item: IReportMaster,
+  details: IListItemDetails<IReportMaster>,
+  key?: string
+): JSX.Element => {
+    return (
+      <ListItem
+        className="master-example-row"
+        key={key || "list-item" + index}
+        index={index}
+        details={details}
+      >
+          <div className="flex-row flex-center h-scroll-hidden" style={{ padding: "10px 0px" }}>
+              <div className="flex-noshrink" style={{ width: "32px" }} />
+              <div className="flex-column flex-shrink" style={{ minWidth: 0 }}>
+                  <div className="primary-text text-ellipsis">{item.item}</div>
+                  <div className="secondary-text">{this.isCompliant(item) ?
+                    // @ts-ignore
+                    <div><Status {...Statuses.Success} className="icon-large-margin" size={StatusSize.s}/>Compliant
+                    </div> :
+                    // @ts-ignore
+                    <div><Status {...Statuses.Failed} className="icon-large-margin" size={StatusSize.s}/>Non-compliant
+                    </div>}</div>
+              </div>
+          </div>
+      </ListItem>
     );
 };
