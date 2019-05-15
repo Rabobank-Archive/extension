@@ -36,11 +36,15 @@
     "@storybook/addon-links": "^5.0.11",
     "@storybook/addons": "^5.0.11",
     "@storybook/react": "^5.0.11",
+    "@types/fetch-mock": "^7.2.3",
     "@types/jest": "^24.0.12",
     "@types/node": "^12.0.0",
     "@types/react": "^16.8.16",
     "@types/react-dom": "^16.8.4",
     "@types/storybook__react": "^4.0.1",
+    "fetch-mock": "^7.3.3",
+    "node-fetch": "^2.5.0",
+    "react-testing-library": "^7.0.0",
     "typescript": "^3.4.5"
   }
 }
