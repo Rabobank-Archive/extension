@@ -17,7 +17,7 @@ export class CompliancyCheckerService implements ICompliancyCheckerService {
 
         let hasReconcilePermission: boolean = false;
 
-        let requestInit: RequestInit = {
+        const requestInit: RequestInit = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
