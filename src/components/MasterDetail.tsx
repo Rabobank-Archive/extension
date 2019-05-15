@@ -248,31 +248,6 @@ export default class extends React.Component<
             return rule.status !== Statuses.Success;
         });
     }
-
-    private renderSmallCompliantIcon(item: IReportMaster): JSX.Element {
-        return this.isCompliant(item) ? (
-            <div>
-                <Status
-                    {...Statuses.Success}
-                    className="icon-large-margin"
-                    // @ts-ignore
-                    size={StatusSize.s}
-                />
-                Compliant
-            </div>
-        ) : (
-            <div>
-                <Status
-                    {...Statuses.Failed}
-                    className="icon-large-margin"
-                    // @ts-ignore
-                    size={StatusSize.s}
-                />
-                Non-compliant
-            </div>
-        );
-    }
-
     private renderInitialRow = (
         index: number,
         item: IReportMaster,
@@ -291,16 +266,15 @@ export default class extends React.Component<
                     style={{ padding: "10px 0px" }}
                 >
                     <div className="flex-noshrink" style={{ width: "32px" }} />
-                    <div
-                        className="flex-column flex-shrink"
-                        style={{ minWidth: 0 }}
-                    >
-                        <div className="primary-text text-ellipsis">
-                            {item.item}
-                        </div>
-                        <div className="secondary-text">
-                            {this.renderSmallCompliantIcon(item)}
-                        </div>
+                    <div className="flex-column flex-shrink" style={{ minWidth: 0 }}>
+                        <div className="primary-text text-ellipsis">{item.item}</div>
+                        <div className="secondary-text">{this.isCompliant(item) ?
+                          // @ts-ignore
+                          <div><Status {...Statuses.Success} className="icon-large-margin" size={StatusSize.s}/>Compliant
+                          </div> :
+                          // @ts-ignore
+                          <div><Status {...Statuses.Failed} className="icon-large-margin" size={StatusSize.s}/>Non-compliant
+                          </div>}</div>
                     </div>
                 </div>
             </ListItem>
