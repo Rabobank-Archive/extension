@@ -16,3 +16,4 @@ reports/
 coverage/
 dist/
 build/
+.eslintcache

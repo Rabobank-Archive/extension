@@ -1,33 +1,44 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { ITableColumn, ISimpleTableCell, renderSimpleCell, Table } from "azure-devops-ui/Table"
-import { ObservableValue, ObservableArray } from 'azure-devops-ui/Core/Observable';
-import { Page } from 'azure-devops-ui/Page';
-import { Header, TitleSize } from 'azure-devops-ui/Header'
-import { Card } from 'azure-devops-ui/Card'
+import {
+    ITableColumn,
+    ISimpleTableCell,
+    renderSimpleCell,
+    Table
+} from "azure-devops-ui/Table";
+import {
+    ObservableValue,
+    ObservableArray
+} from "azure-devops-ui/Core/Observable";
+import { Page } from "azure-devops-ui/Page";
+import { Header, TitleSize } from "azure-devops-ui/Header";
+import { Card } from "azure-devops-ui/Card";
 import { Statuses, IStatusProps } from "azure-devops-ui/Status";
 
-import { IAzDoService, IBuildReport } from './services/IAzDoService';
-import { sortingBehavior, onSize } from './components/TableBehaviors'
-import { renderDate, renderCheckmark } from './components/TableRenderers';
-import { Link } from 'azure-devops-ui/Link';
+import { IAzDoService, IBuildReport } from "./services/IAzDoService";
+import { sortingBehavior, onSize } from "./components/TableBehaviors";
+import { renderDate, renderCheckmark } from "./components/TableRenderers";
+import { Link } from "azure-devops-ui/Link";
 
 interface ITableItem extends ISimpleTableCell {
-    pipeline: string,
-    buildId: string,
-    createdDate: string,
-    usesFortify: IStatusProps,
-    usesSonarQube: IStatusProps,
-    artifactsStoredSecure: IStatusProps
+    pipeline: string;
+    buildId: string;
+    createdDate: string;
+    usesFortify: IStatusProps;
+    usesSonarQube: IStatusProps;
+    artifactsStoredSecure: IStatusProps;
 }
 
 interface IBuildProps {
-    azDoService: IAzDoService
+    azDoService: IAzDoService;
 }
 
-export default class extends React.Component<IBuildProps, { report: IBuildReport, isLoading: boolean }> {
+export default class extends React.Component<
+    IBuildProps,
+    { report: IBuildReport; isLoading: boolean }
+> {
     private itemProvider = new ObservableArray<any>();
-    
+
     constructor(props: IBuildProps) {
         super(props);
         this.state = {
@@ -35,27 +46,35 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 reports: []
             },
             isLoading: true
-        }
+        };
     }
 
     async componentDidMount() {
-        const report = await this.props.azDoService.GetReportsFromDocumentStorage<IBuildReport>("BuildReports");
-        this.itemProvider.push(...report.reports.map<ITableItem>(x => ({
-             pipeline: x.pipeline,
-             buildId: x.id,
-             createdDate: x.createdDate,
-             usesFortify: x.usesFortify ? Statuses.Success : Statuses.Failed,
-             usesSonarQube: x.usesSonarQube ? Statuses.Success : Statuses.Failed,
-             artifactsStoredSecure: x.artifactsStoredSecure ? Statuses.Success : Statuses.Failed
-        })));
+        const report = await this.props.azDoService.GetReportsFromDocumentStorage<
+            IBuildReport
+        >("BuildReports");
+        this.itemProvider.push(
+            ...report.reports.map<ITableItem>(x => ({
+                pipeline: x.pipeline,
+                buildId: x.id,
+                createdDate: x.createdDate,
+                usesFortify: x.usesFortify ? Statuses.Success : Statuses.Failed,
+                usesSonarQube: x.usesSonarQube
+                    ? Statuses.Success
+                    : Statuses.Failed,
+                artifactsStoredSecure: x.artifactsStoredSecure
+                    ? Statuses.Success
+                    : Statuses.Failed
+            }))
+        );
 
-        this.setState({ isLoading: false, report: report });    
+        this.setState({ isLoading: false, report: report });
     }
 
     render() {
         const columns: ITableColumn<ITableItem>[] = [
             {
-                id: 'pipeline',
+                id: "pipeline",
                 name: "Pipeline",
                 onSize: onSize,
                 renderCell: renderSimpleCell,
@@ -66,8 +85,8 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 }
             },
             {
-                id: 'buildId',
-                name: 'Build',
+                id: "buildId",
+                name: "Build",
                 onSize: onSize,
                 width: new ObservableValue(75),
                 renderCell: renderSimpleCell,
@@ -77,8 +96,8 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 }
             },
             {
-                id: 'createdDate',
-                name: 'Created',
+                id: "createdDate",
+                name: "Created",
                 onSize: onSize,
                 width: new ObservableValue(130),
                 renderCell: renderDate,
@@ -88,8 +107,8 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 }
             },
             {
-                id: 'usesFortify',
-                name: 'Fortify',
+                id: "usesFortify",
+                name: "Fortify",
                 onSize: onSize,
                 width: new ObservableValue(75),
                 renderCell: renderCheckmark,
@@ -99,8 +118,8 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 }
             },
             {
-                id: 'usesSonarQube',
-                name: 'SonarQube',
+                id: "usesSonarQube",
+                name: "SonarQube",
                 onSize: onSize,
                 width: new ObservableValue(75),
                 renderCell: renderCheckmark,
@@ -110,8 +129,8 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 }
             },
             {
-                id: 'artifactsStoredSecure',
-                name: 'Artifact Secure',
+                id: "artifactsStoredSecure",
+                name: "Artifact Secure",
                 onSize: onSize,
                 width: new ObservableValue(75),
                 renderCell: renderCheckmark,
@@ -119,7 +138,7 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
                 }
-            },
+            }
         ];
 
         return (
@@ -132,19 +151,61 @@ export default class extends React.Component<IBuildProps, { report: IBuildReport
                 />
 
                 <div className="page-content page-content-top">
-                    <p>We would ❤ getting in touch on how to improve analyzing builds and stuff, so join us on our <Link href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu" target="_blank">sprint review</Link> @UC-T15!</p>
-                    <p>More information on the <Link href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Build" target="_blank">how &amp; why</Link> of storing artifacts secure with Azure Pipelines or <Link href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines" target="_blank">secure pipelines</Link> in general.</p>
-                    <p>If you still have questions or need assistance on your pipelines, create a <Link href="http://tools.rabobank.nl/vsts/request" target="_blank">support request</Link>.</p>
-                    
+                    <p>
+                        We would ❤ getting in touch on how to improve analyzing
+                        builds and stuff, so join us on our{" "}
+                        <Link
+                            href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu"
+                            target="_blank"
+                        >
+                            sprint review
+                        </Link>{" "}
+                        @UC-T15!
+                    </p>
+                    <p>
+                        More information on the{" "}
+                        <Link
+                            href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Build"
+                            target="_blank"
+                        >
+                            how &amp; why
+                        </Link>{" "}
+                        of storing artifacts secure with Azure Pipelines or{" "}
+                        <Link
+                            href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines"
+                            target="_blank"
+                        >
+                            secure pipelines
+                        </Link>{" "}
+                        in general.
+                    </p>
+                    <p>
+                        If you still have questions or need assistance on your
+                        pipelines, create a{" "}
+                        <Link
+                            href="http://tools.rabobank.nl/vsts/request"
+                            target="_blank"
+                        >
+                            support request
+                        </Link>
+                        .
+                    </p>
+
                     <Card>
-                        { this.state.isLoading ?
-                            <div>Loading...</div> :
-                            <Table<ITableItem> columns={columns}  itemProvider={this.itemProvider} behaviors={[ sortingBehavior(this.itemProvider, columns) ]} />
-                        }
+                        {this.state.isLoading ? (
+                            <div>Loading...</div>
+                        ) : (
+                            <Table<ITableItem>
+                                columns={columns}
+                                itemProvider={this.itemProvider}
+                                behaviors={[
+                                    sortingBehavior(this.itemProvider, columns)
+                                ]}
+                            />
+                        )}
                     </Card>
                 </div>
             </Page>
-
-            );
-    }  
+        );
+    }
 }

@@ -1,6 +1,11 @@
 import * as React from "react";
 import { IListBoxItem } from "azure-devops-ui/ListBox";
-import { Status, StatusSize, IStatusProps, Statuses } from "azure-devops-ui/Status";
+import {
+    Status,
+    StatusSize,
+    IStatusProps,
+    Statuses
+} from "azure-devops-ui/Status";
 import { css } from "azure-devops-ui/Util";
 
 export interface ICompliancyStatusIndicatorData {
@@ -9,13 +14,12 @@ export interface ICompliancyStatusIndicatorData {
 }
 
 export function getPossibleCompliancyStatuses(): boolean[] {
-    return [
-        true,
-        false,
-    ];
-};
+    return [true, false];
+}
 
-export function getCompliancyStatusAsListItem(status: boolean): IListBoxItem<boolean> {
+export function getCompliancyStatusAsListItem(
+    status: boolean
+): IListBoxItem<boolean> {
     const statusDetail = getCompliancyStatusIndicatorData(status);
 
     return {
@@ -26,7 +30,10 @@ export function getCompliancyStatusAsListItem(status: boolean): IListBoxItem<boo
             render: className => (
                 <Status
                     {...statusDetail.statusProps}
-                    className={css(className, statusDetail.statusProps.className)}
+                    className={css(
+                        className,
+                        statusDetail.statusProps.className
+                    )}
                     // @ts-ignore
                     size={StatusSize.m}
                     animated={false}
@@ -34,17 +41,19 @@ export function getCompliancyStatusAsListItem(status: boolean): IListBoxItem<boo
             )
         }
     };
-};
+}
 
-export function getCompliancyStatusIndicatorData(isCompliant: boolean): ICompliancyStatusIndicatorData {
-    let indicatorData: ICompliancyStatusIndicatorData = isCompliant ? 
-        {
-            statusProps: Statuses.Success,
-            label: "Compliant"
-        } :
-        {
-            statusProps: Statuses.Failed,
-            label: "Non-Compliant"
-        }
+export function getCompliancyStatusIndicatorData(
+    isCompliant: boolean
+): ICompliancyStatusIndicatorData {
+    let indicatorData: ICompliancyStatusIndicatorData = isCompliant
+        ? {
+              statusProps: Statuses.Success,
+              label: "Compliant"
+          }
+        : {
+              statusProps: Statuses.Failed,
+              label: "Non-Compliant"
+          };
     return indicatorData;
 }

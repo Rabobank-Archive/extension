@@ -1,10 +1,10 @@
-import * as React from 'react';
+import * as React from "react";
 
 import { ITableColumn, SimpleTableCell } from "azure-devops-ui/Table";
-import moment from 'moment';
+import moment from "moment";
 import { IStatusProps, Status, StatusSize } from "azure-devops-ui/Status";
-import { Icon } from 'azure-devops-ui/Icon';
-import { ITooltipProps } from 'azure-devops-ui/TooltipEx';
+import { Icon } from "azure-devops-ui/Icon";
+import { ITooltipProps } from "azure-devops-ui/TooltipEx";
 
 export function renderDate(
     _rowIndex: number,
@@ -18,10 +18,11 @@ export function renderDate(
         <SimpleTableCell
             columnIndex={columnIndex}
             tableColumn={tableColumn}
-            key={"col-" + columnIndex} >
+            key={"col-" + columnIndex}
+        >
             {moment(value).fromNow()}
         </SimpleTableCell>
-    )
+    );
 }
 
 export function renderString(
@@ -36,10 +37,11 @@ export function renderString(
         <SimpleTableCell
             columnIndex={columnIndex}
             tableColumn={tableColumn}
-            key={"col-" + columnIndex} >
+            key={"col-" + columnIndex}
+        >
             {value}
         </SimpleTableCell>
-    )
+    );
 }
 
 export function renderStringWithWhyTooltip(
@@ -52,16 +54,22 @@ export function renderStringWithWhyTooltip(
 
     let tooltip: ITooltipProps = {
         text: item["why"]
-    }
+    };
 
     return (
         <SimpleTableCell
             columnIndex={columnIndex}
             tableColumn={tableColumn}
-            key={"col-" + columnIndex} >
-            {value} <Icon iconName={"Info"} style={{marginLeft: "10px"}} tooltipProps={tooltip} />
+            key={"col-" + columnIndex}
+        >
+            {value}{" "}
+            <Icon
+                iconName={"Info"}
+                style={{ marginLeft: "10px" }}
+                tooltipProps={tooltip}
+            />
         </SimpleTableCell>
-    )
+    );
 }
 
 export function renderCheckmark(
@@ -76,7 +84,8 @@ export function renderCheckmark(
         <SimpleTableCell
             columnIndex={columnIndex}
             tableColumn={tableColumn}
-            key={"col-" + columnIndex} >
+            key={"col-" + columnIndex}
+        >
             <Status
                 {...value}
                 className="icon-large-margin"
@@ -84,5 +93,5 @@ export function renderCheckmark(
                 size={StatusSize.l}
             />
         </SimpleTableCell>
-    )
+    );
 }
