@@ -288,7 +288,7 @@ export default class extends React.Component<
                 <Status
                     {...Statuses.Success}
                     className="icon-large-margin"
-                    // @ts-ignore                    
+                    // @ts-ignore
                     size={StatusSize.s}
                 />
                 Compliant

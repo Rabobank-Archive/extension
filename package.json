@@ -7,7 +7,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "postbuild": "rimraf ./build/static/js/runtime~*",
-    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!(azure-devops-ui))/\"",
+    "test": "tsc && react-scripts test --transformIgnorePatterns \"node_modules/(?!(azure-devops-ui))/\"",    
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
