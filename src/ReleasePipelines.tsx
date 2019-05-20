@@ -9,10 +9,8 @@ import { Page } from "azure-devops-ui/Page";
 import { Link } from "azure-devops-ui/Link";
 import { Card } from "azure-devops-ui/Card";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
-
-import PipelinesMasterDetail from "./components/MasterDetail";
+import { MasterDetail } from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
-
 import "./css/styles.css";
 import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
 
@@ -149,7 +147,7 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
 
     getTabContent(): React.ReactNode {
         return (
-            <PipelinesMasterDetail
+            <MasterDetail
                 title="Pipelines"
                 hasReconcilePermission={this.state.hasReconcilePermission}
                 data={this.state.releasePipelinesReport.reports.sort(

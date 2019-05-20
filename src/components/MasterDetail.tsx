@@ -65,7 +65,7 @@ function isCompliant(item: IReportMaster): boolean {
     });
 }
 
-export default class extends React.Component<
+export class MasterDetail extends React.Component<
     {
         title: string;
         data: IItemReport[];
@@ -198,7 +198,7 @@ export default class extends React.Component<
             this.props.data.sort(compareItemReports)
         ).filter((value, index, array) => {
             return (
-                value.item.includes(searchFilter) &&
+                value.item.toLowerCase().includes(searchFilter.toLowerCase()) &&
                 ((showCompliantRepos && isCompliant(value)) ||
                     (showNonCompliantRepos && !isCompliant(value)))
             );
