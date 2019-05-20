@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Card } from "azure-devops-ui/Card";
-import { IObservableValue, ObservableArray, ObservableValue } from "azure-devops-ui/Core/Observable";
+import {
+    IObservableValue,
+    ObservableArray,
+    ObservableValue
+} from "azure-devops-ui/Core/Observable";
 import { Header, TitleSize } from "azure-devops-ui/Header";
 import {
     IListItemDetails,
@@ -24,7 +28,12 @@ import { Page } from "azure-devops-ui/Page";
 import { ITableColumn, SimpleTableCell, Table } from "azure-devops-ui/Table";
 import { TextField } from "azure-devops-ui/TextField";
 import { renderCheckmark, renderStringWithWhyTooltip } from "./TableRenderers";
-import { IStatusProps, Status, Statuses, StatusSize } from "azure-devops-ui/Status";
+import {
+    IStatusProps,
+    Status,
+    Statuses,
+    StatusSize
+} from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
 import { IItemReport } from "../services/IAzDoService";
@@ -48,6 +57,12 @@ interface IReportRule {
 
 function compareItemReports(a: IItemReport, b: IItemReport) {
     return a.item.localeCompare(b.item);
+}
+
+function isCompliant(item: IReportMaster): boolean {
+    return !item.rules.some(rule => {
+        return rule.status !== Statuses.Success;
+    });
 }
 
 export default class extends React.Component<
@@ -184,8 +199,8 @@ export default class extends React.Component<
         ).filter((value, index, array) => {
             return (
                 value.item.includes(searchFilter) &&
-                ((showCompliantRepos && this.isCompliant(value)) ||
-                    (showNonCompliantRepos && !this.isCompliant(value)))
+                ((showCompliantRepos && isCompliant(value)) ||
+                    (showNonCompliantRepos && !isCompliant(value)))
             );
         });
     }
@@ -197,7 +212,10 @@ export default class extends React.Component<
         key: "initial",
         masterPanelContent: {
             renderContent: (parentItem, initialSelectedMasterItem) => (
-                <InitialMasterPanelContent  initialSelectedMasterItem={initialSelectedMasterItem} />
+                <InitialMasterPanelContent
+                    initialSelectedMasterItem={initialSelectedMasterItem}
+                    filteredDataProvider={this.filteredDataProvider}
+                />
             ),
             renderHeader: () => <MasterPanelHeader title={this.props.title} />,
             renderSearch: () => (
@@ -241,13 +259,6 @@ export default class extends React.Component<
         selectedMasterItem: this.selectedMasterItem,
         parentItem: undefined
     };
-
-
-    private isCompliant(item: IReportMaster): boolean {
-        return !item.rules.some(rule => {
-            return rule.status !== Statuses.Success;
-        });
-    }
 
     private InitialDetailView: React.FunctionComponent<{
         detailItem: IReportMaster;
@@ -354,53 +365,78 @@ export default class extends React.Component<
 
 const InitialMasterPanelContent: React.FunctionComponent<{
     initialSelectedMasterItem: IObservableValue<IReportMaster>;
+    filteredDataProvider: ObservableArray<IReportMaster>;
 }> = props => {
     const [initialSelection] = React.useState(new ListSelection());
 
     React.useEffect(() => {
         bindSelectionToObservable(
-          initialSelection,
-          this.filteredDataProvider,
-          props.initialSelectedMasterItem
+            initialSelection,
+            props.filteredDataProvider,
+            props.initialSelectedMasterItem
         );
     });
 
     return (
-      <List
-        itemProvider={this.filteredDataProvider}
-        selection={initialSelection}
-        renderRow={renderRow}
-        width="100%"
-      />
+        <List
+            itemProvider={props.filteredDataProvider}
+            selection={initialSelection}
+            renderRow={renderRow}
+            width="100%"
+        />
     );
 };
 
 const renderRow = (
-  index: number,
-  item: IReportMaster,
-  details: IListItemDetails<IReportMaster>,
-  key?: string
+    index: number,
+    item: IReportMaster,
+    details: IListItemDetails<IReportMaster>,
+    key?: string
 ): JSX.Element => {
     return (
-      <ListItem
-        className="master-example-row"
-        key={key || "list-item" + index}
-        index={index}
-        details={details}
-      >
-          <div className="flex-row flex-center h-scroll-hidden" style={{ padding: "10px 0px" }}>
-              <div className="flex-noshrink" style={{ width: "32px" }} />
-              <div className="flex-column flex-shrink" style={{ minWidth: 0 }}>
-                  <div className="primary-text text-ellipsis">{item.item}</div>
-                  <div className="secondary-text">{this.isCompliant(item) ?
-                    // @ts-ignore
-                    <div><Status {...Statuses.Success} className="icon-large-margin" size={StatusSize.s}/>Compliant
-                    </div> :
-                    // @ts-ignore
-                    <div><Status {...Statuses.Failed} className="icon-large-margin" size={StatusSize.s}/>Non-compliant
-                    </div>}</div>
-              </div>
-          </div>
-      </ListItem>
+        <ListItem
+            className="master-example-row"
+            key={key || "list-item" + index}
+            index={index}
+            details={details}
+        >
+            <div
+                className="flex-row flex-center h-scroll-hidden"
+                style={{ padding: "10px 0px" }}
+            >
+                <div className="flex-noshrink" style={{ width: "32px" }} />
+                <div
+                    className="flex-column flex-shrink"
+                    style={{ minWidth: 0 }}
+                >
+                    <div className="primary-text text-ellipsis">
+                        {item.item}
+                    </div>
+                    <div className="secondary-text">
+                        {isCompliant(item) ? (
+                            <div>
+                                <Status
+                                    {...Statuses.Success}
+                                    className="icon-large-margin"
+                                    // @ts-ignore
+                                    size={StatusSize.s}
+                                />
+                                Compliant
+                            </div>
+                        ) : (
+                            <div>
+                                <Status
+                                    {...Statuses.Failed}
+                                    className="icon-large-margin"
+                                    // @ts-ignore
+                                    size={StatusSize.s}
+                                />
+                                Non-compliant
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </ListItem>
     );
 };
