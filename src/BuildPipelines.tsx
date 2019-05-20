@@ -16,7 +16,7 @@ import { Filter } from "azure-devops-ui/Utilities/Filter";
 import { DropdownMultiSelection } from "azure-devops-ui/Utilities/DropdownSelection";
 
 import BuildPipelinesList from "./components/BuildPipelinesList";
-import PipelinesMasterDetail from "./components/MasterDetail";
+import { MasterDetail } from "./components/MasterDetail";
 import {
     getPossibleCompliancyStatuses,
     getCompliancyStatusAsListItem
@@ -247,7 +247,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                 // allowFiltering.value = false;
                 // filterToggled.value = false;
                 return (
-                    <PipelinesMasterDetail
+                    <MasterDetail
                         title="Pipelines"
                         hasReconcilePermission={
                             this.state.hasReconcilePermission

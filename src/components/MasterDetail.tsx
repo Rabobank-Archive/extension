@@ -65,7 +65,7 @@ function isCompliant(item: IReportMaster): boolean {
     });
 }
 
-export default class extends React.Component<
+export class MasterDetail extends React.Component<
     {
         title: string;
         data: IItemReport[];
