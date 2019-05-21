@@ -2,9 +2,9 @@ import React from "react";
 import { List, IListItemDetails } from "azure-devops-ui/List";
 import { IItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { IReadonlyObservableValue } from "azure-devops-ui/Core/Observable";
-import "../css/NumberedList.css";
+import "../css/UnorderedList.css";
 
-export class NumberedList extends React.Component<
+export class UnorderedList extends React.Component<
     {
         itemProvider: IItemProvider<
             string | IReadonlyObservableValue<string | undefined>
@@ -19,8 +19,8 @@ export class NumberedList extends React.Component<
     ): JSX.Element {
         return (
             <tr className="bolt-list-row" data-row-index={rowIndex}>
-                <td className="numbered-list-cell">&bull;</td>
-                <td className="numbered-list-cell">{item}</td>
+                <td className="unordered-list-cell">&bull;</td>
+                <td className="unordered-list-cell">{item}</td>
             </tr>
         );
     }

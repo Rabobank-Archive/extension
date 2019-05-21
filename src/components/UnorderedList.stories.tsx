@@ -1,10 +1,10 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import { NumberedList } from "./NumberedList";
+import { UnorderedList } from "./UnorderedList";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 
-storiesOf("NumberedList", module).add("default", () => (
-    <NumberedList
+storiesOf("UnorderedList", module).add("default", () => (
+    <UnorderedList
         itemProvider={
             new ArrayItemProvider([
                 "Rabobank Project Administrators group is created and added to Project Administrators",

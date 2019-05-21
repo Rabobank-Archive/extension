@@ -2,10 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Dialog } from "azure-devops-ui/Dialog";
 import { MessageCard, MessageCardSeverity } from "azure-devops-ui/MessageCard";
 import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
-import { SimpleList } from "azure-devops-ui/List";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { ICompliancyCheckerService } from "../services/ICompliancyCheckerService";
-import { NumberedList } from "./NumberedList";
+import { UnorderedList } from "./UnorderedList";
 
 interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
@@ -89,7 +88,7 @@ export const ConfirmReconcileDialog = ({
                 />
             )}
             <p>Are you sure? Reconciling will make the following changes:</p>
-            <NumberedList
+            <UnorderedList
                 itemProvider={new ArrayItemProvider<string>(impact)}
             />
         </Dialog>
