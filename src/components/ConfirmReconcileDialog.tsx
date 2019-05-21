@@ -5,6 +5,7 @@ import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { SimpleList } from "azure-devops-ui/List";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { ICompliancyCheckerService } from "../services/ICompliancyCheckerService";
+import { NumberedList } from "./NumberedList";
 
 interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
@@ -88,8 +89,7 @@ export const ConfirmReconcileDialog = ({
                 />
             )}
             <p>Are you sure? Reconciling will make the following changes:</p>
-            <SimpleList
-                width={"100%"}
+            <NumberedList
                 itemProvider={new ArrayItemProvider<string>(impact)}
             />
         </Dialog>

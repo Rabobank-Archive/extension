@@ -1,0 +1,13 @@
+.numbered-list-cell {
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    color: inherit;
+    display: table-cell;
+    overflow: hidden;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    white-space: normal;
+    vertical-align: top;
+    padding-left: 5px;
+}
