@@ -8,8 +8,9 @@ import BuildPipelines from "./BuildPipelines";
 import ReleasePipelines from "./ReleasePipelines";
 
 import * as SDK from "azure-devops-extension-sdk";
+import { USE_AZDO_SDK } from "./services/Environment";
 
-if (process.env.REACT_APP_USE_AZDO_SDK === "true") {
+if (USE_AZDO_SDK) {
     SDK.init();
     SDK.ready().then(() => {
         let element: JSX.Element = GetRootElement();
