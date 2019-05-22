@@ -33,6 +33,9 @@ export const ReconcileButton = ({
                     onReconcileCompleted={() => {
                         setIsDialogOpen(false);
                     }}
+                    onCancel={() => {
+                        setIsDialogOpen(false);
+                    }}
                 />
             )}
         </div>

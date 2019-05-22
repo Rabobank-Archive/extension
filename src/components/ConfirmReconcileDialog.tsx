@@ -10,12 +10,14 @@ interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
     impact: string[];
     onReconcileCompleted?: () => void;
+    onCancel?: () => void;
 }
 
 export const ConfirmReconcileDialog = ({
     impact,
     reconcileUrl,
-    onReconcileCompleted
+    onReconcileCompleted,
+    onCancel
 }: IConfirmReconcileDialogProps) => {
     const [isReconciling, setIsReconciling] = useState<boolean>(false);
     const [errorText, setErrorText] = useState<string>("");
@@ -45,6 +47,7 @@ export const ConfirmReconcileDialog = ({
                     text: "Cancel",
                     onClick: () => {
                         setErrorText("");
+                        if (onCancel) onCancel();
                     }
                 },
                 {
