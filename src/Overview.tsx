@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAzDoService, IOverviewReport } from "./services/IAzDoService";
+import { IOverviewReport } from "./services/IAzDoService";
 
 import { ITableColumn, SimpleTableCell, Table } from "azure-devops-ui/Table";
 import {
@@ -20,7 +20,8 @@ import ReconcileButton from "./components/ReconcileButton";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 import "./css/styles.css";
-import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
+import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
+import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 
 interface ITableItem {
     description: string;
@@ -29,13 +30,9 @@ interface ITableItem {
     hasReconcilePermission: boolean;
     reconcileUrl: string;
     reconcileImpact: string[];
-    compliancyCheckerService: ICompliancyCheckerService;
 }
 
-interface IOverviewProps {
-    azDoService: IAzDoService;
-    compliancyCheckerService: ICompliancyCheckerService;
-}
+interface IOverviewProps {}
 
 export default class extends React.Component<
     IOverviewProps,
@@ -43,7 +40,6 @@ export default class extends React.Component<
         report: IOverviewReport;
         isLoading: boolean;
         isRescanning: boolean;
-        token: string;
     }
 > {
     private itemProvider = new ObservableArray<ITableItem>();
@@ -58,19 +54,17 @@ export default class extends React.Component<
                 hasReconcilePermissionUrl: ""
             },
             isLoading: true,
-            isRescanning: false,
-            token: ""
+            isRescanning: false
         };
     }
 
     private async getReportdata(): Promise<void> {
-        const report = await this.props.azDoService.GetReportsFromDocumentStorage<
-            IOverviewReport
-        >("globalpermissions");
-        const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(
+        const report = await GetAzDoReportsFromDocumentStorage<IOverviewReport>(
+            "globalpermissions"
+        );
+        const hasReconcilePermission = await HasReconcilePermission(
             report.hasReconcilePermissionUrl
         );
-        const token = await this.props.azDoService.GetAppToken();
 
         this.itemProvider.removeAll();
 
@@ -81,12 +75,11 @@ export default class extends React.Component<
                 hasReconcilePermission: hasReconcilePermission,
                 reconcileUrl: x.reconcile!.url,
                 reconcileImpact: x.reconcile!.impact,
-                status: x.status ? Statuses.Success : Statuses.Failed,
-                compliancyCheckerService: this.props.compliancyCheckerService
+                status: x.status ? Statuses.Success : Statuses.Failed
             }))
         );
 
-        this.setState({ isLoading: false, report: report, token: token });
+        this.setState({ isLoading: false, report: report });
     }
 
     async componentDidMount() {
@@ -103,9 +96,6 @@ export default class extends React.Component<
                     onRescanFinished={async () => {
                         await this.getReportdata();
                     }}
-                    compliancyCheckerService={
-                        this.props.compliancyCheckerService
-                    }
                 />
 
                 <div className="page-content page-content-top flex-row">

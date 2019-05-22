@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAzDoService, IBuildPipelinesReport } from "./services/IAzDoService";
+import { IBuildPipelinesReport } from "./services/IAzDoService";
 import { Page } from "azure-devops-ui/Page";
 import {
     HeaderCommandBarWithFilter,
@@ -27,12 +27,10 @@ import { Observer } from "azure-devops-ui/Observer";
 import "./css/styles.css";
 import { Link } from "azure-devops-ui/Link";
 import { Card } from "azure-devops-ui/Card";
-import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
+import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
+import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 
-interface IBuildPipelinesProps {
-    azDoService: IAzDoService;
-    compliancyCheckerService: ICompliancyCheckerService;
-}
+interface IBuildPipelinesProps {}
 
 const filterToggled = new ObservableValue<boolean>(false);
 const allowFiltering = new ObservableValue<boolean>(true);
@@ -92,10 +90,10 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
     };
 
     private async getData(): Promise<void> {
-        const buildPipelinesReport = await this.props.azDoService.GetReportsFromDocumentStorage<
+        const buildPipelinesReport = await GetAzDoReportsFromDocumentStorage<
             IBuildPipelinesReport
         >("buildpipelines");
-        const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(
+        const hasReconcilePermission = await HasReconcilePermission(
             buildPipelinesReport.hasReconcilePermissionUrl
         );
 
@@ -122,9 +120,6 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                         onRescanFinished={async () => {
                             await this.getData();
                         }}
-                        compliancyCheckerService={
-                            this.props.compliancyCheckerService
-                        }
                     />
 
                     {/* <TabBar
@@ -253,9 +248,6 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                             this.state.hasReconcilePermission
                         }
                         data={this.state.buildPipelinesReport.reports}
-                        compliancyCheckerService={
-                            this.props.compliancyCheckerService
-                        }
                     />
                 );
 

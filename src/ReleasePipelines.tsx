@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-    IAzDoService,
     IBuildPipelinesReport,
     IItemReport,
     IReleasePipelinesReport
@@ -12,12 +11,10 @@ import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import { MasterDetail } from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
 import "./css/styles.css";
-import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
+import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
+import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 
-interface IReleasePipelinesProps {
-    azDoService: IAzDoService;
-    compliancyCheckerService: ICompliancyCheckerService;
-}
+interface IReleasePipelinesProps {}
 
 interface IState {
     isLoading: boolean;
@@ -44,10 +41,10 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
     }
 
     private async getData(): Promise<void> {
-        const releasePipelinesReport = await this.props.azDoService.GetReportsFromDocumentStorage<
+        const releasePipelinesReport = await GetAzDoReportsFromDocumentStorage<
             IReleasePipelinesReport
         >("releasepipelines");
-        const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(
+        const hasReconcilePermission = await HasReconcilePermission(
             releasePipelinesReport.hasReconcilePermissionUrl
         );
 
@@ -74,9 +71,6 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
                         onRescanFinished={async () => {
                             await this.getData();
                         }}
-                        compliancyCheckerService={
-                            this.props.compliancyCheckerService
-                        }
                     />
 
                     <div className="page-content page-content-top flex-row">
@@ -153,7 +147,6 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
                 data={this.state.releasePipelinesReport.reports.sort(
                     compareItemReports
                 )}
-                compliancyCheckerService={this.props.compliancyCheckerService}
             />
         );
     }

@@ -1,17 +1,12 @@
 import React from "react";
 import { MasterDetail } from "./MasterDetail";
 import { fireEvent, render } from "react-testing-library";
-import { DummyAzDoService } from "../services/DummyAzDoService";
-import { DummyCompliancyCheckerService } from "../services/DummyCompliancyCheckerService";
 import { DummyRepositoriesReport } from "../services/DummyData";
 
 describe("MasterDetail", () => {
     it("should filter the master list", async () => {
         const { getByLabelText, queryAllByText, queryAllByRole } = render(
             <MasterDetail
-                compliancyCheckerService={
-                    new DummyCompliancyCheckerService(new DummyAzDoService())
-                }
                 hasReconcilePermission={true}
                 title="Mock Title"
                 data={DummyRepositoriesReport.reports}
@@ -31,9 +26,6 @@ describe("MasterDetail", () => {
     it("should filter case insensitive", async () => {
         const { getByLabelText, queryAllByRole } = render(
             <MasterDetail
-                compliancyCheckerService={
-                    new DummyCompliancyCheckerService(new DummyAzDoService())
-                }
                 hasReconcilePermission={true}
                 title="Mock Title"
                 data={DummyRepositoriesReport.reports}
