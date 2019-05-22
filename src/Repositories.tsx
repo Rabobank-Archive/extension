@@ -8,12 +8,10 @@ import CompliancyHeader from "./components/CompliancyHeader";
 import { Surface, SurfaceBackground } from "azure-devops-ui/Surface";
 
 import "./css/styles.css";
-import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
+import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 
-interface IRepositoriesProps {
-    compliancyCheckerService: ICompliancyCheckerService;
-}
+interface IRepositoriesProps {}
 
 interface IState {
     isLoading: boolean;
@@ -46,7 +44,7 @@ export default class extends React.Component<IRepositoriesProps, IState> {
         const report = await GetAzDoReportsFromDocumentStorage<
             IRepositoriesReport
         >("repository");
-        const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(
+        const hasReconcilePermission = await HasReconcilePermission(
             report.hasReconcilePermissionUrl
         );
 
@@ -69,9 +67,6 @@ export default class extends React.Component<IRepositoriesProps, IState> {
                         onRescanFinished={async () => {
                             await this.getReportdata();
                         }}
-                        compliancyCheckerService={
-                            this.props.compliancyCheckerService
-                        }
                     />
 
                     <div className="page-content page-content-top flex-row">
@@ -84,9 +79,6 @@ export default class extends React.Component<IRepositoriesProps, IState> {
                                     data={this.state.report.reports}
                                     hasReconcilePermission={
                                         this.state.hasReconcilePermission
-                                    }
-                                    compliancyCheckerService={
-                                        this.props.compliancyCheckerService
                                     }
                                 />
                             )}

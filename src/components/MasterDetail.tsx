@@ -38,7 +38,6 @@ import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
 import { IItemReport } from "../services/IAzDoService";
 import ReconcileButton from "./ReconcileButton";
-import { ICompliancyCheckerService } from "../services/ICompliancyCheckerService";
 
 interface IReportMaster {
     item: string;
@@ -52,7 +51,6 @@ interface IReportRule {
     hasReconcilePermission: boolean;
     reconcileUrl: string;
     reconcileImpact: string[];
-    compliancyCheckerService: ICompliancyCheckerService;
 }
 
 function compareItemReports(a: IItemReport, b: IItemReport) {
@@ -70,7 +68,6 @@ export class MasterDetail extends React.Component<
         title: string;
         data: IItemReport[];
         hasReconcilePermission: boolean;
-        compliancyCheckerService: ICompliancyCheckerService;
     },
     {}
 > {
@@ -101,9 +98,7 @@ export class MasterDetail extends React.Component<
                             .hasReconcilePermission,
                         reconcileUrl: x.reconcile ? x.reconcile.url : "",
                         reconcileImpact: x.reconcile ? x.reconcile.impact : [],
-                        status: x.status ? Statuses.Success : Statuses.Failed,
-                        compliancyCheckerService: this.props
-                            .compliancyCheckerService
+                        status: x.status ? Statuses.Success : Statuses.Failed
                     };
                     return rule;
                 })

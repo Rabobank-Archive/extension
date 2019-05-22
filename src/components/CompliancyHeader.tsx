@@ -12,14 +12,13 @@ import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { Ago } from "azure-devops-ui/Ago";
 import { AgoFormat } from "azure-devops-ui/Utilities/Date";
 import { HeaderCommandBar } from "azure-devops-ui/HeaderCommandBar";
-import { ICompliancyCheckerService } from "../services/ICompliancyCheckerService";
+import { DoRescanRequest } from "../services/CompliancyCheckerService";
 
 interface ICompliancyHeaderProps {
     headerText: string;
     lastScanDate: Date;
     rescanUrl: string;
     onRescanFinished?: () => Promise<void>;
-    compliancyCheckerService: ICompliancyCheckerService;
 }
 
 interface IState {
@@ -36,7 +35,7 @@ export default class extends React.Component<ICompliancyHeaderProps, IState> {
 
     private async doRescanRequest(): Promise<void> {
         this.setState({ isRescanning: true });
-        await this.props.compliancyCheckerService.DoRescanRequest(
+        await DoRescanRequest(
             this.props.rescanUrl,
             () => {
                 this.setState({ isRescanning: false });

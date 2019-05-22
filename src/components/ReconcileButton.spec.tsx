@@ -2,7 +2,6 @@ import React from "react";
 import fetchMock from "fetch-mock";
 import ReconcileButton from "./ReconcileButton";
 import { fireEvent, render, wait } from "react-testing-library";
-import { CompliancyCheckerService } from "../services/CompliancyCheckerService";
 
 describe("ReconcileButon", () => {
     it("should reconcile", async () => {
@@ -10,8 +9,7 @@ describe("ReconcileButon", () => {
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"],
-                    compliancyCheckerService: new CompliancyCheckerService()
+                    reconcileImpact: ["mock-impact"]
                 }}
             />
         );
@@ -43,8 +41,7 @@ describe("ReconcileButon", () => {
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"],
-                    compliancyCheckerService: new CompliancyCheckerService()
+                    reconcileImpact: ["mock-impact"]
                 }}
             />
         );
@@ -75,8 +72,7 @@ describe("ReconcileButon", () => {
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"],
-                    compliancyCheckerService: new CompliancyCheckerService()
+                    reconcileImpact: ["mock-impact"]
                 }}
             />
         );
@@ -106,8 +102,7 @@ describe("ReconcileButon", () => {
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"],
-                    compliancyCheckerService: new CompliancyCheckerService()
+                    reconcileImpact: ["mock-impact"]
                 }}
             />
         );

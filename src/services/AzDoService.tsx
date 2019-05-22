@@ -14,6 +14,7 @@ import {
     DummyReleasePipelinesReport
 } from "./DummyData";
 import { USE_AZDO_SERVICE } from "./Environment";
+import { delay } from "./Delay";
 
 let appToken: string | undefined;
 
@@ -94,7 +95,3 @@ async function GetRealAzDoReportsFromDocumentStorage<TReport>(
     return dataManager.getDocument(documentCollectionName, project!.name);
 }
 //#endregion
-
-function delay(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}

@@ -3,20 +3,18 @@ import { Dialog } from "azure-devops-ui/Dialog";
 import { MessageCard, MessageCardSeverity } from "azure-devops-ui/MessageCard";
 import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
-import { ICompliancyCheckerService } from "../services/ICompliancyCheckerService";
 import { UnorderedList } from "./UnorderedList";
+import { DoReconcileRequest } from "../services/CompliancyCheckerService";
 
 interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
     impact: string[];
-    compliancyCheckerService: ICompliancyCheckerService;
     onReconcileCompleted?: () => void;
 }
 
 export const ConfirmReconcileDialog = ({
     impact,
     reconcileUrl,
-    compliancyCheckerService,
     onReconcileCompleted
 }: IConfirmReconcileDialogProps) => {
     const [isReconciling, setIsReconciling] = useState<boolean>(false);
@@ -25,7 +23,7 @@ export const ConfirmReconcileDialog = ({
     useEffect(() => {
         const doFetch = async () => {
             try {
-                await compliancyCheckerService.DoReconcileRequest(reconcileUrl);
+                await DoReconcileRequest(reconcileUrl);
                 setErrorText("");
                 if (onReconcileCompleted) onReconcileCompleted();
             } catch (e) {
@@ -37,12 +35,7 @@ export const ConfirmReconcileDialog = ({
         if (isReconciling) {
             doFetch();
         }
-    }, [
-        compliancyCheckerService,
-        isReconciling,
-        onReconcileCompleted,
-        reconcileUrl
-    ]);
+    }, [isReconciling, onReconcileCompleted, reconcileUrl]);
 
     return (
         <Dialog

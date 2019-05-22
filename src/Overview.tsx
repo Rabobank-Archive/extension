@@ -20,8 +20,8 @@ import ReconcileButton from "./components/ReconcileButton";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 import "./css/styles.css";
-import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
+import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 
 interface ITableItem {
     description: string;
@@ -30,12 +30,9 @@ interface ITableItem {
     hasReconcilePermission: boolean;
     reconcileUrl: string;
     reconcileImpact: string[];
-    compliancyCheckerService: ICompliancyCheckerService;
 }
 
-interface IOverviewProps {
-    compliancyCheckerService: ICompliancyCheckerService;
-}
+interface IOverviewProps {}
 
 export default class extends React.Component<
     IOverviewProps,
@@ -65,7 +62,7 @@ export default class extends React.Component<
         const report = await GetAzDoReportsFromDocumentStorage<IOverviewReport>(
             "globalpermissions"
         );
-        const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(
+        const hasReconcilePermission = await HasReconcilePermission(
             report.hasReconcilePermissionUrl
         );
 
@@ -78,8 +75,7 @@ export default class extends React.Component<
                 hasReconcilePermission: hasReconcilePermission,
                 reconcileUrl: x.reconcile!.url,
                 reconcileImpact: x.reconcile!.impact,
-                status: x.status ? Statuses.Success : Statuses.Failed,
-                compliancyCheckerService: this.props.compliancyCheckerService
+                status: x.status ? Statuses.Success : Statuses.Failed
             }))
         );
 
@@ -100,9 +96,6 @@ export default class extends React.Component<
                     onRescanFinished={async () => {
                         await this.getReportdata();
                     }}
-                    compliancyCheckerService={
-                        this.props.compliancyCheckerService
-                    }
                 />
 
                 <div className="page-content page-content-top flex-row">
