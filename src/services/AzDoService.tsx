@@ -1,7 +1,6 @@
 import {
     IExtensionDataService,
-    IProjectPageService,
-    CommonServiceIds
+    IProjectPageService
 } from "azure-devops-extension-api";
 
 import * as SDK from "azure-devops-extension-sdk";
@@ -80,12 +79,10 @@ async function GetRealAzDoReportsFromDocumentStorage<TReport>(
 ): Promise<TReport> {
     const token = await SDK.getAccessToken();
     const dataService = await SDK.getService<IExtensionDataService>(
-        // @ts-ignore
-        CommonServiceIds.ExtensionDataService
+        "ms.vss-features.extension-data-service"
     );
     const projectService = await SDK.getService<IProjectPageService>(
-        // @ts-ignore
-        CommonServiceIds.ProjectPageService
+        "ms.vss-tfs-web.tfs-page-data-service"
     );
     const project = await projectService.getProject();
     const dataManager = await dataService.getExtensionDataManager(
