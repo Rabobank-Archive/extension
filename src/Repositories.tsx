@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAzDoService, IRepositoriesReport } from "./services/IAzDoService";
+import { IRepositoriesReport } from "./services/IAzDoService";
 import { Card } from "azure-devops-ui/Card";
 import { Page } from "azure-devops-ui/Page";
 import { Link } from "azure-devops-ui/Link";
@@ -9,9 +9,9 @@ import { Surface, SurfaceBackground } from "azure-devops-ui/Surface";
 
 import "./css/styles.css";
 import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
+import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 
 interface IRepositoriesProps {
-    azDoService: IAzDoService;
     compliancyCheckerService: ICompliancyCheckerService;
 }
 
@@ -43,7 +43,7 @@ export default class extends React.Component<IRepositoriesProps, IState> {
     }
 
     async getReportdata(): Promise<void> {
-        const report = await this.props.azDoService.GetReportsFromDocumentStorage<
+        const report = await GetAzDoReportsFromDocumentStorage<
             IRepositoriesReport
         >("repository");
         const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(

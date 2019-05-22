@@ -7,53 +7,33 @@ import Builds from "./Builds";
 import BuildPipelines from "./BuildPipelines";
 import ReleasePipelines from "./ReleasePipelines";
 
-import { IAzDoService } from "./services/IAzDoService";
-import { AzDoService } from "./services/AzDoService";
-import { DummyAzDoService } from "./services/DummyAzDoService";
-
 import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
 import { CompliancyCheckerService } from "./services/CompliancyCheckerService";
 import { DummyCompliancyCheckerService } from "./services/DummyCompliancyCheckerService";
 
 import * as SDK from "azure-devops-extension-sdk";
 
-let azDoService: IAzDoService;
 let compliancyCheckerService: ICompliancyCheckerService;
 
-if (process.env.REACT_APP_USE_AZDO_SERVICE === "true") {
-    azDoService = new AzDoService();
-} else {
-    azDoService = new DummyAzDoService();
-}
-
 if (process.env.REACT_APP_USE_COMPLIANCYCHECKER_SERVICE === "true") {
-    compliancyCheckerService = new CompliancyCheckerService(azDoService);
+    compliancyCheckerService = new CompliancyCheckerService();
 } else {
-    compliancyCheckerService = new DummyCompliancyCheckerService(azDoService);
+    compliancyCheckerService = new DummyCompliancyCheckerService();
 }
 
 if (process.env.REACT_APP_USE_AZDO_SDK === "true") {
     SDK.init();
     SDK.ready().then(() => {
-        let element: JSX.Element = GetRootElement(
-            azDoService,
-            compliancyCheckerService
-        );
+        let element: JSX.Element = GetRootElement(compliancyCheckerService);
         ReactDOM.render(element, document.getElementById("root"));
         SDK.notifyLoadSucceeded();
     });
 } else {
-    let element: JSX.Element = GetRootElement(
-        azDoService,
-        compliancyCheckerService
-    );
+    let element: JSX.Element = GetRootElement(compliancyCheckerService);
     ReactDOM.render(element, document.getElementById("root"));
 }
 
-function GetRootElement(
-    azDoService: IAzDoService,
-    compliancyCheckerService: ICompliancyCheckerService
-) {
+function GetRootElement(compliancyCheckerService: ICompliancyCheckerService) {
     // Not using react router because the paths are incompatible
     // with static hosting on Azure Devops extensions therefore
     // using index.html#report as identifier.
@@ -64,7 +44,6 @@ function GetRootElement(
             element = (
                 <BuildPipelines
                     compliancyCheckerService={compliancyCheckerService}
-                    azDoService={azDoService}
                 />
             );
             break;
@@ -72,30 +51,25 @@ function GetRootElement(
             element = (
                 <ReleasePipelines
                     compliancyCheckerService={compliancyCheckerService}
-                    azDoService={azDoService}
                 />
             );
             break;
         case "builds":
-            element = <Builds azDoService={azDoService} />;
+            element = <Builds />;
             break;
         case "repositories":
             element = (
                 <Repositories
                     compliancyCheckerService={compliancyCheckerService}
-                    azDoService={azDoService}
                 />
             );
             break;
         case "releases":
-            element = <Releases azDoService={azDoService} />;
+            element = <Releases />;
             break;
         case "overview":
             element = (
-                <Overview
-                    compliancyCheckerService={compliancyCheckerService}
-                    azDoService={azDoService}
-                />
+                <Overview compliancyCheckerService={compliancyCheckerService} />
             );
             break;
         default:

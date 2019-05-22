@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAzDoService, IReleaseReport } from "./services/IAzDoService";
+import { IReleaseReport } from "./services/IAzDoService";
 import {
     ISimpleTableCell,
     ITableColumn,
@@ -18,6 +18,7 @@ import { sortingBehavior, onSize } from "./components/TableBehaviors";
 import { renderDate, renderCheckmark } from "./components/TableRenderers";
 import { Link } from "azure-devops-ui/Link";
 import "./Releases.css";
+import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -31,9 +32,7 @@ interface ITableItem extends ISimpleTableCell {
     allArtifactsAreFromBuild: IStatusProps;
 }
 
-interface IReleaseProps {
-    azDoService: IAzDoService;
-}
+interface IReleaseProps {}
 
 export default class extends React.Component<
     IReleaseProps,
@@ -52,9 +51,9 @@ export default class extends React.Component<
     }
 
     async componentDidMount() {
-        const report = await this.props.azDoService.GetReportsFromDocumentStorage<
-            IReleaseReport
-        >("Releases");
+        const report = await GetAzDoReportsFromDocumentStorage<IReleaseReport>(
+            "Releases"
+        );
         this.itemProvider.push(
             ...report.reports.map<ITableItem>(x => ({
                 pipeline: x.pipeline,

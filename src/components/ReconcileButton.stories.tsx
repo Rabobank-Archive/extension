@@ -2,7 +2,6 @@ import React from "react";
 import { storiesOf } from "@storybook/react";
 import ReconcileButton from "./ReconcileButton";
 import { CompliancyCheckerService } from "../services/CompliancyCheckerService";
-import { DummyAzDoService } from "../services/DummyAzDoService";
 
 storiesOf("ReconcileButton", module).add("default", () => (
     <ReconcileButton
@@ -14,9 +13,7 @@ storiesOf("ReconcileButton", module).add("default", () => (
                 "Members of the Project Administrators are moved to Rabobank Project Administrators",
                 "Delete team project permission is set to 'not set' for all other groups"
             ],
-            compliancyCheckerService: new CompliancyCheckerService(
-                new DummyAzDoService()
-            )
+            compliancyCheckerService: new CompliancyCheckerService()
         }}
     />
 ));

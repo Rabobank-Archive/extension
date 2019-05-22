@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAzDoService, IOverviewReport } from "./services/IAzDoService";
+import { IOverviewReport } from "./services/IAzDoService";
 
 import { ITableColumn, SimpleTableCell, Table } from "azure-devops-ui/Table";
 import {
@@ -21,6 +21,7 @@ import CompliancyHeader from "./components/CompliancyHeader";
 
 import "./css/styles.css";
 import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
+import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 
 interface ITableItem {
     description: string;
@@ -33,7 +34,6 @@ interface ITableItem {
 }
 
 interface IOverviewProps {
-    azDoService: IAzDoService;
     compliancyCheckerService: ICompliancyCheckerService;
 }
 
@@ -43,7 +43,6 @@ export default class extends React.Component<
         report: IOverviewReport;
         isLoading: boolean;
         isRescanning: boolean;
-        token: string;
     }
 > {
     private itemProvider = new ObservableArray<ITableItem>();
@@ -58,19 +57,17 @@ export default class extends React.Component<
                 hasReconcilePermissionUrl: ""
             },
             isLoading: true,
-            isRescanning: false,
-            token: ""
+            isRescanning: false
         };
     }
 
     private async getReportdata(): Promise<void> {
-        const report = await this.props.azDoService.GetReportsFromDocumentStorage<
-            IOverviewReport
-        >("globalpermissions");
+        const report = await GetAzDoReportsFromDocumentStorage<IOverviewReport>(
+            "globalpermissions"
+        );
         const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(
             report.hasReconcilePermissionUrl
         );
-        const token = await this.props.azDoService.GetAppToken();
 
         this.itemProvider.removeAll();
 
@@ -86,7 +83,7 @@ export default class extends React.Component<
             }))
         );
 
-        this.setState({ isLoading: false, report: report, token: token });
+        this.setState({ isLoading: false, report: report });
     }
 
     async componentDidMount() {

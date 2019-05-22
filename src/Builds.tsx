@@ -15,10 +15,11 @@ import { Header, TitleSize } from "azure-devops-ui/Header";
 import { Card } from "azure-devops-ui/Card";
 import { Statuses, IStatusProps } from "azure-devops-ui/Status";
 
-import { IAzDoService, IBuildReport } from "./services/IAzDoService";
+import { IBuildReport } from "./services/IAzDoService";
 import { sortingBehavior, onSize } from "./components/TableBehaviors";
 import { renderDate, renderCheckmark } from "./components/TableRenderers";
 import { Link } from "azure-devops-ui/Link";
+import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -29,9 +30,7 @@ interface ITableItem extends ISimpleTableCell {
     artifactsStoredSecure: IStatusProps;
 }
 
-interface IBuildProps {
-    azDoService: IAzDoService;
-}
+interface IBuildProps {}
 
 export default class extends React.Component<
     IBuildProps,
@@ -50,9 +49,9 @@ export default class extends React.Component<
     }
 
     async componentDidMount() {
-        const report = await this.props.azDoService.GetReportsFromDocumentStorage<
-            IBuildReport
-        >("BuildReports");
+        const report = await GetAzDoReportsFromDocumentStorage<IBuildReport>(
+            "BuildReports"
+        );
         this.itemProvider.push(
             ...report.reports.map<ITableItem>(x => ({
                 pipeline: x.pipeline,

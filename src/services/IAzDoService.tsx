@@ -69,11 +69,3 @@ export interface IReleasePipelinesReport
 export interface IBuildReport extends IExtensionDocument<IBuildRule> {}
 
 export interface IReleaseReport extends IExtensionDocument<IReleaseRule> {}
-
-export interface IAzDoService {
-    GetReportsFromDocumentStorage<TReport>(
-        documentCollectionName: string
-    ): Promise<TReport>;
-
-    GetAppToken(): Promise<string>;
-}

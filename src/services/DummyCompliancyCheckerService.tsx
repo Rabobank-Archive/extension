@@ -1,5 +1,4 @@
 import { ICompliancyCheckerService } from "./ICompliancyCheckerService";
-import { IAzDoService } from "./IAzDoService";
 
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -7,12 +6,8 @@ function delay(ms: number) {
 
 export class DummyCompliancyCheckerService
     implements ICompliancyCheckerService {
-    private azDoService: IAzDoService;
-
-    constructor(azDoService: IAzDoService) {
+    constructor() {
         console.log("Using dummy compliancy checker service");
-
-        this.azDoService = azDoService;
     }
 
     public async HasReconcilePermission(

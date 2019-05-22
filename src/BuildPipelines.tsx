@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IAzDoService, IBuildPipelinesReport } from "./services/IAzDoService";
+import { IBuildPipelinesReport } from "./services/IAzDoService";
 import { Page } from "azure-devops-ui/Page";
 import {
     HeaderCommandBarWithFilter,
@@ -28,9 +28,9 @@ import "./css/styles.css";
 import { Link } from "azure-devops-ui/Link";
 import { Card } from "azure-devops-ui/Card";
 import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
+import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 
 interface IBuildPipelinesProps {
-    azDoService: IAzDoService;
     compliancyCheckerService: ICompliancyCheckerService;
 }
 
@@ -92,7 +92,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
     };
 
     private async getData(): Promise<void> {
-        const buildPipelinesReport = await this.props.azDoService.GetReportsFromDocumentStorage<
+        const buildPipelinesReport = await GetAzDoReportsFromDocumentStorage<
             IBuildPipelinesReport
         >("buildpipelines");
         const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(

@@ -1,19 +1,15 @@
 import { ICompliancyCheckerService } from "./ICompliancyCheckerService";
-import { IAzDoService } from "./IAzDoService";
+import { GetAzDoAppToken } from "./AzDoService";
 
 export class CompliancyCheckerService implements ICompliancyCheckerService {
-    private azDoService: IAzDoService;
-
-    constructor(azDoService: IAzDoService) {
+    constructor() {
         console.log("Using real compliancy checker service");
-
-        this.azDoService = azDoService;
     }
 
     public async HasReconcilePermission(
         hasReconcilePermissionUrl: string
     ): Promise<boolean> {
-        const token = await this.azDoService.GetAppToken();
+        const token = await GetAzDoAppToken();
 
         let hasReconcilePermission: boolean = false;
 
@@ -36,7 +32,7 @@ export class CompliancyCheckerService implements ICompliancyCheckerService {
         onComplete?: () => void,
         onError?: () => void
     ): Promise<void> {
-        const token = await this.azDoService.GetAppToken();
+        const token = await GetAzDoAppToken();
 
         try {
             let requestInit: RequestInit = {
@@ -58,7 +54,7 @@ export class CompliancyCheckerService implements ICompliancyCheckerService {
         onComplete: () => void,
         onError: () => void
     ): Promise<void> {
-        const token = await this.azDoService.GetAppToken();
+        const token = await GetAzDoAppToken();
 
         try {
             let requestInit: RequestInit = {

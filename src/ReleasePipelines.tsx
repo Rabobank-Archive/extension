@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-    IAzDoService,
     IBuildPipelinesReport,
     IItemReport,
     IReleasePipelinesReport
@@ -13,9 +12,9 @@ import { MasterDetail } from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
 import "./css/styles.css";
 import { ICompliancyCheckerService } from "./services/ICompliancyCheckerService";
+import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 
 interface IReleasePipelinesProps {
-    azDoService: IAzDoService;
     compliancyCheckerService: ICompliancyCheckerService;
 }
 
@@ -44,7 +43,7 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
     }
 
     private async getData(): Promise<void> {
-        const releasePipelinesReport = await this.props.azDoService.GetReportsFromDocumentStorage<
+        const releasePipelinesReport = await GetAzDoReportsFromDocumentStorage<
             IReleasePipelinesReport
         >("releasepipelines");
         const hasReconcilePermission = await this.props.compliancyCheckerService.HasReconcilePermission(

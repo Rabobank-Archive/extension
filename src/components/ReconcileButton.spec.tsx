@@ -2,7 +2,6 @@ import React from "react";
 import fetchMock from "fetch-mock";
 import ReconcileButton from "./ReconcileButton";
 import { fireEvent, render, wait } from "react-testing-library";
-import { DummyAzDoService } from "../services/DummyAzDoService";
 import { CompliancyCheckerService } from "../services/CompliancyCheckerService";
 
 describe("ReconcileButon", () => {
@@ -12,9 +11,7 @@ describe("ReconcileButon", () => {
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"],
-                    compliancyCheckerService: new CompliancyCheckerService(
-                        new DummyAzDoService()
-                    )
+                    compliancyCheckerService: new CompliancyCheckerService()
                 }}
             />
         );
@@ -47,9 +44,7 @@ describe("ReconcileButon", () => {
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"],
-                    compliancyCheckerService: new CompliancyCheckerService(
-                        new DummyAzDoService()
-                    )
+                    compliancyCheckerService: new CompliancyCheckerService()
                 }}
             />
         );
@@ -81,9 +76,7 @@ describe("ReconcileButon", () => {
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"],
-                    compliancyCheckerService: new CompliancyCheckerService(
-                        new DummyAzDoService()
-                    )
+                    compliancyCheckerService: new CompliancyCheckerService()
                 }}
             />
         );
@@ -114,9 +107,7 @@ describe("ReconcileButon", () => {
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"],
-                    compliancyCheckerService: new CompliancyCheckerService(
-                        new DummyAzDoService()
-                    )
+                    compliancyCheckerService: new CompliancyCheckerService()
                 }}
             />
         );
