@@ -89,7 +89,7 @@ class Overview extends React.Component<
 
     async componentDidMount() {
         await this.getReportdata();
-        trackEvent("Overview page opened");
+        trackEvent("[Overview] Page opened");
     }
 
     render() {

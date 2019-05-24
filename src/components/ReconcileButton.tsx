@@ -2,7 +2,10 @@ import * as React from "react";
 import { useState } from "react";
 import { Button } from "azure-devops-ui/Button";
 import ConfirmReconcileDialog from "./ConfirmReconcileDialog";
-import { appInsightsReactPlugin } from "../services/ApplicationInsights";
+import {
+    appInsightsReactPlugin,
+    trackEvent
+} from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface IReconcileButtonProps {
@@ -22,6 +25,7 @@ const ReconcileButton = ({ reconcilableItem }: IReconcileButtonProps) => {
                 iconProps={{ iconName: "TriggerAuto" }}
                 onClick={() => {
                     setIsDialogOpen(true);
+                    trackEvent("[Reconcile Button] Clicked");
                 }}
                 text="Reconcile"
                 disabled={reconcilableItem.reconcileUrl === ""}

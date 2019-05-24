@@ -20,7 +20,10 @@ import { sortingBehavior, onSize } from "./components/TableBehaviors";
 import { renderDate, renderCheckmark } from "./components/TableRenderers";
 import { Link } from "azure-devops-ui/Link";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
-import { appInsightsReactPlugin } from "./services/ApplicationInsights";
+import {
+    appInsightsReactPlugin,
+    trackEvent
+} from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface ITableItem extends ISimpleTableCell {
@@ -70,6 +73,8 @@ class Builds extends React.Component<
         );
 
         this.setState({ isLoading: false, report: report });
+
+        trackEvent("[Builds] Page opened");
     }
 
     render() {

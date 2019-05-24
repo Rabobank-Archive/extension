@@ -10,7 +10,10 @@ import { Surface, SurfaceBackground } from "azure-devops-ui/Surface";
 import "./css/styles.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
-import { appInsightsReactPlugin } from "./services/ApplicationInsights";
+import {
+    appInsightsReactPlugin,
+    trackEvent
+} from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface IRepositoriesProps {}
@@ -40,6 +43,7 @@ class Repositories extends React.Component<IRepositoriesProps, IState> {
 
     async componentDidMount() {
         await this.getReportdata();
+        trackEvent("[Repositories] Page opened");
     }
 
     async getReportdata(): Promise<void> {

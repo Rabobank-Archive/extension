@@ -13,7 +13,10 @@ import CompliancyHeader from "./components/CompliancyHeader";
 import "./css/styles.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
-import { appInsightsReactPlugin } from "./services/ApplicationInsights";
+import {
+    appInsightsReactPlugin,
+    trackEvent
+} from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface IReleasePipelinesProps {}
@@ -59,6 +62,7 @@ class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
 
     async componentDidMount() {
         await this.getData();
+        trackEvent("[Release Pipelines] Page opened");
     }
 
     render() {

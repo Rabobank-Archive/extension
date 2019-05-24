@@ -19,7 +19,10 @@ import { renderDate, renderCheckmark } from "./components/TableRenderers";
 import { Link } from "azure-devops-ui/Link";
 import "./Releases.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
-import { appInsightsReactPlugin } from "./services/ApplicationInsights";
+import {
+    appInsightsReactPlugin,
+    trackEvent
+} from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface ITableItem extends ISimpleTableCell {
@@ -81,6 +84,7 @@ class Releases extends React.Component<
         );
 
         this.setState({ isLoading: false, report: report });
+        trackEvent("[Releases] Page opened");
     }
 
     render() {
