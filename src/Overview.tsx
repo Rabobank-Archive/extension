@@ -23,7 +23,10 @@ import "./css/styles.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
-import { reactPlugin } from "./services/ApplicationInsights";
+import {
+    appInsightsReactPlugin,
+    trackEvent
+} from "./services/ApplicationInsights";
 
 interface ITableItem {
     description: string;
@@ -86,6 +89,7 @@ class Overview extends React.Component<
 
     async componentDidMount() {
         await this.getReportdata();
+        trackEvent("Overview page opened");
     }
 
     render() {
@@ -213,4 +217,4 @@ class Overview extends React.Component<
     }
 }
 
-export default withAITracking(reactPlugin, Overview);
+export default withAITracking(appInsightsReactPlugin, Overview);
