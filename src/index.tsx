@@ -14,7 +14,7 @@ import { USE_AZDO_SDK } from "./services/Environment";
 class App extends Component {
     render() {
         return (
-            <HashRouter>
+            <HashRouter hashType="noslash">
                 <div>
                     <Route
                         exact
