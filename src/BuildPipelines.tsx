@@ -16,7 +16,7 @@ import { Filter } from "azure-devops-ui/Utilities/Filter";
 import { DropdownMultiSelection } from "azure-devops-ui/Utilities/DropdownSelection";
 
 import BuildPipelinesList from "./components/BuildPipelinesList";
-import { MasterDetail } from "./components/MasterDetail";
+import MasterDetail from "./components/MasterDetail";
 import {
     getPossibleCompliancyStatuses,
     getCompliancyStatusAsListItem

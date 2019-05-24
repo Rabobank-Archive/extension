@@ -1,6 +1,6 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import { ConfirmReconcileDialog } from "./ConfirmReconcileDialog";
+import ConfirmReconcileDialog from "./ConfirmReconcileDialog";
 
 storiesOf("ConfirmReconcileDialog", module).add("default", () => (
     <ConfirmReconcileDialog

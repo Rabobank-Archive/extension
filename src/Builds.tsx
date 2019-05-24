@@ -20,6 +20,8 @@ import { sortingBehavior, onSize } from "./components/TableBehaviors";
 import { renderDate, renderCheckmark } from "./components/TableRenderers";
 import { Link } from "azure-devops-ui/Link";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
+import { appInsightsReactPlugin } from "./services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -32,7 +34,7 @@ interface ITableItem extends ISimpleTableCell {
 
 interface IBuildProps {}
 
-export default class extends React.Component<
+class Builds extends React.Component<
     IBuildProps,
     { report: IBuildReport; isLoading: boolean }
 > {
@@ -208,3 +210,5 @@ export default class extends React.Component<
         );
     }
 }
+
+export default withAITracking(appInsightsReactPlugin, Builds);

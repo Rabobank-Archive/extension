@@ -3,13 +3,15 @@ import { IRepositoriesReport } from "./services/IAzDoService";
 import { Card } from "azure-devops-ui/Card";
 import { Page } from "azure-devops-ui/Page";
 import { Link } from "azure-devops-ui/Link";
-import { MasterDetail } from "./components/MasterDetail";
+import MasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
 import { Surface, SurfaceBackground } from "azure-devops-ui/Surface";
 
 import "./css/styles.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
+import { appInsightsReactPlugin } from "./services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface IRepositoriesProps {}
 
@@ -20,7 +22,7 @@ interface IState {
     hasReconcilePermission: boolean;
 }
 
-export default class extends React.Component<IRepositoriesProps, IState> {
+class Repositories extends React.Component<IRepositoriesProps, IState> {
     constructor(props: IRepositoriesProps) {
         super(props);
         this.state = {
@@ -142,3 +144,5 @@ export default class extends React.Component<IRepositoriesProps, IState> {
         );
     }
 }
+
+export default withAITracking(appInsightsReactPlugin, Repositories);

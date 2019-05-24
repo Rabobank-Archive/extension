@@ -5,6 +5,8 @@ import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { UnorderedList } from "./UnorderedList";
 import { DoReconcileRequest } from "../services/CompliancyCheckerService";
+import { appInsightsReactPlugin } from "../services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
@@ -13,7 +15,7 @@ interface IConfirmReconcileDialogProps {
     onCancel?: () => void;
 }
 
-export const ConfirmReconcileDialog = ({
+const ConfirmReconcileDialog = ({
     impact,
     reconcileUrl,
     onReconcileCompleted,
@@ -90,3 +92,5 @@ export const ConfirmReconcileDialog = ({
         </Dialog>
     );
 };
+
+export default withAITracking(appInsightsReactPlugin, ConfirmReconcileDialog);

@@ -8,11 +8,13 @@ import { Page } from "azure-devops-ui/Page";
 import { Link } from "azure-devops-ui/Link";
 import { Card } from "azure-devops-ui/Card";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
-import { MasterDetail } from "./components/MasterDetail";
+import MasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
 import "./css/styles.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
+import { appInsightsReactPlugin } from "./services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface IReleasePipelinesProps {}
 
@@ -23,7 +25,7 @@ interface IState {
     hasReconcilePermission: boolean;
 }
 
-export default class extends React.Component<IReleasePipelinesProps, IState> {
+class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
     constructor(props: IReleasePipelinesProps) {
         super(props);
 
@@ -151,6 +153,8 @@ export default class extends React.Component<IReleasePipelinesProps, IState> {
         );
     }
 }
+
+export default withAITracking(appInsightsReactPlugin, ReleasePipelines);
 
 function compareItemReports(a: IItemReport, b: IItemReport) {
     return a.item.localeCompare(b.item);

@@ -38,6 +38,8 @@ import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
 import { IItemReport } from "../services/IAzDoService";
 import ReconcileButton from "./ReconcileButton";
+import { appInsightsReactPlugin } from "../services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface IReportMaster {
     item: string;
@@ -63,7 +65,7 @@ function isCompliant(item: IReportMaster): boolean {
     });
 }
 
-export class MasterDetail extends React.Component<
+class MasterDetail extends React.Component<
     {
         title: string;
         data: IItemReport[];
@@ -357,6 +359,8 @@ export class MasterDetail extends React.Component<
         );
     }
 }
+
+export default withAITracking(appInsightsReactPlugin, MasterDetail);
 
 const InitialMasterPanelContent: React.FunctionComponent<{
     initialSelectedMasterItem: IObservableValue<IReportMaster>;

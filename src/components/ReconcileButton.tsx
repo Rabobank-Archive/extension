@@ -1,7 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
 import { Button } from "azure-devops-ui/Button";
-import { ConfirmReconcileDialog } from "./ConfirmReconcileDialog";
+import ConfirmReconcileDialog from "./ConfirmReconcileDialog";
+import { appInsightsReactPlugin } from "../services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface IReconcileButtonProps {
     reconcilableItem: {
@@ -10,9 +12,7 @@ interface IReconcileButtonProps {
     };
 }
 
-export const ReconcileButton = ({
-    reconcilableItem
-}: IReconcileButtonProps) => {
+const ReconcileButton = ({ reconcilableItem }: IReconcileButtonProps) => {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
     return (
@@ -42,4 +42,4 @@ export const ReconcileButton = ({
     );
 };
 
-export default ReconcileButton;
+export default withAITracking(appInsightsReactPlugin, ReconcileButton);
