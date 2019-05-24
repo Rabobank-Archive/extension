@@ -22,6 +22,8 @@ import CompliancyHeader from "./components/CompliancyHeader";
 import "./css/styles.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
+import { reactPlugin } from "./services/ApplicationInsights";
 
 interface ITableItem {
     description: string;
@@ -34,7 +36,7 @@ interface ITableItem {
 
 interface IOverviewProps {}
 
-export default class extends React.Component<
+class Overview extends React.Component<
     IOverviewProps,
     {
         report: IOverviewReport;
@@ -210,3 +212,5 @@ export default class extends React.Component<
         );
     }
 }
+
+export default withAITracking(reactPlugin, Overview);
