@@ -1,10 +1,10 @@
-import React from "react";
 import {
     ApplicationInsights,
     SeverityLevel
 } from "@microsoft/applicationinsights-web";
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 import { createBrowserHistory } from "history";
+import { USE_APP_INSIGHTS } from "./Environment";
 
 const browserHistory = createBrowserHistory({ basename: "" });
 const reactPlugin = new ReactPlugin();
@@ -14,7 +14,9 @@ const appInsights = new ApplicationInsights({
         extensions: [reactPlugin],
         extensionConfig: {
             [reactPlugin.identifier]: browserHistory
-        }
+        },
+        disableFetchTracking: false,
+        disableTelemetry: !USE_APP_INSIGHTS
     }
 });
 appInsights.loadAppInsights();
