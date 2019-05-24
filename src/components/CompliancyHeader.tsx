@@ -13,6 +13,8 @@ import { Ago } from "azure-devops-ui/Ago";
 import { AgoFormat } from "azure-devops-ui/Utilities/Date";
 import { HeaderCommandBar } from "azure-devops-ui/HeaderCommandBar";
 import { DoRescanRequest } from "../services/CompliancyCheckerService";
+import { appInsightsReactPlugin } from "../services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface ICompliancyHeaderProps {
     headerText: string;
@@ -25,7 +27,7 @@ interface IState {
     isRescanning: boolean;
 }
 
-export default class extends React.Component<ICompliancyHeaderProps, IState> {
+class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
     constructor(props: ICompliancyHeaderProps) {
         super(props);
         this.state = {
@@ -111,3 +113,5 @@ export default class extends React.Component<ICompliancyHeaderProps, IState> {
         );
     }
 }
+
+export default withAITracking(appInsightsReactPlugin, CompliancyHeader);

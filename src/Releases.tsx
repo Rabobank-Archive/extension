@@ -19,6 +19,11 @@ import { renderDate, renderCheckmark } from "./components/TableRenderers";
 import { Link } from "azure-devops-ui/Link";
 import "./Releases.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
+import {
+    appInsightsReactPlugin,
+    trackEvent
+} from "./services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -34,7 +39,7 @@ interface ITableItem extends ISimpleTableCell {
 
 interface IReleaseProps {}
 
-export default class extends React.Component<
+class Releases extends React.Component<
     IReleaseProps,
     { report: IReleaseReport; isLoading: boolean }
 > {
@@ -79,6 +84,7 @@ export default class extends React.Component<
         );
 
         this.setState({ isLoading: false, report: report });
+        trackEvent("[Releases] Page opened");
     }
 
     render() {
@@ -258,3 +264,5 @@ export default class extends React.Component<
         );
     }
 }
+
+export default withAITracking(appInsightsReactPlugin, Releases);

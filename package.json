@@ -7,7 +7,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "postbuild": "rimraf ./build/static/js/runtime~*",
-    "test": "tsc && react-scripts test --transformIgnorePatterns \"node_modules/(?!(azure-devops-ui))/\"",    
+    "test": "tsc && react-scripts test --transformIgnorePatterns \"node_modules/(?!(azure-devops-ui))/\"",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -21,12 +21,16 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@microsoft/applicationinsights-react-js": "^2.0.0",
+    "@microsoft/applicationinsights-web": "^2.0.0",
     "azure-devops-extension-api": "^1.150.3",
     "azure-devops-extension-sdk": "^2.0.7",
     "azure-devops-ui": "^1.151.6",
+    "history": "^4.9.0",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0"
   },
   "devDependencies": {
@@ -36,17 +40,19 @@
     "@storybook/addons": "^5.0.11",
     "@storybook/react": "^5.0.11",
     "@types/fetch-mock": "^7.2.3",
+    "@types/history": "^4.7.2",
     "@types/jest": "^24.0.12",
     "@types/node": "^12.0.0",
     "@types/react": "^16.8.16",
     "@types/react-dom": "^16.8.4",
+    "@types/react-router-dom": "^4.3.3",
     "@types/storybook__react": "^4.0.1",
-    "fetch-mock": "^7.3.3",
-    "node-fetch": "^2.5.0",
-    "react-testing-library": "^7.0.0",
     "eslint-config-prettier": "^4.2.0",
     "eslint-plugin-prettier": "^3.1.0",
+    "fetch-mock": "^7.3.3",
+    "node-fetch": "^2.5.0",
     "prettier": "^1.17.1",
+    "react-testing-library": "^7.0.0",
     "typescript": "^3.4.5"
   }
 }

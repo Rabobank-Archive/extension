@@ -5,6 +5,12 @@ import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { UnorderedList } from "./UnorderedList";
 import { DoReconcileRequest } from "../services/CompliancyCheckerService";
+import {
+    appInsightsReactPlugin,
+    trackEvent,
+    trackException
+} from "../services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
 interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
@@ -13,7 +19,7 @@ interface IConfirmReconcileDialogProps {
     onCancel?: () => void;
 }
 
-export const ConfirmReconcileDialog = ({
+const ConfirmReconcileDialog = ({
     impact,
     reconcileUrl,
     onReconcileCompleted,
@@ -23,13 +29,19 @@ export const ConfirmReconcileDialog = ({
     const [errorText, setErrorText] = useState<string>("");
 
     useEffect(() => {
+        trackEvent("[Confirm Reconcile Dialog] Opened");
+    }, []);
+
+    useEffect(() => {
         const doFetch = async () => {
             try {
                 await DoReconcileRequest(reconcileUrl);
                 setErrorText("");
+                trackEvent("[Confirm Reconcile Dialog] Reconcile completed");
                 if (onReconcileCompleted) onReconcileCompleted();
             } catch (e) {
                 setErrorText("Couldn't fulfill reconcile request.");
+                trackException(e);
             }
             setIsReconciling(false);
         };
@@ -47,6 +59,7 @@ export const ConfirmReconcileDialog = ({
                     text: "Cancel",
                     onClick: () => {
                         setErrorText("");
+                        trackEvent("[Confirm Reconcile Dialog] Cancelled");
                         if (onCancel) onCancel();
                     }
                 },
@@ -54,6 +67,7 @@ export const ConfirmReconcileDialog = ({
                     text: "Reconcile",
                     onClick: () => {
                         setIsReconciling(true);
+                        trackEvent("[Confirm Reconcile Dialog] Confirmed");
                     },
                     primary: true,
                     disabled: isReconciling
@@ -90,3 +104,5 @@ export const ConfirmReconcileDialog = ({
         </Dialog>
     );
 };
+
+export default withAITracking(appInsightsReactPlugin, ConfirmReconcileDialog);
