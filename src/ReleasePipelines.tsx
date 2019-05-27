@@ -15,7 +15,8 @@ import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 import {
     appInsightsReactPlugin,
-    trackEvent
+    trackEvent,
+    trackPageview
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
@@ -61,8 +62,9 @@ class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
     }
 
     async componentDidMount() {
-        await this.getData();
         trackEvent("[Release Pipelines] Page opened");
+        trackPageview();
+        await this.getData();
     }
 
     render() {

@@ -29,6 +29,7 @@ import { Link } from "azure-devops-ui/Link";
 import { Card } from "azure-devops-ui/Card";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
+import { trackEvent, trackPageview } from "./services/ApplicationInsights";
 
 interface IBuildPipelinesProps {}
 
@@ -105,6 +106,8 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
     }
 
     async componentDidMount() {
+        trackEvent("[Build Pipelines] Page opened");
+        trackPageview();
         await this.getData();
     }
 

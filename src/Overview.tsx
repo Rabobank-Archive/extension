@@ -25,7 +25,8 @@ import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import {
     appInsightsReactPlugin,
-    trackEvent
+    trackEvent,
+    trackPageview
 } from "./services/ApplicationInsights";
 
 interface ITableItem {
@@ -65,7 +66,7 @@ class Overview extends React.Component<
 
     private async getReportdata(): Promise<void> {
         const report = await GetAzDoReportsFromDocumentStorage<IOverviewReport>(
-            "globalpermissions"
+            "globalpermissionss"
         );
         const hasReconcilePermission = await HasReconcilePermission(
             report.hasReconcilePermissionUrl
@@ -88,8 +89,9 @@ class Overview extends React.Component<
     }
 
     async componentDidMount() {
-        await this.getReportdata();
         trackEvent("[Overview] Page opened");
+        trackPageview();
+        await this.getReportdata();
     }
 
     render() {
