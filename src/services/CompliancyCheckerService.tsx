@@ -1,6 +1,7 @@
 import { GetAzDoAppToken } from "./AzDoService";
 import { delay } from "./Delay";
 import { USE_COMPLIANCYCHECKER_SERVICE } from "./Environment";
+import { trackException } from "./ApplicationInsights";
 
 export function HasReconcilePermission(
     hasReconcilePermissionUrl: string
@@ -80,8 +81,9 @@ async function HasRealReconcilePermission(
         let response = await fetch(hasReconcilePermissionUrl, requestInit);
         let responseJson = await response.json();
         hasReconcilePermission = responseJson as boolean;
-    } catch {
+    } catch (e) {
         // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
+        trackException(e);
     }
     return hasReconcilePermission;
 }
@@ -103,8 +105,9 @@ async function DoRealReconcileRequest(
         } else {
             if (onError) onError();
         }
-    } catch {
+    } catch (e) {
         if (onError) onError();
+        trackException(e);
     }
 }
 
@@ -125,8 +128,9 @@ async function DoRealRescanRequest(
         } else {
             if (onError) onError();
         }
-    } catch {
+    } catch (e) {
         if (onError) onError();
+        trackException(e);
     }
 }
 //#endregion
