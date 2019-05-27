@@ -66,7 +66,7 @@ class Overview extends React.Component<
 
     private async getReportdata(): Promise<void> {
         const report = await GetAzDoReportsFromDocumentStorage<IOverviewReport>(
-            "globalpermissionss"
+            "globalpermissions"
         );
         const hasReconcilePermission = await HasReconcilePermission(
             report.hasReconcilePermissionUrl
