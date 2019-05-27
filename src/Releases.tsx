@@ -21,7 +21,8 @@ import "./Releases.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import {
     appInsightsReactPlugin,
-    trackEvent
+    trackEvent,
+    trackPageview
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
@@ -56,6 +57,9 @@ class Releases extends React.Component<
     }
 
     async componentDidMount() {
+        trackEvent("[Releases] Page opened");
+        trackPageview();
+
         const report = await GetAzDoReportsFromDocumentStorage<IReleaseReport>(
             "Releases"
         );
@@ -84,7 +88,6 @@ class Releases extends React.Component<
         );
 
         this.setState({ isLoading: false, report: report });
-        trackEvent("[Releases] Page opened");
     }
 
     render() {

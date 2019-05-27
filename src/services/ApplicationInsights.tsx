@@ -16,6 +16,8 @@ const appInsights = new ApplicationInsights({
             [reactPlugin.identifier]: browserHistory
         },
         disableFetchTracking: false,
+        disableExceptionTracking: false,
+        disableAjaxTracking: false,
         disableTelemetry: !USE_APP_INSIGHTS
     }
 });
@@ -37,6 +39,10 @@ export const trackTrace = (text: string) => {
 
 export const trackEvent = (text: string) => {
     appInsights.trackEvent({ name: text });
+};
+
+export const trackPageview = () => {
+    appInsights.trackPageView();
 };
 
 export { reactPlugin as appInsightsReactPlugin };

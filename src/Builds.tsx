@@ -22,7 +22,8 @@ import { Link } from "azure-devops-ui/Link";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import {
     appInsightsReactPlugin,
-    trackEvent
+    trackEvent,
+    trackPageview
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 
@@ -54,6 +55,9 @@ class Builds extends React.Component<
     }
 
     async componentDidMount() {
+        trackEvent("[Builds] Page opened");
+        trackPageview();
+
         const report = await GetAzDoReportsFromDocumentStorage<IBuildReport>(
             "BuildReports"
         );
@@ -73,8 +77,6 @@ class Builds extends React.Component<
         );
 
         this.setState({ isLoading: false, report: report });
-
-        trackEvent("[Builds] Page opened");
     }
 
     render() {
