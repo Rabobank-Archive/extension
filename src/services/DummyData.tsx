@@ -93,7 +93,8 @@ export const DummyReleaseReport: IReleaseReport = {
             pipeline: "TAS Azure DevOps Extensions",
             hasBranchFilterForAllArtifacts: true,
             usesManagedAgentsOnly: false,
-            allArtifactsAreFromBuild: false
+            allArtifactsAreFromBuild: false,
+            relatedToSm9: false
         },
         {
             release: "Release-199",
@@ -105,7 +106,8 @@ export const DummyReleaseReport: IReleaseReport = {
             pipeline: "TAS Azure DevOps Extensions",
             hasBranchFilterForAllArtifacts: false,
             usesManagedAgentsOnly: true,
-            allArtifactsAreFromBuild: true
+            allArtifactsAreFromBuild: true,
+            relatedToSm9: false
         },
         {
             release: "Release-199",
@@ -117,7 +119,8 @@ export const DummyReleaseReport: IReleaseReport = {
             pipeline: "TAS Azure DevOps Extensions",
             hasBranchFilterForAllArtifacts: false,
             usesManagedAgentsOnly: null,
-            allArtifactsAreFromBuild: null
+            allArtifactsAreFromBuild: null,
+            relatedToSm9: true
         }
     ]
 };
