@@ -36,7 +36,7 @@ interface ITableItem extends ISimpleTableCell {
     hasBranchFilterForAllArtifacts: IStatusProps;
     usesManagedAgentsOnly: IStatusProps;
     allArtifactsAreFromBuild: IStatusProps;
-    relatedToSm9: IStatusProps;
+    relatedToSm9Change: IStatusProps;
 }
 
 interface IReleaseProps {}
@@ -85,7 +85,7 @@ class Releases extends React.Component<
                 allArtifactsAreFromBuild: x.allArtifactsAreFromBuild
                     ? Statuses.Success
                     : Statuses.Failed,
-                relatedToSm9: x.relatedToSm9
+                relatedToSm9Change: x.relatedToSm9Change
                     ? Statuses.Success
                     : Statuses.Failed,
             }))
@@ -201,7 +201,7 @@ class Releases extends React.Component<
                 }
             },
             {
-                id: "relatedToSm9",
+                id: "relatedToSm9Change",
                 name: "Related to SM9",
                 onSize: onSize,
                 renderCell: renderCheckmark,
