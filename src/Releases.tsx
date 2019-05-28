@@ -85,9 +85,11 @@ class Releases extends React.Component<
                 allArtifactsAreFromBuild: x.allArtifactsAreFromBuild
                     ? Statuses.Success
                     : Statuses.Failed,
-                relatedToSm9Change: x.relatedToSm9Change
+                relatedToSm9Change: x.relatedToSm9Change == undefined
+                    ? Statuses.Skipped
+                    : x.relatedToSm9Change
                     ? Statuses.Success
-                    : Statuses.Failed,
+                    : Statuses.Failed
             }))
         );
 

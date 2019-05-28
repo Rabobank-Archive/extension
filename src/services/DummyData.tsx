@@ -94,7 +94,7 @@ export const DummyReleaseReport: IReleaseReport = {
             hasBranchFilterForAllArtifacts: true,
             usesManagedAgentsOnly: false,
             allArtifactsAreFromBuild: false,
-            relatedToSm9Change: false
+            relatedToSm9Change: undefined
         },
         {
             release: "Release-199",
