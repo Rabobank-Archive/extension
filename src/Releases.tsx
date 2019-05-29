@@ -85,11 +85,12 @@ class Releases extends React.Component<
                 allArtifactsAreFromBuild: x.allArtifactsAreFromBuild
                     ? Statuses.Success
                     : Statuses.Failed,
-                relatedToSm9Change: x.relatedToSm9Change == undefined
-                    ? Statuses.Skipped
-                    : x.relatedToSm9Change
-                    ? Statuses.Success
-                    : Statuses.Failed
+                relatedToSm9Change:
+                    x.relatedToSm9Change === undefined
+                        ? Statuses.Skipped
+                        : x.relatedToSm9Change
+                        ? Statuses.Success
+                        : Statuses.Failed
             }))
         );
 
@@ -214,7 +215,6 @@ class Releases extends React.Component<
                     ariaLabelDescending: "Sorted Z to A"
                 }
             }
-
         ];
 
         return (
