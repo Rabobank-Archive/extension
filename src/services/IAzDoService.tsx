@@ -35,7 +35,7 @@ export interface IReleaseRule {
     hasBranchFilterForAllArtifacts: boolean;
     usesManagedAgentsOnly: boolean | null;
     allArtifactsAreFromBuild: boolean | null;
-    relatedToSm9Change?: boolean
+    relatedToSm9Change: boolean | null | undefined;
 }
 
 export interface IExtensionDocument<TReport> {

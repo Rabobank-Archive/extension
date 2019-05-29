@@ -86,6 +86,7 @@ class Releases extends React.Component<
                     ? Statuses.Success
                     : Statuses.Failed,
                 relatedToSm9Change:
+                    x.relatedToSm9Change === null ||
                     x.relatedToSm9Change === undefined
                         ? Statuses.Queued
                         : x.relatedToSm9Change
