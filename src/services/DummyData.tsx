@@ -94,15 +94,15 @@ export const DummyReleaseReport: IReleaseReport = {
             hasBranchFilterForAllArtifacts: true,
             usesManagedAgentsOnly: false,
             allArtifactsAreFromBuild: false,
-            relatedToSm9Change: undefined
+            relatedToSm9Change: null
         },
         {
             release: "Release-199",
             environment: "raboweb-test",
             releaseId: "2374",
             createdDate: "2019-02-12T11:34:18.8188815Z",
-            usesProductionEndpoints: true,
-            hasApprovalOptions: false,
+            usesProductionEndpoints: false,
+            hasApprovalOptions: null,
             pipeline: "TAS Azure DevOps Extensions",
             hasBranchFilterForAllArtifacts: false,
             usesManagedAgentsOnly: true,
@@ -110,11 +110,11 @@ export const DummyReleaseReport: IReleaseReport = {
             relatedToSm9Change: false
         },
         {
-            release: "Release-199",
+            release: "Release-198",
             environment: "raboweb-test",
             releaseId: "2374",
             createdDate: "2019-02-12T11:34:18.8188815Z",
-            usesProductionEndpoints: true,
+            usesProductionEndpoints: null,
             hasApprovalOptions: false,
             pipeline: "TAS Azure DevOps Extensions",
             hasBranchFilterForAllArtifacts: false,

@@ -30,12 +30,12 @@ export interface IReleaseRule {
     releaseId: string;
     environment: string;
     createdDate: string;
-    hasApprovalOptions: boolean;
-    usesProductionEndpoints: boolean;
-    hasBranchFilterForAllArtifacts: boolean;
-    usesManagedAgentsOnly: boolean | null;
-    allArtifactsAreFromBuild: boolean | null;
-    relatedToSm9Change?: boolean
+    hasApprovalOptions: boolean | null | undefined;
+    usesProductionEndpoints: boolean | null | undefined;
+    hasBranchFilterForAllArtifacts: boolean | null | undefined;
+    usesManagedAgentsOnly: boolean | null | undefined;
+    allArtifactsAreFromBuild: boolean | null | undefined;
+    relatedToSm9Change: boolean | null | undefined;
 }
 
 export interface IExtensionDocument<TReport> {

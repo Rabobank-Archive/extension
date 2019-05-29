@@ -70,27 +70,20 @@ class Releases extends React.Component<
                 release: x.release,
                 environment: x.environment,
                 createdDate: x.createdDate,
-                usesProductionEndpoints: x.usesProductionEndpoints
-                    ? "yes"
-                    : "no",
-                hasApprovalOptions: x.hasApprovalOptions
-                    ? Statuses.Success
-                    : Statuses.Failed,
-                hasBranchFilterForAllArtifacts: x.hasBranchFilterForAllArtifacts
-                    ? Statuses.Success
-                    : Statuses.Failed,
-                usesManagedAgentsOnly: x.usesManagedAgentsOnly
-                    ? Statuses.Success
-                    : Statuses.Failed,
-                allArtifactsAreFromBuild: x.allArtifactsAreFromBuild
-                    ? Statuses.Success
-                    : Statuses.Failed,
-                relatedToSm9Change:
-                    x.relatedToSm9Change === undefined
-                        ? Statuses.Queued
-                        : x.relatedToSm9Change
-                        ? Statuses.Success
-                        : Statuses.Failed
+                usesProductionEndpoints:
+                    x.usesProductionEndpoints === null ||
+                    x.usesProductionEndpoints === undefined
+                        ? ""
+                        : x.usesProductionEndpoints
+                        ? "yes"
+                        : "no",
+                hasApprovalOptions: getStatus(x.hasApprovalOptions),
+                hasBranchFilterForAllArtifacts: getStatus(
+                    x.hasBranchFilterForAllArtifacts
+                ),
+                usesManagedAgentsOnly: getStatus(x.usesManagedAgentsOnly),
+                allArtifactsAreFromBuild: getStatus(x.allArtifactsAreFromBuild),
+                relatedToSm9Change: getStatus(x.relatedToSm9Change)
             }))
         );
 
@@ -288,3 +281,10 @@ class Releases extends React.Component<
 }
 
 export default withAITracking(appInsightsReactPlugin, Releases);
+function getStatus(value: null | undefined | boolean): IStatusProps {
+    return value === null || value === undefined
+        ? Statuses.Queued
+        : value
+        ? Statuses.Success
+        : Statuses.Failed;
+}
