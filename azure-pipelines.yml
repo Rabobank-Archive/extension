@@ -14,6 +14,10 @@ steps:
   displayName: 'npm install'
 
 - script: |
+    CI=true npm test
+  displayName: 'npm test'
+
+- script: |
     npm run build
   displayName: 'npm run build'
 
