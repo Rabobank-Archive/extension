@@ -1,5 +1,5 @@
 import React from "react";
-import { MasterDetail } from "./MasterDetail";
+import MasterDetail from "./MasterDetail";
 import { fireEvent, render } from "react-testing-library";
 import { DummyRepositoriesReport } from "../services/DummyData";
 
