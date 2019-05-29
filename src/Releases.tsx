@@ -36,6 +36,7 @@ interface ITableItem extends ISimpleTableCell {
     hasBranchFilterForAllArtifacts: IStatusProps;
     usesManagedAgentsOnly: IStatusProps;
     allArtifactsAreFromBuild: IStatusProps;
+    relatedToSm9Change: IStatusProps;
 }
 
 interface IReleaseProps {}
@@ -83,7 +84,13 @@ class Releases extends React.Component<
                     : Statuses.Failed,
                 allArtifactsAreFromBuild: x.allArtifactsAreFromBuild
                     ? Statuses.Success
-                    : Statuses.Failed
+                    : Statuses.Failed,
+                relatedToSm9Change:
+                    x.relatedToSm9Change === undefined
+                        ? Statuses.Queued
+                        : x.relatedToSm9Change
+                        ? Statuses.Success
+                        : Statuses.Failed
             }))
         );
 
@@ -190,7 +197,19 @@ class Releases extends React.Component<
                 onSize: onSize,
                 renderCell: renderCheckmark,
                 className: "center",
-                width: new ObservableValue(250),
+                width: new ObservableValue(172),
+                sortProps: {
+                    ariaLabelAscending: "Sorted A to Z",
+                    ariaLabelDescending: "Sorted Z to A"
+                }
+            },
+            {
+                id: "relatedToSm9Change",
+                name: "Related to SM9",
+                onSize: onSize,
+                renderCell: renderCheckmark,
+                className: "center",
+                width: new ObservableValue(130),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
                     ariaLabelDescending: "Sorted Z to A"
