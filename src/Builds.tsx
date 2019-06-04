@@ -96,7 +96,7 @@ class Builds extends React.Component<
                 id: "buildId",
                 name: "Build",
                 onSize: onSize,
-                width: new ObservableValue(75),
+                width: new ObservableValue(100),
                 renderCell: renderSimpleCell,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -118,7 +118,7 @@ class Builds extends React.Component<
                 id: "usesFortify",
                 name: "Fortify",
                 onSize: onSize,
-                width: new ObservableValue(75),
+                width: new ObservableValue(100),
                 renderCell: renderCheckmark,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -129,7 +129,7 @@ class Builds extends React.Component<
                 id: "usesSonarQube",
                 name: "SonarQube",
                 onSize: onSize,
-                width: new ObservableValue(75),
+                width: new ObservableValue(100),
                 renderCell: renderCheckmark,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
@@ -140,7 +140,7 @@ class Builds extends React.Component<
                 id: "artifactsStoredSecure",
                 name: "Artifact Secure",
                 onSize: onSize,
-                width: new ObservableValue(75),
+                width: new ObservableValue(100),
                 renderCell: renderCheckmark,
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
