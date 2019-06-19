@@ -2,6 +2,7 @@ import { GetAzDoAppToken, GetAzDoUser } from "./AzDoService";
 import { delay } from "./Delay";
 import { USE_COMPLIANCYCHECKER_SERVICE } from "./Environment";
 import { trackException, trackTrace } from "./ApplicationInsights";
+import axios, { AxiosRequestConfig } from "axios";
 
 export function HasReconcilePermission(
     hasReconcilePermissionUrl: string
@@ -10,6 +11,7 @@ export function HasReconcilePermission(
         ? HasRealReconcilePermission(hasReconcilePermissionUrl)
         : HasDummyReconcilePermission(hasReconcilePermissionUrl);
 }
+
 export function DoReconcileRequest(
     reconcileUrl: string,
     onComplete?: () => void,
@@ -19,6 +21,7 @@ export function DoReconcileRequest(
         ? DoRealReconcileRequest(reconcileUrl, onComplete, onError)
         : DoDummyReconcileRequest(reconcileUrl, onComplete, onError);
 }
+
 export function DoRescanRequest(
     rescanUrl: string,
     onComplete?: () => void,
@@ -63,6 +66,7 @@ async function DoDummyRescanRequest(
     await delay(2000);
     if (onComplete) onComplete();
 }
+
 //#endregion
 
 //#region Real implementations
@@ -141,18 +145,15 @@ async function DoRealRescanRequest(
     const token = await GetAzDoAppToken();
 
     try {
-        let requestInit: RequestInit = {
+        let config: AxiosRequestConfig = {
             headers: { Authorization: `Bearer ${token}` }
         };
-        let response = await fetch(rescanUrl, requestInit);
-        if (response.ok) {
-            if (onComplete) onComplete();
-        } else {
-            if (onError) onError();
-        }
+        await axios.get(rescanUrl, config);
+        if (onComplete) onComplete();
     } catch (e) {
         if (onError) onError();
         trackException(e);
     }
 }
+
 //#endregion
