@@ -5,6 +5,7 @@ import {
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 import { createBrowserHistory } from "history";
 import { USE_APP_INSIGHTS } from "./Environment";
+import { ICustomProperties } from "@microsoft/applicationinsights-core-js";
 
 const browserHistory = createBrowserHistory({ basename: "" });
 const reactPlugin = new ReactPlugin();
@@ -30,11 +31,17 @@ export const trackException = (text: string) => {
     });
 };
 
-export const trackTrace = (text: string) => {
-    appInsights.trackTrace({
-        message: text,
-        severityLevel: SeverityLevel.Information
-    });
+export const trackTrace = (
+    text: string,
+    customProperties?: ICustomProperties
+) => {
+    appInsights.trackTrace(
+        {
+            message: text,
+            severityLevel: SeverityLevel.Information
+        },
+        customProperties
+    );
 };
 
 export const trackEvent = (text: string) => {
