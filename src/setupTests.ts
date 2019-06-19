@@ -1,8 +1,11 @@
-import fetchMock from "fetch-mock";
 import { cleanup } from "react-testing-library";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 
-afterEach(fetchMock.reset);
+let mock = new MockAdapter(axios);
+
+afterEach(mock.reset);
 afterEach(cleanup);
 
 jest.setTimeout(10e3);

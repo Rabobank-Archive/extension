@@ -1,7 +1,10 @@
 import React from "react";
-import fetchMock from "fetch-mock";
 import ReconcileButton from "./ReconcileButton";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 import { fireEvent, render, wait } from "react-testing-library";
+
+let mock = new MockAdapter(axios);
 
 describe("ReconcileButon", () => {
     it("should reconcile", async () => {
@@ -16,8 +19,8 @@ describe("ReconcileButon", () => {
 
         fireEvent.click(getByText("Reconcile"));
 
-        fetchMock.get("*", 200);
-
+        mock.onGet("*").reply(200);
+        
         getByText("Confirm reconciliation");
 
         const reconcileButtons = getAllByText("Reconcile");
@@ -51,7 +54,7 @@ describe("ReconcileButon", () => {
         const reconcileButtons = getAllByText("Reconcile");
         expect(reconcileButtons).toHaveLength(2);
 
-        fetchMock.get("*", 200);
+        mock.onGet("*").reply(200);
 
         const dialogConfirmButton = reconcileButtons[1];
         fireEvent.click(dialogConfirmButton);
@@ -79,7 +82,7 @@ describe("ReconcileButon", () => {
 
         fireEvent.click(getByText("Reconcile"));
 
-        fetchMock.get("*", 500);
+        mock.onGet("*").reply(500);
 
         const reconcileButtons = getAllByText("Reconcile");
         expect(reconcileButtons).toHaveLength(2);
