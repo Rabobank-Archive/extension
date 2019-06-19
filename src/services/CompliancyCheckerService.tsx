@@ -1,7 +1,8 @@
-import { GetAzDoAppToken } from "./AzDoService";
-import { delay } from "./Delay";
-import { USE_COMPLIANCYCHECKER_SERVICE } from "./Environment";
-import { trackException } from "./ApplicationInsights";
+import {GetAzDoAppToken} from "./AzDoService";
+import {delay} from "./Delay";
+import {USE_COMPLIANCYCHECKER_SERVICE} from "./Environment";
+import {trackException} from "./ApplicationInsights";
+import axios from "axios";
 
 export function HasReconcilePermission(
     hasReconcilePermissionUrl: string
@@ -10,6 +11,7 @@ export function HasReconcilePermission(
         ? HasRealReconcilePermission(hasReconcilePermissionUrl)
         : HasDummyReconcilePermission(hasReconcilePermissionUrl);
 }
+
 export function DoReconcileRequest(
     reconcileUrl: string,
     onComplete?: () => void,
@@ -19,6 +21,7 @@ export function DoReconcileRequest(
         ? DoRealReconcileRequest(reconcileUrl, onComplete, onError)
         : DoDummyReconcileRequest(reconcileUrl, onComplete, onError);
 }
+
 export function DoRescanRequest(
     rescanUrl: string,
     onComplete?: () => void,
@@ -63,6 +66,7 @@ async function DoDummyRescanRequest(
     await delay(2000);
     if (onComplete) onComplete();
 }
+
 //#endregion
 
 //#region Real implementations
@@ -74,7 +78,7 @@ async function HasRealReconcilePermission(
     let hasReconcilePermission: boolean = false;
 
     const requestInit: RequestInit = {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {Authorization: `Bearer ${token}`}
     };
 
     try {
@@ -97,7 +101,7 @@ async function DoRealReconcileRequest(
 
     try {
         let requestInit: RequestInit = {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: {Authorization: `Bearer ${token}`}
         };
         let response = await fetch(reconcileUrl, requestInit);
         if (response.ok) {
@@ -120,17 +124,14 @@ async function DoRealRescanRequest(
 
     try {
         let requestInit: RequestInit = {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: {Authorization: `Bearer ${token}`}
         };
-        let response = await fetch(rescanUrl, requestInit);
-        if (response.ok) {
-            if (onComplete) onComplete();
-        } else {
-            if (onError) onError();
-        }
+        await axios.get(rescanUrl, {headers: {requestInit}});
+        if (onComplete) onComplete();
     } catch (e) {
         if (onError) onError();
         trackException(e);
     }
 }
+
 //#endregion
