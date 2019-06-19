@@ -1,8 +1,8 @@
-import { GetAzDoAppToken, GetAzDoUser } from "./AzDoService";
-import { delay } from "./Delay";
-import { USE_COMPLIANCYCHECKER_SERVICE } from "./Environment";
-import { trackException, trackTrace } from "./ApplicationInsights";
-import axios, { AxiosRequestConfig } from "axios";
+import {GetAzDoAppToken, GetAzDoUser} from "./AzDoService";
+import {delay} from "./Delay";
+import {USE_COMPLIANCYCHECKER_SERVICE} from "./Environment";
+import {trackException, trackTrace} from "./ApplicationInsights";
+import axios, {AxiosRequestConfig} from "axios";
 
 export function HasReconcilePermission(
     hasReconcilePermissionUrl: string
@@ -78,8 +78,8 @@ async function HasRealReconcilePermission(
 
     let hasReconcilePermission: boolean = false;
 
-    const requestInit: RequestInit = {
-        headers: { Authorization: `Bearer ${token}` }
+    const config: AxiosRequestConfig = {
+        headers: {Authorization: `Bearer ${token}`}
     };
 
     trackTrace("HasReconcilePermission started", {
@@ -90,9 +90,8 @@ async function HasRealReconcilePermission(
     });
 
     try {
-        let response = await fetch(hasReconcilePermissionUrl, requestInit);
-        let responseJson = await response.json();
-        hasReconcilePermission = responseJson as boolean;
+        let response = await axios.get(hasReconcilePermissionUrl, config);
+        hasReconcilePermission = response.data as boolean;
     } catch (e) {
         // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
         trackException(e);
@@ -122,15 +121,11 @@ async function DoRealReconcileRequest(
     const token = await GetAzDoAppToken();
 
     try {
-        let requestInit: RequestInit = {
-            headers: { Authorization: `Bearer ${token}` }
+        let config: AxiosRequestConfig = {
+            headers: {Authorization: `Bearer ${token}`}
         };
-        let response = await fetch(reconcileUrl, requestInit);
-        if (response.ok) {
-            if (onComplete) onComplete();
-        } else {
-            if (onError) onError();
-        }
+        await axios.get(reconcileUrl, config);
+        if (onComplete) onComplete();
     } catch (e) {
         if (onError) onError();
         trackException(e);
@@ -146,7 +141,7 @@ async function DoRealRescanRequest(
 
     try {
         let config: AxiosRequestConfig = {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: {Authorization: `Bearer ${token}`}
         };
         await axios.get(rescanUrl, config);
         if (onComplete) onComplete();
