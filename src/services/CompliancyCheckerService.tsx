@@ -1,7 +1,7 @@
-import { GetAzDoAppToken } from "./AzDoService";
+import { GetAzDoAppToken, GetAzDoUser } from "./AzDoService";
 import { delay } from "./Delay";
 import { USE_COMPLIANCYCHECKER_SERVICE } from "./Environment";
-import { trackException } from "./ApplicationInsights";
+import { trackException, trackTrace } from "./ApplicationInsights";
 
 export function HasReconcilePermission(
     hasReconcilePermissionUrl: string
@@ -70,12 +70,20 @@ async function HasRealReconcilePermission(
     hasReconcilePermissionUrl: string
 ): Promise<boolean> {
     const token = await GetAzDoAppToken();
+    const user = GetAzDoUser();
 
     let hasReconcilePermission: boolean = false;
 
     const requestInit: RequestInit = {
         headers: { Authorization: `Bearer ${token}` }
     };
+
+    trackTrace("HasReconcilePermission started", {
+        token: token,
+        userName: user.name,
+        userDisplayName: user.displayName,
+        userId: user.id
+    });
 
     try {
         let response = await fetch(hasReconcilePermissionUrl, requestInit);
@@ -84,7 +92,21 @@ async function HasRealReconcilePermission(
     } catch (e) {
         // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
         trackException(e);
+        trackTrace("HasReconcilePermission failed", {
+            token: token,
+            userName: user.name,
+            userDisplayName: user.displayName,
+            userId: user.id,
+            result: e
+        });
     }
+    trackTrace("HasReconcilePermission succeeded", {
+        token: token,
+        userName: user.name,
+        userDisplayName: user.displayName,
+        userId: user.id,
+        result: hasReconcilePermission
+    });
     return hasReconcilePermission;
 }
 

@@ -17,6 +17,10 @@ import { delay } from "./Delay";
 
 let appToken: string | undefined;
 
+export function GetAzDoUser(): SDK.IUserContext {
+    return USE_AZDO_SERVICE ? GetRealAzDoUser() : GetDummyAzDoUser();
+}
+
 export async function GetAzDoAppToken(): Promise<string> {
     return USE_AZDO_SERVICE ? GetRealAzDoAppToken() : GetDummyAzDoAppToken();
 }
@@ -30,6 +34,16 @@ export async function GetAzDoReportsFromDocumentStorage<TReport>(
 }
 
 //#region Dummy implementations
+function GetDummyAzDoUser(): SDK.IUserContext {
+    return {
+        descriptor: "dummy-descriptor",
+        displayName: "dummy-displayname",
+        id: "dummy-id",
+        imageUrl: "https://dummy-image-url",
+        name: "dummy-name"
+    };
+}
+
 async function GetDummyAzDoAppToken(): Promise<string> {
     const token = "DUMMYTOKEN!@#";
     console.log(
@@ -67,6 +81,10 @@ function loadData<TReport>(documentCollectionName: string): TReport {
 //#endregion
 
 //#region Real implementations
+function GetRealAzDoUser(): SDK.IUserContext {
+    return SDK.getUser();
+}
+
 async function GetRealAzDoAppToken(): Promise<string> {
     if (!appToken) {
         appToken = await SDK.getAppToken();
