@@ -14,6 +14,7 @@ import {
 } from "./DummyData";
 import { USE_AZDO_SERVICE } from "./Environment";
 import { delay } from "./Delay";
+import * as JWT from "jsonwebtoken";
 
 let appToken: string | undefined;
 
@@ -86,10 +87,16 @@ function GetRealAzDoUser(): SDK.IUserContext {
 }
 
 async function GetRealAzDoAppToken(): Promise<string> {
-    if (!appToken) {
+    if (!appToken || IsTokenExpired(appToken)) {
         appToken = await SDK.getAppToken();
     }
     return appToken;
+}
+
+export function IsTokenExpired(token: string): boolean {
+    var decoded = JWT.decode(token) as any;
+    var currentTime = Date.now().valueOf() / 1000;
+    return currentTime > decoded["exp"];
 }
 
 async function GetRealAzDoReportsFromDocumentStorage<TReport>(
