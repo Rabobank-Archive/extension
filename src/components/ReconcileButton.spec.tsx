@@ -2,7 +2,7 @@ import React from "react";
 import ReconcileButton from "./ReconcileButton";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { fireEvent, render, wait } from "react-testing-library";
+import { fireEvent, render, wait } from "@testing-library/react";
 
 let mock = new MockAdapter(axios);
 
@@ -20,7 +20,7 @@ describe("ReconcileButon", () => {
         fireEvent.click(getByText("Reconcile"));
 
         mock.onGet("*").reply(200);
-        
+
         getByText("Confirm reconciliation");
 
         const reconcileButtons = getAllByText("Reconcile");

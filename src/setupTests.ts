@@ -1,4 +1,4 @@
-import { cleanup } from "react-testing-library";
+import { cleanup } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { ReactPlugin } from "@microsoft/applicationinsights-react-js";

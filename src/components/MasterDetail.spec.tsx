@@ -1,6 +1,6 @@
 import React from "react";
 import MasterDetail from "./MasterDetail";
-import { fireEvent, render } from "react-testing-library";
+import { fireEvent, render } from "@testing-library/react";
 import { DummyRepositoriesReport } from "../services/DummyData";
 
 describe("MasterDetail", () => {
