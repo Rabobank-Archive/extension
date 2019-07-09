@@ -28,6 +28,7 @@ import {
     trackEvent,
     trackPageview
 } from "./services/ApplicationInsights";
+import ErrorBar from "./components/ErrorBar";
 
 interface ITableItem {
     description: string;
@@ -46,6 +47,7 @@ class Overview extends React.Component<
         report: IOverviewReport;
         isLoading: boolean;
         isRescanning: boolean;
+        errorText: string;
     }
 > {
     private itemProvider = new ObservableArray<ITableItem>();
@@ -60,32 +62,42 @@ class Overview extends React.Component<
                 hasReconcilePermissionUrl: ""
             },
             isLoading: true,
-            isRescanning: false
+            isRescanning: false,
+            errorText: ""
         };
     }
 
     private async getReportdata(): Promise<void> {
-        const report = await GetAzDoReportsFromDocumentStorage<IOverviewReport>(
-            "globalpermissions"
-        );
-        const hasReconcilePermission = await HasReconcilePermission(
-            report.hasReconcilePermissionUrl
-        );
+        try {
+            const report = await GetAzDoReportsFromDocumentStorage<
+                IOverviewReport
+            >("globalpermissions");
 
-        this.itemProvider.removeAll();
+            const hasReconcilePermission = await HasReconcilePermission(
+                report.hasReconcilePermissionUrl
+            );
 
-        this.itemProvider.push(
-            ...report.reports.map<ITableItem>(x => ({
-                description: x.description,
-                why: x.why,
-                hasReconcilePermission: hasReconcilePermission,
-                reconcileUrl: x.reconcile!.url,
-                reconcileImpact: x.reconcile!.impact,
-                status: x.status ? Statuses.Success : Statuses.Failed
-            }))
-        );
+            this.itemProvider.removeAll();
 
-        this.setState({ isLoading: false, report: report });
+            this.itemProvider.push(
+                ...report.reports.map<ITableItem>(x => ({
+                    description: x.description,
+                    why: x.why,
+                    hasReconcilePermission: hasReconcilePermission,
+                    reconcileUrl: x.reconcile!.url,
+                    reconcileImpact: x.reconcile!.impact,
+                    status: x.status ? Statuses.Success : Statuses.Failed
+                }))
+            );
+
+            this.setState({ isLoading: false, report: report });
+        } catch {
+            this.setState({
+                isLoading: false,
+                errorText:
+                    "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
+            });
+        }
     }
 
     async componentDidMount() {
@@ -104,6 +116,10 @@ class Overview extends React.Component<
                     onRescanFinished={async () => {
                         await this.getReportdata();
                     }}
+                />
+                <ErrorBar
+                    message={this.state.errorText}
+                    onDismiss={() => this.setState({ errorText: "" })}
                 />
 
                 <div className="page-content page-content-top flex-row">

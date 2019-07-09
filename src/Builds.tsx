@@ -26,6 +26,7 @@ import {
     trackPageview
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
+import ErrorBar from "./components/ErrorBar";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -40,7 +41,7 @@ interface IBuildProps {}
 
 class Builds extends React.Component<
     IBuildProps,
-    { report: IBuildReport; isLoading: boolean }
+    { report: IBuildReport; isLoading: boolean; errorText: string }
 > {
     private itemProvider = new ObservableArray<any>();
 
@@ -50,7 +51,8 @@ class Builds extends React.Component<
             report: {
                 reports: []
             },
-            isLoading: true
+            isLoading: true,
+            errorText: ""
         };
     }
 
@@ -58,25 +60,35 @@ class Builds extends React.Component<
         trackEvent("[Builds] Page opened");
         trackPageview();
 
-        const report = await GetAzDoReportsFromDocumentStorage<IBuildReport>(
-            "BuildReports"
-        );
-        this.itemProvider.push(
-            ...report.reports.map<ITableItem>(x => ({
-                pipeline: x.pipeline,
-                buildId: x.id,
-                createdDate: x.createdDate,
-                usesFortify: x.usesFortify ? Statuses.Success : Statuses.Failed,
-                usesSonarQube: x.usesSonarQube
-                    ? Statuses.Success
-                    : Statuses.Failed,
-                artifactsStoredSecure: x.artifactsStoredSecure
-                    ? Statuses.Success
-                    : Statuses.Failed
-            }))
-        );
+        try {
+            const report = await GetAzDoReportsFromDocumentStorage<
+                IBuildReport
+            >("BuildReports");
+            this.itemProvider.push(
+                ...report.reports.map<ITableItem>(x => ({
+                    pipeline: x.pipeline,
+                    buildId: x.id,
+                    createdDate: x.createdDate,
+                    usesFortify: x.usesFortify
+                        ? Statuses.Success
+                        : Statuses.Failed,
+                    usesSonarQube: x.usesSonarQube
+                        ? Statuses.Success
+                        : Statuses.Failed,
+                    artifactsStoredSecure: x.artifactsStoredSecure
+                        ? Statuses.Success
+                        : Statuses.Failed
+                }))
+            );
 
-        this.setState({ isLoading: false, report: report });
+            this.setState({ isLoading: false, report: report });
+        } catch {
+            this.setState({
+                isLoading: false,
+                errorText:
+                    "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
+            });
+        }
     }
 
     render() {
@@ -161,6 +173,10 @@ class Builds extends React.Component<
                     titleIconProps={{ iconName: "OpenSource" }}
                 />
 
+                <ErrorBar
+                    message={this.state.errorText}
+                    onDismiss={() => this.setState({ errorText: "" })}
+                />
                 <div className="page-content page-content-top">
                     <p>
                         We would ❤ getting in touch on how to improve analyzing

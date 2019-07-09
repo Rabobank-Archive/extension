@@ -1,8 +1,8 @@
-import {GetAzDoAppToken, GetAzDoUser} from "./AzDoService";
-import {delay} from "./Delay";
-import {USE_COMPLIANCYCHECKER_SERVICE} from "./Environment";
-import {trackException, trackTrace} from "./ApplicationInsights";
-import axios, {AxiosRequestConfig} from "axios";
+import { GetAzDoAppToken, GetAzDoUser } from "./AzDoService";
+import { delay } from "./Delay";
+import { USE_COMPLIANCYCHECKER_SERVICE } from "./Environment";
+import { trackException, trackTrace } from "./ApplicationInsights";
+import axios, { AxiosRequestConfig } from "axios";
 
 export function HasReconcilePermission(
     hasReconcilePermissionUrl: string
@@ -79,7 +79,7 @@ async function HasRealReconcilePermission(
     let hasReconcilePermission: boolean = false;
 
     const config: AxiosRequestConfig = {
-        headers: {Authorization: `Bearer ${token}`}
+        headers: { Authorization: `Bearer ${token}` }
     };
 
     trackTrace("HasReconcilePermission started", {
@@ -122,7 +122,7 @@ async function DoRealReconcileRequest(
 
     try {
         let config: AxiosRequestConfig = {
-            headers: {Authorization: `Bearer ${token}`}
+            headers: { Authorization: `Bearer ${token}` }
         };
         await axios.get(reconcileUrl, config);
         if (onComplete) onComplete();
@@ -141,7 +141,7 @@ async function DoRealRescanRequest(
 
     try {
         let config: AxiosRequestConfig = {
-            headers: {Authorization: `Bearer ${token}`}
+            headers: { Authorization: `Bearer ${token}` }
         };
         await axios.get(rescanUrl, config);
         if (onComplete) onComplete();

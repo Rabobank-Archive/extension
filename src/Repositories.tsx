@@ -16,6 +16,7 @@ import {
     trackPageview
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
+import ErrorBar from "./components/ErrorBar";
 
 interface IRepositoriesProps {}
 
@@ -24,6 +25,7 @@ interface IState {
     isRescanning: boolean;
     report: IRepositoriesReport;
     hasReconcilePermission: boolean;
+    errorText: string;
 }
 
 class Repositories extends React.Component<IRepositoriesProps, IState> {
@@ -38,7 +40,8 @@ class Repositories extends React.Component<IRepositoriesProps, IState> {
                 reports: [],
                 hasReconcilePermissionUrl: ""
             },
-            hasReconcilePermission: false
+            hasReconcilePermission: false,
+            errorText: ""
         };
     }
 
@@ -49,18 +52,26 @@ class Repositories extends React.Component<IRepositoriesProps, IState> {
     }
 
     async getReportdata(): Promise<void> {
-        const report = await GetAzDoReportsFromDocumentStorage<
-            IRepositoriesReport
-        >("repository");
-        const hasReconcilePermission = await HasReconcilePermission(
-            report.hasReconcilePermissionUrl
-        );
+        try {
+            const report = await GetAzDoReportsFromDocumentStorage<
+                IRepositoriesReport
+            >("repository");
+            const hasReconcilePermission = await HasReconcilePermission(
+                report.hasReconcilePermissionUrl
+            );
 
-        this.setState({
-            isLoading: false,
-            report: report,
-            hasReconcilePermission: hasReconcilePermission
-        });
+            this.setState({
+                isLoading: false,
+                report: report,
+                hasReconcilePermission: hasReconcilePermission
+            });
+        } catch {
+            this.setState({
+                isLoading: false,
+                errorText:
+                    "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
+            });
+        }
     }
 
     render() {
@@ -75,6 +86,11 @@ class Repositories extends React.Component<IRepositoriesProps, IState> {
                         onRescanFinished={async () => {
                             await this.getReportdata();
                         }}
+                    />
+
+                    <ErrorBar
+                        message={this.state.errorText}
+                        onDismiss={() => this.setState({ errorText: "" })}
                     />
 
                     <div className="page-content page-content-top flex-row">

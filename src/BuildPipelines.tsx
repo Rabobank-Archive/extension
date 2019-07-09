@@ -30,6 +30,7 @@ import { Card } from "azure-devops-ui/Card";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 import { trackEvent, trackPageview } from "./services/ApplicationInsights";
+import ErrorBar from "./components/ErrorBar";
 
 interface IBuildPipelinesProps {}
 
@@ -46,6 +47,7 @@ interface IState {
     buildPipelinesReport: IBuildPipelinesReport;
     hasReconcilePermission: boolean;
     selectedTabId: string;
+    errorText: string;
 }
 
 export default class extends React.Component<IBuildPipelinesProps, IState> {
@@ -62,7 +64,8 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             isLoading: true,
             isRescanning: false,
             hasReconcilePermission: false,
-            selectedTabId: "pipelines"
+            selectedTabId: "pipelines",
+            errorText: ""
         };
     }
 
@@ -91,18 +94,26 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
     };
 
     private async getData(): Promise<void> {
-        const buildPipelinesReport = await GetAzDoReportsFromDocumentStorage<
-            IBuildPipelinesReport
-        >("buildpipelines");
-        const hasReconcilePermission = await HasReconcilePermission(
-            buildPipelinesReport.hasReconcilePermissionUrl
-        );
+        try {
+            const buildPipelinesReport = await GetAzDoReportsFromDocumentStorage<
+                IBuildPipelinesReport
+            >("buildpipelines");
+            const hasReconcilePermission = await HasReconcilePermission(
+                buildPipelinesReport.hasReconcilePermissionUrl
+            );
 
-        this.setState({
-            isLoading: false,
-            buildPipelinesReport: buildPipelinesReport,
-            hasReconcilePermission: hasReconcilePermission
-        });
+            this.setState({
+                isLoading: false,
+                buildPipelinesReport: buildPipelinesReport,
+                hasReconcilePermission: hasReconcilePermission
+            });
+        } catch {
+            this.setState({
+                isLoading: false,
+                errorText:
+                    "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
+            });
+        }
     }
 
     async componentDidMount() {
@@ -123,6 +134,11 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                         onRescanFinished={async () => {
                             await this.getData();
                         }}
+                    />
+
+                    <ErrorBar
+                        message={this.state.errorText}
+                        onDismiss={() => this.setState({ errorText: "" })}
                     />
 
                     {/* <TabBar

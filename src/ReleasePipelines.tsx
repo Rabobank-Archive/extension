@@ -19,6 +19,7 @@ import {
     trackPageview
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
+import ErrorBar from "./components/ErrorBar";
 
 interface IReleasePipelinesProps {}
 
@@ -27,6 +28,7 @@ interface IState {
     isRescanning: boolean;
     releasePipelinesReport: IBuildPipelinesReport;
     hasReconcilePermission: boolean;
+    errorText: string;
 }
 
 class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
@@ -42,23 +44,32 @@ class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
             },
             isLoading: true,
             isRescanning: false,
-            hasReconcilePermission: false
+            hasReconcilePermission: false,
+            errorText: ""
         };
     }
 
     private async getData(): Promise<void> {
-        const releasePipelinesReport = await GetAzDoReportsFromDocumentStorage<
-            IReleasePipelinesReport
-        >("releasepipelines");
-        const hasReconcilePermission = await HasReconcilePermission(
-            releasePipelinesReport.hasReconcilePermissionUrl
-        );
+        try {
+            const releasePipelinesReport = await GetAzDoReportsFromDocumentStorage<
+                IReleasePipelinesReport
+            >("releasepipelines");
+            const hasReconcilePermission = await HasReconcilePermission(
+                releasePipelinesReport.hasReconcilePermissionUrl
+            );
 
-        this.setState({
-            isLoading: false,
-            releasePipelinesReport: releasePipelinesReport,
-            hasReconcilePermission: hasReconcilePermission
-        });
+            this.setState({
+                isLoading: false,
+                releasePipelinesReport: releasePipelinesReport,
+                hasReconcilePermission: hasReconcilePermission
+            });
+        } catch {
+            this.setState({
+                isLoading: false,
+                errorText:
+                    "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
+            });
+        }
     }
 
     async componentDidMount() {
@@ -79,6 +90,10 @@ class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
                         onRescanFinished={async () => {
                             await this.getData();
                         }}
+                    />
+                    <ErrorBar
+                        message={this.state.errorText}
+                        onDismiss={() => this.setState({ errorText: "" })}
                     />
 
                     <div className="page-content page-content-top flex-row">

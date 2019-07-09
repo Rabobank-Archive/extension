@@ -25,6 +25,7 @@ import {
     trackPageview
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
+import ErrorBar from "./components/ErrorBar";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -43,7 +44,7 @@ interface IReleaseProps {}
 
 class Releases extends React.Component<
     IReleaseProps,
-    { report: IReleaseReport; isLoading: boolean }
+    { report: IReleaseReport; isLoading: boolean; errorText: string }
 > {
     private itemProvider = new ObservableArray<any>();
 
@@ -53,7 +54,8 @@ class Releases extends React.Component<
             report: {
                 reports: []
             },
-            isLoading: true
+            isLoading: true,
+            errorText: ""
         };
     }
 
@@ -61,33 +63,43 @@ class Releases extends React.Component<
         trackEvent("[Releases] Page opened");
         trackPageview();
 
-        const report = await GetAzDoReportsFromDocumentStorage<IReleaseReport>(
-            "Releases"
-        );
-        this.itemProvider.push(
-            ...report.reports.map<ITableItem>(x => ({
-                pipeline: x.pipeline,
-                release: x.release,
-                environment: x.environment,
-                createdDate: x.createdDate,
-                usesProductionEndpoints:
-                    x.usesProductionEndpoints === null ||
-                    x.usesProductionEndpoints === undefined
-                        ? ""
-                        : x.usesProductionEndpoints
-                        ? "yes"
-                        : "no",
-                hasApprovalOptions: getStatus(x.hasApprovalOptions),
-                hasBranchFilterForAllArtifacts: getStatus(
-                    x.hasBranchFilterForAllArtifacts
-                ),
-                usesManagedAgentsOnly: getStatus(x.usesManagedAgentsOnly),
-                allArtifactsAreFromBuild: getStatus(x.allArtifactsAreFromBuild),
-                relatedToSm9Change: getStatus(x.relatedToSm9Change)
-            }))
-        );
+        try {
+            const report = await GetAzDoReportsFromDocumentStorage<
+                IReleaseReport
+            >("Releases");
+            this.itemProvider.push(
+                ...report.reports.map<ITableItem>(x => ({
+                    pipeline: x.pipeline,
+                    release: x.release,
+                    environment: x.environment,
+                    createdDate: x.createdDate,
+                    usesProductionEndpoints:
+                        x.usesProductionEndpoints === null ||
+                        x.usesProductionEndpoints === undefined
+                            ? ""
+                            : x.usesProductionEndpoints
+                            ? "yes"
+                            : "no",
+                    hasApprovalOptions: getStatus(x.hasApprovalOptions),
+                    hasBranchFilterForAllArtifacts: getStatus(
+                        x.hasBranchFilterForAllArtifacts
+                    ),
+                    usesManagedAgentsOnly: getStatus(x.usesManagedAgentsOnly),
+                    allArtifactsAreFromBuild: getStatus(
+                        x.allArtifactsAreFromBuild
+                    ),
+                    relatedToSm9Change: getStatus(x.relatedToSm9Change)
+                }))
+            );
 
-        this.setState({ isLoading: false, report: report });
+            this.setState({ isLoading: false, report: report });
+        } catch {
+            this.setState({
+                isLoading: false,
+                errorText:
+                    "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
+            });
+        }
     }
 
     render() {
@@ -217,6 +229,11 @@ class Releases extends React.Component<
                     // @ts-ignore
                     titleSize={TitleSize.Medium}
                     titleIconProps={{ iconName: "OpenSource" }}
+                />
+
+                <ErrorBar
+                    message={this.state.errorText}
+                    onDismiss={() => this.setState({ errorText: "" })}
                 />
 
                 <div className="page-content page-content-top">
