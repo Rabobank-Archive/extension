@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Dialog } from "azure-devops-ui/Dialog";
-import { MessageCard, MessageCardSeverity } from "azure-devops-ui/MessageCard";
 import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { UnorderedList } from "./UnorderedList";
@@ -11,6 +10,7 @@ import {
     trackException
 } from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
+import ErrorBar from "./ErrorBar";
 
 interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
@@ -77,17 +77,7 @@ const ConfirmReconcileDialog = ({
                 setErrorText("");
             }}
         >
-            {errorText && (
-                <MessageCard
-                    // @ts-ignore
-                    severity={MessageCardSeverity.Error}
-                    onDismiss={() => {
-                        setErrorText("");
-                    }}
-                >
-                    {errorText}
-                </MessageCard>
-            )}
+            <ErrorBar message={errorText} />
             {isReconciling && (
                 <Status
                     {...Statuses.Running}
