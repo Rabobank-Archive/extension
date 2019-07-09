@@ -118,7 +118,12 @@ class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
                         ]}
                     />
                 </CustomHeader>
-                <ErrorBar message={this.state.errorText} />
+                <ErrorBar
+                    message={this.state.errorText}
+                    onDismiss={() => {
+                        this.setState({ errorText: "" });
+                    }}
+                />
             </div>
         );
     }

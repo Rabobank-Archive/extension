@@ -6,9 +6,10 @@ import { MessageCardSeverity, MessageCard } from "azure-devops-ui/MessageCard";
 
 interface IErrorBarProps {
     message: string;
+    onDismiss?: () => void;
 }
 
-const ErrorBar = ({ message }: IErrorBarProps) => {
+const ErrorBar = ({ message, onDismiss }: IErrorBarProps) => {
     const buttonProps: IButtonProps[] = [
         {
             text: "Contact TAS",
@@ -29,6 +30,9 @@ const ErrorBar = ({ message }: IErrorBarProps) => {
                     className="flex-self-stretch"
                     // @ts-ignore
                     severity={MessageCardSeverity.Error}
+                    onDismiss={() => {
+                        onDismiss && onDismiss();
+                    }}
                 >
                     {message}
                 </MessageCard>

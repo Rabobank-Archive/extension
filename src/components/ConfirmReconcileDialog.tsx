@@ -77,7 +77,7 @@ const ConfirmReconcileDialog = ({
                 setErrorText("");
             }}
         >
-            <ErrorBar message={errorText} />
+            <ErrorBar message={errorText} onDismiss={() => setErrorText("")} />
             {isReconciling && (
                 <Status
                     {...Statuses.Running}
