@@ -1,8 +1,8 @@
-import {GetAzDoAppToken, GetAzDoUser} from "./AzDoService";
-import {delay} from "./Delay";
-import {USE_COMPLIANCYCHECKER_SERVICE} from "./Environment";
-import {trackException, trackTrace} from "./ApplicationInsights";
-import axios, {AxiosRequestConfig} from "axios";
+import { GetAzDoAppToken, GetAzDoUser } from "./AzDoService";
+import { delay } from "./Delay";
+import { USE_COMPLIANCYCHECKER_SERVICE } from "./Environment";
+import { trackException, trackTrace } from "./ApplicationInsights";
+import axios, { AxiosRequestConfig } from "axios";
 
 export function HasReconcilePermission(
     hasReconcilePermissionUrl: string
@@ -12,9 +12,7 @@ export function HasReconcilePermission(
         : HasDummyReconcilePermission(hasReconcilePermissionUrl);
 }
 
-export function DoReconcileRequest(
-    reconcileUrl: string,
-): Promise<void> {
+export function DoReconcileRequest(reconcileUrl: string): Promise<void> {
     return USE_COMPLIANCYCHECKER_SERVICE
         ? DoRealReconcileRequest(reconcileUrl)
         : DoDummyReconcileRequest(reconcileUrl);
@@ -41,12 +39,8 @@ async function HasDummyReconcilePermission(
     return retval;
 }
 
-async function DoDummyReconcileRequest(
-    reconcileUrl: string
-): Promise<void> {
-    console.log(
-        `Called 'DoReconcileRequest(${reconcileUrl})`
-    );
+async function DoDummyReconcileRequest(reconcileUrl: string): Promise<void> {
+    console.log(`Called 'DoReconcileRequest(${reconcileUrl})`);
     await delay(2000);
     return Promise.resolve();
 }
@@ -75,7 +69,7 @@ async function HasRealReconcilePermission(
     let hasReconcilePermission: boolean = false;
 
     const config: AxiosRequestConfig = {
-        headers: {Authorization: `Bearer ${token}`}
+        headers: { Authorization: `Bearer ${token}` }
     };
 
     trackTrace("HasReconcilePermission started", {
@@ -109,12 +103,10 @@ async function HasRealReconcilePermission(
     return hasReconcilePermission;
 }
 
-async function DoRealReconcileRequest(
-    reconcileUrl: string
-): Promise<void> {
+async function DoRealReconcileRequest(reconcileUrl: string): Promise<void> {
     const token = await GetAzDoAppToken();
     let config: AxiosRequestConfig = {
-        headers: {Authorization: `Bearer ${token}`}
+        headers: { Authorization: `Bearer ${token}` }
     };
     await axios.get(reconcileUrl, config);
 }
@@ -128,7 +120,7 @@ async function DoRealRescanRequest(
 
     try {
         let config: AxiosRequestConfig = {
-            headers: {Authorization: `Bearer ${token}`}
+            headers: { Authorization: `Bearer ${token}` }
         };
         await axios.get(rescanUrl, config);
         if (onComplete) onComplete();

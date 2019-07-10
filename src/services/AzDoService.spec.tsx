@@ -32,7 +32,8 @@ describe("AzDoService", () => {
 
     //Token expires Monday 7 may 2035
     it("should return false if token not expired", () => {
-        let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1laWQiOiIxNjIwNTQ0NC03ZjY1LTYyMzctODM4Yi00NzNmNjhhOWE3YjMiLCJ0aWQiOiI2ZTkzYTYyNi04YWNhLTRkYzEtOTE5MS1jZTI5MWI0Yjc1YTEiLCJpc3MiOiJhcHAudnNzcHMudmlzdWFsc3R1ZGlvLmNvbSIsImF1ZCI6Ijc4YzY4ZGIxLTIzMjMtNGE0OC04M2Y3LWY0MjA3MGY2ZTYzMiIsIm5iZiI6MTU2MjE1NTUzNSwiZXhwIjoyMDYyMTU5NzM1fQ.40-RT42P8lkKI2igtz2BahQoJO9OnnKC6I3VpCvWY5U";
+        let token =
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1laWQiOiIxNjIwNTQ0NC03ZjY1LTYyMzctODM4Yi00NzNmNjhhOWE3YjMiLCJ0aWQiOiI2ZTkzYTYyNi04YWNhLTRkYzEtOTE5MS1jZTI5MWI0Yjc1YTEiLCJpc3MiOiJhcHAudnNzcHMudmlzdWFsc3R1ZGlvLmNvbSIsImF1ZCI6Ijc4YzY4ZGIxLTIzMjMtNGE0OC04M2Y3LWY0MjA3MGY2ZTYzMiIsIm5iZiI6MTU2MjE1NTUzNSwiZXhwIjoyMDYyMTU5NzM1fQ.40-RT42P8lkKI2igtz2BahQoJO9OnnKC6I3VpCvWY5U";
         var expired = IsTokenExpired(token);
         expect(expired).toBe(false);
     });
