@@ -43,7 +43,7 @@ class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
         await DoRescanRequest(
             this.props.rescanUrl,
             () => {
-                this.setState({ isRescanning: false });
+                this.setState({ isRescanning: false, errorText: "" });
             },
             () => {
                 this.setState({

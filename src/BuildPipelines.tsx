@@ -105,7 +105,8 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
             this.setState({
                 isLoading: false,
                 buildPipelinesReport: buildPipelinesReport,
-                hasReconcilePermission: hasReconcilePermission
+                hasReconcilePermission: hasReconcilePermission,
+                errorText: ""
             });
         } catch {
             this.setState({

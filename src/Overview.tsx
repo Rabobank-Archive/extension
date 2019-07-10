@@ -90,7 +90,7 @@ class Overview extends React.Component<
                 }))
             );
 
-            this.setState({ isLoading: false, report: report });
+            this.setState({ isLoading: false, report: report, errorText: "" });
         } catch {
             this.setState({
                 isLoading: false,

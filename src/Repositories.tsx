@@ -63,7 +63,8 @@ class Repositories extends React.Component<IRepositoriesProps, IState> {
             this.setState({
                 isLoading: false,
                 report: report,
-                hasReconcilePermission: hasReconcilePermission
+                hasReconcilePermission: hasReconcilePermission,
+                errorText: ""
             });
         } catch {
             this.setState({

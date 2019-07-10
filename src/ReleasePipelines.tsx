@@ -61,7 +61,8 @@ class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
             this.setState({
                 isLoading: false,
                 releasePipelinesReport: releasePipelinesReport,
-                hasReconcilePermission: hasReconcilePermission
+                hasReconcilePermission: hasReconcilePermission,
+                errorText: ""
             });
         } catch {
             this.setState({
