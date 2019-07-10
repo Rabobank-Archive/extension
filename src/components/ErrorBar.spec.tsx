@@ -2,7 +2,7 @@ import React from "react";
 import ErrorBar from "./ErrorBar";
 import { render } from "@testing-library/react";
 
-describe("ReconcileButon", () => {
+describe("ErrorBar", () => {
     it("should show when message is set", async () => {
         const { findByText } = render(<ErrorBar message="Dummy message" />);
 
