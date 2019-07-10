@@ -16,6 +16,10 @@ steps:
 - script: |
     CI=true npm test
   displayName: 'npm test'
+  
+- script: |
+    npm run lint
+  displayName: 'npm running linting'
 
 - script: |
     npm run build
