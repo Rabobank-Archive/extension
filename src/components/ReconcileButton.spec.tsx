@@ -6,7 +6,7 @@ import { fireEvent, render, wait } from "@testing-library/react";
 
 let mock = new MockAdapter(axios);
 
-describe("ReconcileButon", () => {
+describe("ReconcileButton", () => {
     it("should reconcile", async () => {
         const { debug, getByText, getAllByText, findByText } = render(
             <ReconcileButton
