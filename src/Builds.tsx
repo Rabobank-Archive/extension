@@ -84,12 +84,17 @@ class Builds extends React.Component<
 
             this.setState({ isLoading: false, report: report, errorText: "" });
         } catch (e) {
-            console.log(e);
-            this.setState({
-                isLoading: false,
-                errorText:
-                    "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
-            });
+            if (e.status == 404) {
+                this.setState({
+                    isLoading: false
+                });
+            } else {
+                this.setState({
+                    isLoading: false,
+                    errorText:
+                        "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
+                });
+            }
         }
     }
 
