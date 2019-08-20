@@ -27,6 +27,7 @@ import {
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
+import { Exception } from "@microsoft/applicationinsights-web";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -82,7 +83,8 @@ class Builds extends React.Component<
             );
 
             this.setState({ isLoading: false, report: report, errorText: "" });
-        } catch {
+        } catch (e) {
+            console.log(e);
             this.setState({
                 isLoading: false,
                 errorText:
