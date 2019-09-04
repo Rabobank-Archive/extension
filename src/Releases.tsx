@@ -32,7 +32,6 @@ interface ITableItem extends ISimpleTableCell {
     release: string;
     environment: string;
     createdDate: string;
-    usesProductionEndpoints: string;
     hasApprovalOptions: IStatusProps;
     hasBranchFilterForAllArtifacts: IStatusProps;
     usesManagedAgentsOnly: IStatusProps;
@@ -73,13 +72,6 @@ class Releases extends React.Component<
                     release: x.release,
                     environment: x.environment,
                     createdDate: x.createdDate,
-                    usesProductionEndpoints:
-                        x.usesProductionEndpoints === null ||
-                        x.usesProductionEndpoints === undefined
-                            ? ""
-                            : x.usesProductionEndpoints
-                            ? "yes"
-                            : "no",
                     hasApprovalOptions: getStatus(x.hasApprovalOptions),
                     hasBranchFilterForAllArtifacts: getStatus(
                         x.hasBranchFilterForAllArtifacts
@@ -152,18 +144,6 @@ class Releases extends React.Component<
                 sortProps: {
                     ariaLabelAscending: "Sorted Oldest to Newest",
                     ariaLabelDescending: "Sorted Newest to Oldest"
-                }
-            },
-            {
-                id: "usesProductionEndpoints",
-                name: "Uses production endpoints",
-                onSize: onSize,
-                renderCell: renderSimpleCell,
-                className: "center",
-                width: new ObservableValue(185),
-                sortProps: {
-                    ariaLabelAscending: "Sorted A to Z",
-                    ariaLabelDescending: "Sorted Z to A"
                 }
             },
             {
