@@ -11,7 +11,7 @@ import { IPipelineItem } from "../components/BuildPipelinesList";
 
 export const DummyProjectRulesReport: IOverviewReport = {
     date: new Date(),
-    rescanUrl: 
+    rescanUrl:
         "https://azdoanalyticsdev.azurewebsites.net/api/scan/raboweb-test/WV%20New%20Project%20Test%204/globalpermissions",
     hasReconcilePermissionUrl:
         "https://azdoanalyticsdev.azurewebsites.net/api/reconcile/raboweb-test/WV%20New%20Project%20Test%204/haspermission",

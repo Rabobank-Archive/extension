@@ -25,7 +25,10 @@ import {
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
-import { renderStringWithWhyTooltip, renderCheckmark } from "./components/TableRenderers";
+import {
+    renderStringWithWhyTooltip,
+    renderCheckmark
+} from "./components/TableRenderers";
 import { onSize } from "./components/TableBehaviors";
 import ReconcileButton from "./components/ReconcileButton";
 interface ITableItem {
@@ -48,7 +51,7 @@ interface IState {
 
 class Overview extends React.Component<IOverviewProps, IState> {
     private itemProvider = new ObservableArray<ITableItem>();
-    
+
     constructor(props: IOverviewProps) {
         super(props);
         this.state = {
@@ -92,7 +95,7 @@ class Overview extends React.Component<IOverviewProps, IState> {
                     status: x.status ? Statuses.Success : Statuses.Failed
                 }))
             );
-            
+
             this.setState({
                 isLoading: false,
                 report: report,
