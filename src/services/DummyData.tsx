@@ -20,7 +20,8 @@ export const DummyProjectRulesReport: IOverviewReport = {
             item: "",
             rules: [
                 {
-                    description: "No one should be able to delete the Team Project",
+                    description:
+                        "No one should be able to delete the Team Project",
                     why:
                         "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the Team Project.",
                     status: true,
