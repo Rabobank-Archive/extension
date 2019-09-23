@@ -15,7 +15,7 @@ class App extends Component {
     render() {
         return (
             <HashRouter hashType="noslash">
-                <div>
+                <div className="flex-grow">
                     <Route
                         exact
                         path="/"

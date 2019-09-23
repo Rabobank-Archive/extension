@@ -40,6 +40,7 @@ import { IItemReport } from "../services/IAzDoService";
 import ReconcileButton from "./ReconcileButton";
 import { appInsightsReactPlugin } from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
+import "./MasterDetail.css";
 
 interface IReportMaster {
     item: string;
@@ -351,7 +352,7 @@ class MasterDetail extends React.Component<
     render() {
         return (
             <MasterDetailsContext.Provider value={this.masterDetailsContext}>
-                <div className="flex-row">
+                <div className="flex-row flex-grow">
                     <MasterPanel />
                     <DetailsPanel />
                 </div>

@@ -1,0 +1,22 @@
+/* scrollable panels for master and detail */
+.flex-grow {
+    height: 100%;
+}
+
+.page-content.flex-row {
+    height: 100%;
+}
+
+/* hack for application insights plugin generating div wrappers arround exported components */
+.page-content > .flex-grow > div:not([class]) {
+    height: 100%;
+}
+
+/* fix bottom border */
+.bolt-page .page-content {
+    padding-bottom: 0;
+}
+
+#root > div {
+    height: 100%;
+}
