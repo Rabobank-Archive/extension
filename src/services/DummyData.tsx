@@ -11,51 +11,56 @@ import { IPipelineItem } from "../components/BuildPipelinesList";
 
 export const DummyProjectRulesReport: IOverviewReport = {
     date: new Date(),
-    rescanUrl:
+    rescanUrl: 
         "https://azdoanalyticsdev.azurewebsites.net/api/scan/raboweb-test/WV%20New%20Project%20Test%204/globalpermissions",
     hasReconcilePermissionUrl:
         "https://azdoanalyticsdev.azurewebsites.net/api/reconcile/raboweb-test/WV%20New%20Project%20Test%204/haspermission",
     reports: [
         {
-            description: "No one should be able to delete the Team Project",
-            why:
-                "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the Team Project.",
-            status: true,
-            reconcile: {
-                impact: [
-                    "Rabobank Project Administrators group is created and added to Project Administrators",
-                    "Delete team project permissions of the Rabobank Project Administrators group is set to deny",
-                    "Members of the Project Administrators are moved to Rabobank Project Administrators",
-                    "Delete team project permission is set to 'not set' for all other groups"
-                ],
-                url: "http://something.com"
-            }
-        },
-        {
-            description: "Some rule that cannot autofix",
-            why: "Some rule explanation",
-            status: false,
-            reconcile: {
-                impact: [
-                    "Typ gewoon blablabal wat mij betreft zet je er",
-                    "henkie is een test"
-                ],
-                url: ""
-            }
-        },
-        {
-            description: "Just some dummy other rule",
-            why: "Some other rule explanation",
-            status: false,
-            reconcile: {
-                impact: [
-                    "Dit is een test data zin, om te checken of blablablabal",
-                    "Dit is een test data zin, om te checken of blablablabal",
-                    "Members of the Project Administrators are moved to Rabobank Project Administrators",
-                    "Delete team project permission is set to 'not set' for all other groups"
-                ],
-                url: "http://something.com"
-            }
+            item: "",
+            rules: [
+                {
+                    description: "No one should be able to delete the Team Project",
+                    why:
+                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the Team Project.",
+                    status: true,
+                    reconcile: {
+                        impact: [
+                            "Rabobank Project Administrators group is created and added to Project Administrators",
+                            "Delete team project permissions of the Rabobank Project Administrators group is set to deny",
+                            "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                            "Delete team project permission is set to 'not set' for all other groups"
+                        ],
+                        url: "http://something.com"
+                    }
+                },
+                {
+                    description: "Some rule that cannot autofix",
+                    why: "Some rule explanation",
+                    status: false,
+                    reconcile: {
+                        impact: [
+                            "Typ gewoon blablabal wat mij betreft zet je er",
+                            "henkie is een test"
+                        ],
+                        url: ""
+                    }
+                },
+                {
+                    description: "Just some dummy other rule",
+                    why: "Some other rule explanation",
+                    status: false,
+                    reconcile: {
+                        impact: [
+                            "Dit is een test data zin, om te checken of blablablabal",
+                            "Dit is een test data zin, om te checken of blablablabal",
+                            "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                            "Delete team project permission is set to 'not set' for all other groups"
+                        ],
+                        url: "http://something.com"
+                    }
+                }
+            ]
         }
     ]
 };

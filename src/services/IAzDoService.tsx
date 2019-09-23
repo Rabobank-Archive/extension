@@ -42,7 +42,7 @@ export interface IExtensionDocument<TReport> {
     reports: TReport[];
 }
 
-export interface IOverviewReport extends IExtensionDocument<IRule> {
+export interface IOverviewReport extends IExtensionDocument<IItemReport> {
     date: Date;
     rescanUrl: string;
     hasReconcilePermissionUrl: string;

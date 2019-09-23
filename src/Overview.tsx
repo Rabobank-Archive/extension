@@ -9,27 +9,25 @@ import {
 import { Page } from "azure-devops-ui/Page";
 import { Card } from "azure-devops-ui/Card";
 import { IStatusProps, Statuses } from "azure-devops-ui/Status";
-import {
-    renderCheckmark,
-    renderStringWithWhyTooltip
-} from "./components/TableRenderers";
-import { Link } from "azure-devops-ui/Link";
-import { onSize } from "./components/TableBehaviors";
-import ReconcileButton from "./components/ReconcileButton";
 
+import { Link } from "azure-devops-ui/Link";
+import MasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
+import { Surface, SurfaceBackground } from "azure-devops-ui/Surface";
 
 import "./css/styles.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
-import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import {
     appInsightsReactPlugin,
     trackEvent,
     trackPageview
 } from "./services/ApplicationInsights";
+import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
-
+import { renderStringWithWhyTooltip, renderCheckmark } from "./components/TableRenderers";
+import { onSize } from "./components/TableBehaviors";
+import ReconcileButton from "./components/ReconcileButton";
 interface ITableItem {
     description: string;
     why: string;
@@ -38,41 +36,46 @@ interface ITableItem {
     reconcileUrl: string;
     reconcileImpact: string[];
 }
-
 interface IOverviewProps {}
 
-class Overview extends React.Component<
-    IOverviewProps,
-    {
-        report: IOverviewReport;
-        isLoading: boolean;
-        isRescanning: boolean;
-        errorText: string;
-    }
-> {
-    private itemProvider = new ObservableArray<ITableItem>();
+interface IState {
+    isLoading: boolean;
+    isRescanning: boolean;
+    report: IOverviewReport;
+    hasReconcilePermission: boolean;
+    errorText: string;
+}
 
+class Overview extends React.Component<IOverviewProps, IState> {
+    private itemProvider = new ObservableArray<ITableItem>();
+    
     constructor(props: IOverviewProps) {
         super(props);
         this.state = {
-            report: {
-                date: new Date(0),
-                reports: [],
-                rescanUrl: "",
-                hasReconcilePermissionUrl: ""
-            },
             isLoading: true,
             isRescanning: false,
+            report: {
+                date: new Date(),
+                rescanUrl: "",
+                reports: [],
+                hasReconcilePermissionUrl: ""
+            },
+            hasReconcilePermission: false,
             errorText: ""
         };
     }
 
-    private async getReportdata(): Promise<void> {
+    async componentDidMount() {
+        trackEvent("[Overview] Page opened");
+        trackPageview();
+        await this.getReportdata();
+    }
+
+    async getReportdata(): Promise<void> {
         try {
             const report = await GetAzDoReportsFromDocumentStorage<
                 IOverviewReport
             >("globalpermissions");
-
             const hasReconcilePermission = await HasReconcilePermission(
                 report.hasReconcilePermissionUrl
             );
@@ -80,7 +83,7 @@ class Overview extends React.Component<
             this.itemProvider.removeAll();
 
             this.itemProvider.push(
-                ...report.reports.map<ITableItem>(x => ({
+                ...report.reports[0].rules.map<ITableItem>(x => ({
                     description: x.description,
                     why: x.why,
                     hasReconcilePermission: hasReconcilePermission,
@@ -89,8 +92,13 @@ class Overview extends React.Component<
                     status: x.status ? Statuses.Success : Statuses.Failed
                 }))
             );
-
-            this.setState({ isLoading: false, report: report, errorText: "" });
+            
+            this.setState({
+                isLoading: false,
+                report: report,
+                hasReconcilePermission: hasReconcilePermission,
+                errorText: ""
+            });
         } catch {
             this.setState({
                 isLoading: false,
@@ -98,12 +106,6 @@ class Overview extends React.Component<
                     "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
             });
         }
-    }
-
-    async componentDidMount() {
-        trackEvent("[Overview] Page opened");
-        trackPageview();
-        await this.getReportdata();
     }
 
     render() {
