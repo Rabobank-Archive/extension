@@ -3,7 +3,6 @@ import {
     IProjectPageService
 } from "azure-devops-extension-api";
 
-import * as SDK from "azure-devops-extension-sdk";
 import {
     DummyProjectRulesReport,
     DummyBuildReport,
@@ -15,10 +14,18 @@ import {
 import { USE_AZDO_SERVICE } from "./Environment";
 import { delay } from "./Delay";
 import * as JWT from "jsonwebtoken";
+import {
+    IUserContext,
+    getUser,
+    getAppToken,
+    getAccessToken,
+    getService,
+    getExtensionContext
+} from "azure-devops-extension-sdk";
 
 let appToken: string | undefined;
 
-export function GetAzDoUser(): SDK.IUserContext {
+export function GetAzDoUser(): IUserContext {
     return USE_AZDO_SERVICE ? GetRealAzDoUser() : GetDummyAzDoUser();
 }
 
@@ -35,7 +42,7 @@ export async function GetAzDoReportsFromDocumentStorage<TReport>(
 }
 
 //#region Dummy implementations
-function GetDummyAzDoUser(): SDK.IUserContext {
+function GetDummyAzDoUser(): IUserContext {
     return {
         descriptor: "dummy-descriptor",
         displayName: "dummy-displayname",
@@ -82,13 +89,13 @@ function loadData<TReport>(documentCollectionName: string): TReport {
 //#endregion
 
 //#region Real implementations
-function GetRealAzDoUser(): SDK.IUserContext {
-    return SDK.getUser();
+function GetRealAzDoUser(): IUserContext {
+    return getUser();
 }
 
 async function GetRealAzDoAppToken(): Promise<string> {
     if (!appToken || IsTokenExpired(appToken)) {
-        appToken = await SDK.getAppToken();
+        appToken = await getAppToken();
     }
     return appToken;
 }
@@ -102,16 +109,16 @@ export function IsTokenExpired(token: string): boolean {
 async function GetRealAzDoReportsFromDocumentStorage<TReport>(
     documentCollectionName: string
 ): Promise<TReport> {
-    const token = await SDK.getAccessToken();
-    const dataService = await SDK.getService<IExtensionDataService>(
+    const token = await getAccessToken();
+    const dataService = await getService<IExtensionDataService>(
         "ms.vss-features.extension-data-service"
     );
-    const projectService = await SDK.getService<IProjectPageService>(
+    const projectService = await getService<IProjectPageService>(
         "ms.vss-tfs-web.tfs-page-data-service"
     );
     const project = await projectService.getProject();
     const dataManager = await dataService.getExtensionDataManager(
-        SDK.getExtensionContext().id,
+        getExtensionContext().id,
         token
     );
     return dataManager.getDocument(documentCollectionName, project!.name);
