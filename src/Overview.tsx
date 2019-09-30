@@ -11,9 +11,7 @@ import { Card } from "azure-devops-ui/Card";
 import { IStatusProps, Statuses } from "azure-devops-ui/Status";
 
 import { Link } from "azure-devops-ui/Link";
-import MasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
-import { Surface, SurfaceBackground } from "azure-devops-ui/Surface";
 
 import "./css/styles.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";

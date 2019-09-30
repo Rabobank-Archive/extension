@@ -1,7 +1,5 @@
-import React from "react";
 import { IReleaseRule } from "./IAzDoService";
 import { IsTokenExpired } from "./AzDoService";
-import * as SDK from "azure-devops-extension-sdk";
 
 describe("AzDoService", () => {
     it("should return undefined if property not present in report", () => {

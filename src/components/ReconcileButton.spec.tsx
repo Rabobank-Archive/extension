@@ -8,7 +8,7 @@ let mock = new MockAdapter(axios);
 
 describe("ReconcileButton", () => {
     it("should reconcile", async () => {
-        const { debug, getByText, getAllByText, findByText } = render(
+        const { getByText, getAllByText, findByText } = render(
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
@@ -34,13 +34,7 @@ describe("ReconcileButton", () => {
     });
 
     it("should show a loading state while reconciling", async () => {
-        const {
-            debug,
-            getByText,
-            getAllByText,
-            findByText,
-            container
-        } = render(
+        const { getByText, getAllByText } = render(
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
@@ -65,13 +59,7 @@ describe("ReconcileButton", () => {
     });
 
     it("should show an error when reconciling failed", async () => {
-        const {
-            debug,
-            getByText,
-            getAllByText,
-            findByText,
-            container
-        } = render(
+        const { getByText, getAllByText } = render(
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
@@ -95,13 +83,7 @@ describe("ReconcileButton", () => {
     });
 
     it("should dismiss the dialog", async () => {
-        const {
-            debug,
-            getByText,
-            getAllByText,
-            findByText,
-            container
-        } = render(
+        const { getByText, findByText } = render(
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",

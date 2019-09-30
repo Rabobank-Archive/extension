@@ -86,7 +86,7 @@ class Releases extends React.Component<
 
             this.setState({ isLoading: false, report: report, errorText: "" });
         } catch (e) {
-            if (e.status == 404) {
+            if (e.status === 404) {
                 this.setState({
                     isLoading: false
                 });
