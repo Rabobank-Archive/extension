@@ -7,10 +7,16 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:3000/#build-pipelines](http://localhost:3000/#build-pipelines) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
+
+See the different [routes](src/index.tsx) for available reports.
+
+### `npm run storybook`
+
+Runs the storybook to read stories of the available components. Makes it possible to checkout (and test) a component in isolation.
 
 ### `npm test`
 
