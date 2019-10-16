@@ -8,7 +8,7 @@
 }
 
 /* hack for application insights plugin generating div wrappers arround exported components */
-.page-content > .flex-grow > div:not([class]) {
+.page-content > .flex-grow > div[class=""] {
     height: 100%;
 }
 
