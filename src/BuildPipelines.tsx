@@ -25,12 +25,12 @@ import CompliancyHeader from "./components/CompliancyHeader";
 import { Observer } from "azure-devops-ui/Observer";
 
 import "./css/styles.css";
-import { Link } from "azure-devops-ui/Link";
 import { Card } from "azure-devops-ui/Card";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 import { trackEvent, trackPageview } from "./services/ApplicationInsights";
 import ErrorBar from "./components/ErrorBar";
+import InfoBlock from "./components/InfoBlock";
 
 interface IBuildPipelinesProps {}
 
@@ -198,49 +198,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                                 titleProps={{ text: "More information" }}
                             >
                                 <div>
-                                    <p>
-                                        We would ❤ getting in touch on the
-                                        pipeline setup, so join us on our{" "}
-                                        <Link
-                                            href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu"
-                                            target="_blank"
-                                        >
-                                            {" "}
-                                            sprint review
-                                        </Link>{" "}
-                                        @UC-T15!
-                                    </p>
-
-                                    <p>
-                                        More information on the{" "}
-                                        <Link
-                                            href="https://confluence.dev.rabobank.nl/pages/viewpage.action?pageId=119243814#ApplyDevOpsSecurityBlueprintCI/CDprinciples-Repositories"
-                                            target="_blank"
-                                        >
-                                            how &amp; why
-                                        </Link>{" "}
-                                        of the pipeline setup with Azure
-                                        Pipelines or{" "}
-                                        <Link
-                                            href="https://confluence.dev.rabobank.nl/display/MTTAS/Secure+Pipelines"
-                                            target="_blank"
-                                        >
-                                            secure pipelines
-                                        </Link>{" "}
-                                        in general.
-                                    </p>
-
-                                    <p>
-                                        If you still have questions or need
-                                        assistance on your pipelines, create a{" "}
-                                        <Link
-                                            href="http://tools.rabobank.nl/vsts/request"
-                                            target="_blank"
-                                        >
-                                            support request
-                                        </Link>
-                                        .
-                                    </p>
+                                    <InfoBlock />
                                 </div>
                             </Card>
                         </div>

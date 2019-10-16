@@ -49,7 +49,7 @@ interface IReportMaster {
 
 interface IReportRule {
     description: string;
-    why: string;
+    link: string | null;
     status: IStatusProps;
     hasReconcilePermission: boolean;
     reconcileUrl: string;
@@ -96,7 +96,7 @@ class MasterDetail extends React.Component<
                 rules: m.rules.map(x => {
                     let rule: IReportRule = {
                         description: x.description,
-                        why: x.why,
+                        link: x.link,
                         hasReconcilePermission: this.props
                             .hasReconcilePermission,
                         reconcileUrl: x.reconcile ? x.reconcile.url : "",

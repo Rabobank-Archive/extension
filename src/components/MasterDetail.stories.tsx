@@ -20,8 +20,7 @@ storiesOf("MasterDetail", module)
                 rules: [
                     {
                         description: "Nobody can delete the repository",
-                        why:
-                            "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the repository.",
+                        link: "http://www.google.com",
                         status: true,
                         reconcile: {
                             url: "http://some-reconcile-url",

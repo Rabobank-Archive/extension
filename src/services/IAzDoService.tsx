@@ -5,7 +5,7 @@ export interface IItemReport {
 
 export interface IRule {
     description: string;
-    why: string;
+    link: string | null;
     status: boolean;
     reconcile:
         | {

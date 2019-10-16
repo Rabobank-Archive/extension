@@ -1,6 +1,5 @@
 import * as React from "react";
 import { IOverviewReport } from "./services/IAzDoService";
-
 import { ITableColumn, SimpleTableCell, Table } from "azure-devops-ui/Table";
 import {
     ObservableArray,
@@ -9,8 +8,6 @@ import {
 import { Page } from "azure-devops-ui/Page";
 import { Card } from "azure-devops-ui/Card";
 import { IStatusProps, Statuses } from "azure-devops-ui/Status";
-
-import { Link } from "azure-devops-ui/Link";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 import "./css/styles.css";
@@ -29,9 +26,10 @@ import {
 } from "./components/TableRenderers";
 import { onSize } from "./components/TableBehaviors";
 import ReconcileButton from "./components/ReconcileButton";
+import InfoBlock from "./components/InfoBlock";
 interface ITableItem {
     description: string;
-    why: string;
+    link: string | null;
     status: IStatusProps;
     hasReconcilePermission: boolean;
     reconcileUrl: string;
@@ -86,7 +84,7 @@ class Overview extends React.Component<IOverviewProps, IState> {
             this.itemProvider.push(
                 ...report.reports[0].rules.map<ITableItem>(x => ({
                     description: x.description,
-                    why: x.why,
+                    link: x.link,
                     hasReconcilePermission: hasReconcilePermission,
                     reconcileUrl: x.reconcile!.url,
                     reconcileImpact: x.reconcile!.impact,
@@ -207,28 +205,7 @@ class Overview extends React.Component<IOverviewProps, IState> {
                             titleProps={{ text: "More information" }}
                         >
                             <div>
-                                <p>
-                                    We would ❤ getting in touch on how to have a
-                                    secure setup that works out for you, so join
-                                    us on our{" "}
-                                    <Link
-                                        href="https://confluence.dev.rabobank.nl/display/MTTAS/Sprint+Review+Menu"
-                                        target="_blank"
-                                    >
-                                        bi-weekly sprint review
-                                    </Link>{" "}
-                                    @UC-T15!
-                                </p>
-                                <p>
-                                    More information on the effective{" "}
-                                    <Link
-                                        href="https://confluence.dev.rabobank.nl/display/vsts/Azure+DevOps+Project+group+permissions"
-                                        target="_blank"
-                                    >
-                                        Azure Devops Project group permissions
-                                    </Link>{" "}
-                                    that are used for the secure setup.
-                                </p>
+                                <InfoBlock />
                             </div>
                         </Card>
                     </div>

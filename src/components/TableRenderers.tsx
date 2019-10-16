@@ -4,7 +4,7 @@ import { ITableColumn, SimpleTableCell } from "azure-devops-ui/Table";
 import moment from "moment";
 import { IStatusProps, Status, StatusSize } from "azure-devops-ui/Status";
 import { Icon } from "azure-devops-ui/Icon";
-import { ITooltipProps } from "azure-devops-ui/TooltipEx";
+import { Link } from "azure-devops-ui/Link";
 
 export function renderDate(
     _rowIndex: number,
@@ -51,10 +51,7 @@ export function renderStringWithWhyTooltip(
     item: any
 ): JSX.Element {
     let value = item[tableColumn.id] as string;
-
-    let tooltip: ITooltipProps = {
-        text: item["why"]
-    };
+    let link = item["link"] as string;
 
     return (
         <SimpleTableCell
@@ -63,11 +60,18 @@ export function renderStringWithWhyTooltip(
             key={"col-" + columnIndex}
         >
             {value}{" "}
-            <Icon
-                iconName={"Info"}
-                style={{ marginLeft: "10px" }}
-                tooltipProps={tooltip}
-            />
+            {link != null && (
+                <Link href={link} target="_blank">
+                    <Icon
+                        iconName={"TextDocument"}
+                        style={{
+                            marginLeft: "10px",
+                            position: "relative",
+                            top: "3px"
+                        }}
+                    />
+                </Link>
+            )}
         </SimpleTableCell>
     );
 }

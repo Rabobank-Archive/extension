@@ -22,8 +22,7 @@ export const DummyProjectRulesReport: IOverviewReport = {
                 {
                     description:
                         "No one should be able to delete the Team Project",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the Team Project.",
+                    link: "http://documentation",
                     status: true,
                     reconcile: {
                         impact: [
@@ -37,7 +36,7 @@ export const DummyProjectRulesReport: IOverviewReport = {
                 },
                 {
                     description: "Some rule that cannot autofix",
-                    why: "Some rule explanation",
+                    link: "http://documentation",
                     status: false,
                     reconcile: {
                         impact: [
@@ -49,7 +48,7 @@ export const DummyProjectRulesReport: IOverviewReport = {
                 },
                 {
                     description: "Just some dummy other rule",
-                    why: "Some other rule explanation",
+                    link: null,
                     status: false,
                     reconcile: {
                         impact: [
@@ -141,8 +140,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
             rules: [
                 {
                     description: "Nobody can delete the repository",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the repository.",
+                    link: "http://documentation",
                     status: true,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -151,8 +149,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
                 },
                 {
                     description: "Master and release branches are protected",
-                    why:
-                        "To enforce the 4-eyes principle, appropriate branch policies should be configured on potential release branches.",
+                    link: "http://documentation",
                     status: true,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -166,8 +163,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
             rules: [
                 {
                     description: "Nobody can delete the repository",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the repository.",
+                    link: "http://documentation",
                     status: false,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -176,8 +172,7 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
                 },
                 {
                     description: "Master and release branches are protected",
-                    why:
-                        "To enforce the 4-eyes principle, appropriate branch policies should be configured on potential release branches.",
+                    link: "http://documentation",
                     status: true,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -199,8 +194,7 @@ export const DummyBuildPipelinesReport: IBuildPipelinesReport = {
             rules: [
                 {
                     description: "Nobody can delete the pipeline",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+                    link: "http://documentation",
                     status: true,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -214,8 +208,7 @@ export const DummyBuildPipelinesReport: IBuildPipelinesReport = {
             rules: [
                 {
                     description: "Nobody can delete the pipeline",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+                    link: "http://documentation",
                     status: false,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -229,8 +222,7 @@ export const DummyBuildPipelinesReport: IBuildPipelinesReport = {
             rules: [
                 {
                     description: "Nobody can delete the pipeline",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+                    link: "http://documentation",
                     status: false,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -244,8 +236,7 @@ export const DummyBuildPipelinesReport: IBuildPipelinesReport = {
             rules: [
                 {
                     description: "Nobody can delete the pipeline",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+                    link: "http://documentation",
                     status: false,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -267,8 +258,7 @@ export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
             rules: [
                 {
                     description: "Nobody can delete the pipeline",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+                    link: "http://documentation",
                     status: true,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -282,8 +272,7 @@ export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
             rules: [
                 {
                     description: "Nobody can delete the pipeline",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+                    link: "http://documentation",
                     status: false,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -297,8 +286,7 @@ export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
             rules: [
                 {
                     description: "Nobody can delete the pipeline",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+                    link: "http://documentation",
                     status: false,
                     reconcile: {
                         url: "http://some-reconcile-url",
@@ -312,8 +300,7 @@ export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
             rules: [
                 {
                     description: "Nobody can delete the pipeline",
-                    why:
-                        "To enforce auditability, no data should be deleted. Therefore, nobody should be able to delete the pipeline.",
+                    link: "http://documentation",
                     status: false,
                     reconcile: {
                         url: "http://some-reconcile-url",
