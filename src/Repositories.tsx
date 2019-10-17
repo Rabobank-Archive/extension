@@ -114,7 +114,7 @@ class Repositories extends React.Component<IRepositoriesProps, IState> {
                                 titleProps={{ text: "More information" }}
                             >
                                 <div>
-                                    <InfoBlock />
+                                    <InfoBlock showMoreInfoText={true} />
                                 </div>
                             </Card>
                         </div>

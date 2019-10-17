@@ -223,7 +223,7 @@ class Releases extends React.Component<
                 />
 
                 <div className="page-content page-content-top">
-                    <InfoBlock />
+                    <InfoBlock showMoreInfoText={false} />
                     <Card>
                         {this.state.isLoading ? (
                             <div>Loading...</div>

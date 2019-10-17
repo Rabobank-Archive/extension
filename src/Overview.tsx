@@ -205,7 +205,7 @@ class Overview extends React.Component<IOverviewProps, IState> {
                             titleProps={{ text: "More information" }}
                         >
                             <div>
-                                <InfoBlock />
+                                <InfoBlock showMoreInfoText={true} />
                             </div>
                         </Card>
                     </div>

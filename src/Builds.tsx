@@ -184,7 +184,7 @@ class Builds extends React.Component<
                     onDismiss={() => this.setState({ errorText: "" })}
                 />
                 <div className="page-content page-content-top">
-                    <InfoBlock />
+                    <InfoBlock showMoreInfoText={false} />
                     <Card>
                         {this.state.isLoading ? (
                             <div>Loading...</div>

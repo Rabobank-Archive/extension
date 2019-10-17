@@ -111,7 +111,7 @@ class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
                                 titleProps={{ text: "More information" }}
                             >
                                 <div>
-                                    <InfoBlock />
+                                    <InfoBlock showMoreInfoText={true} />
                                 </div>
                             </Card>
                         </div>

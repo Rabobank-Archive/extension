@@ -198,7 +198,7 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                                 titleProps={{ text: "More information" }}
                             >
                                 <div>
-                                    <InfoBlock />
+                                    <InfoBlock showMoreInfoText={true} />
                                 </div>
                             </Card>
                         </div>
