@@ -9,7 +9,7 @@ interface IInfoBlockProps {
 
 const InfoBlock = ({ showMoreInfoText }: IInfoBlockProps) => {
     return (
-        <p>
+        <div className="page-content">
             This page is maintained by the Test &amp; Automation Support
             department. You can use it to verify if you are working in
             accordance with the{" "}
@@ -27,7 +27,7 @@ const InfoBlock = ({ showMoreInfoText }: IInfoBlockProps) => {
                 tools.rabobank.nl
             </Link>
             .
-        </p>
+        </div>
     );
 };
 

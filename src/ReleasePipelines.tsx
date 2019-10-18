@@ -5,7 +5,6 @@ import {
     IReleasePipelinesReport
 } from "./services/IAzDoService";
 import { Page } from "azure-devops-ui/Page";
-import { Card } from "azure-devops-ui/Card";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import MasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
@@ -92,29 +91,20 @@ class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
                             await this.getData();
                         }}
                     />
+
                     <ErrorBar
                         message={this.state.errorText}
                         onDismiss={() => this.setState({ errorText: "" })}
                     />
 
-                    <div className="page-content page-content-top flex-row">
-                        <div className="flex-grow">
-                            {this.state.isLoading ? (
-                                <div>Loading...</div>
-                            ) : (
-                                this.getTabContent()
-                            )}
-                        </div>
-                        <div className="flex-grow">
-                            <Card
-                                className="card-info"
-                                titleProps={{ text: "More information" }}
-                            >
-                                <div>
-                                    <InfoBlock showMoreInfoText={true} />
-                                </div>
-                            </Card>
-                        </div>
+                    <InfoBlock showMoreInfoText={true} />
+
+                    <div className="page-content page-content-top">
+                        {this.state.isLoading ? (
+                            <div>Loading...</div>
+                        ) : (
+                            this.getTabContent()
+                        )}
                     </div>
                 </Page>
             </Surface>

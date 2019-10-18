@@ -175,7 +175,7 @@ class Builds extends React.Component<
                 <Header
                     title={"Build compliancy"}
                     // @ts-ignore
-                    titleSize={TitleSize.Medium}
+                    titleSize={TitleSize.Large}
                     titleIconProps={{ iconName: "OpenSource" }}
                 />
 
@@ -183,8 +183,10 @@ class Builds extends React.Component<
                     message={this.state.errorText}
                     onDismiss={() => this.setState({ errorText: "" })}
                 />
+
+                <InfoBlock showMoreInfoText={false} />
+
                 <div className="page-content page-content-top">
-                    <InfoBlock showMoreInfoText={false} />
                     <Card>
                         {this.state.isLoading ? (
                             <div>Loading...</div>

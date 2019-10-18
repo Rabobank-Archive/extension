@@ -213,7 +213,7 @@ class Releases extends React.Component<
                 <Header
                     title={"Release compliancy"}
                     // @ts-ignore
-                    titleSize={TitleSize.Medium}
+                    titleSize={TitleSize.Large}
                     titleIconProps={{ iconName: "OpenSource" }}
                 />
 
@@ -222,8 +222,9 @@ class Releases extends React.Component<
                     onDismiss={() => this.setState({ errorText: "" })}
                 />
 
+                <InfoBlock showMoreInfoText={false} />
+
                 <div className="page-content page-content-top">
-                    <InfoBlock showMoreInfoText={false} />
                     <Card>
                         {this.state.isLoading ? (
                             <div>Loading...</div>

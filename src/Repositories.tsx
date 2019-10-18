@@ -1,6 +1,5 @@
 import * as React from "react";
 import { IRepositoriesReport } from "./services/IAzDoService";
-import { Card } from "azure-devops-ui/Card";
 import { Page } from "azure-devops-ui/Page";
 import MasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
@@ -94,30 +93,20 @@ class Repositories extends React.Component<IRepositoriesProps, IState> {
                         onDismiss={() => this.setState({ errorText: "" })}
                     />
 
-                    <div className="page-content page-content-top flex-row">
-                        <div className="flex-grow">
-                            {this.state.isLoading ? (
-                                <div>Loading...</div>
-                            ) : (
-                                <MasterDetail
-                                    title="Repositories"
-                                    data={this.state.report.reports}
-                                    hasReconcilePermission={
-                                        this.state.hasReconcilePermission
-                                    }
-                                />
-                            )}
-                        </div>
-                        <div className="flex-grow">
-                            <Card
-                                className="card-info"
-                                titleProps={{ text: "More information" }}
-                            >
-                                <div>
-                                    <InfoBlock showMoreInfoText={true} />
-                                </div>
-                            </Card>
-                        </div>
+                    <InfoBlock showMoreInfoText={true} />
+
+                    <div className="page-content page-content-top">
+                        {this.state.isLoading ? (
+                            <div>Loading...</div>
+                        ) : (
+                            <MasterDetail
+                                title="Repositories"
+                                data={this.state.report.reports}
+                                hasReconcilePermission={
+                                    this.state.hasReconcilePermission
+                                }
+                            />
+                        )}
                     </div>
                 </Page>
             </Surface>

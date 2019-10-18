@@ -118,97 +118,87 @@ class Overview extends React.Component<IOverviewProps, IState> {
                         await this.getReportdata();
                     }}
                 />
+
                 <ErrorBar
                     message={this.state.errorText}
                     onDismiss={() => this.setState({ errorText: "" })}
                 />
 
-                <div className="page-content page-content-top flex-row">
-                    <div className="flex-grow">
-                        <Card>
-                            {this.state.isLoading ? (
-                                <div>Loading...</div>
-                            ) : (
-                                <div>
-                                    <Table<ITableItem>
-                                        columns={[
-                                            {
-                                                id: "description",
-                                                name: "Description",
-                                                renderCell: renderStringWithWhyTooltip,
-                                                onSize: onSize,
-                                                width: new ObservableValue(450)
-                                            },
-                                            {
-                                                id: "status",
-                                                name: "Status",
-                                                onSize: onSize,
-                                                width: new ObservableValue(75),
-                                                renderCell: renderCheckmark
-                                            },
-                                            {
-                                                id: "reconcileUrl",
-                                                name: "",
-                                                onSize: onSize,
-                                                width: new ObservableValue(130),
-                                                renderCell(
-                                                    _rowIndex: number,
-                                                    columnIndex: number,
-                                                    tableColumn: ITableColumn<
-                                                        ITableItem
-                                                    >,
-                                                    item: ITableItem
-                                                ) {
-                                                    let content =
-                                                        item.status !==
-                                                            Statuses.Success &&
-                                                        item.hasReconcilePermission ? (
-                                                            <ReconcileButton
-                                                                reconcilableItem={
-                                                                    item
-                                                                }
-                                                            />
-                                                        ) : (
-                                                            ""
-                                                        );
+                <InfoBlock showMoreInfoText={true} />
 
-                                                    return (
-                                                        <SimpleTableCell
-                                                            columnIndex={
-                                                                columnIndex
-                                                            }
-                                                            tableColumn={
-                                                                tableColumn
-                                                            }
-                                                            key={
-                                                                "col-" +
-                                                                columnIndex
-                                                            }
-                                                            contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden"
-                                                        >
-                                                            {content}
-                                                        </SimpleTableCell>
-                                                    );
-                                                }
-                                            }
-                                        ]}
-                                        itemProvider={this.itemProvider}
-                                        behaviors={[]}
-                                    />
-                                </div>
-                            )}
-                        </Card>
-                    </div>
-                    <div className="flex-grow">
-                        <Card
-                            className="card-info card-info-overview"
-                            titleProps={{ text: "More information" }}
-                        >
+                <div className="page-content page-content-top">
+                    <Card>
+                        {this.state.isLoading ? (
+                            <div>Loading...</div>
+                        ) : (
                             <div>
-                                <InfoBlock showMoreInfoText={true} />
+                                <Table<ITableItem>
+                                    columns={[
+                                        {
+                                            id: "description",
+                                            name: "Description",
+                                            renderCell: renderStringWithWhyTooltip,
+                                            onSize: onSize,
+                                            width: new ObservableValue(450)
+                                        },
+                                        {
+                                            id: "status",
+                                            name: "Status",
+                                            onSize: onSize,
+                                            width: new ObservableValue(75),
+                                            renderCell: renderCheckmark
+                                        },
+                                        {
+                                            id: "reconcileUrl",
+                                            name: "",
+                                            onSize: onSize,
+                                            width: new ObservableValue(130),
+                                            renderCell(
+                                                _rowIndex: number,
+                                                columnIndex: number,
+                                                tableColumn: ITableColumn<
+                                                    ITableItem
+                                                >,
+                                                item: ITableItem
+                                            ) {
+                                                let content =
+                                                    item.status !==
+                                                        Statuses.Success &&
+                                                    item.hasReconcilePermission ? (
+                                                        <ReconcileButton
+                                                            reconcilableItem={
+                                                                item
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        ""
+                                                    );
+
+                                                return (
+                                                    <SimpleTableCell
+                                                        columnIndex={
+                                                            columnIndex
+                                                        }
+                                                        tableColumn={
+                                                            tableColumn
+                                                        }
+                                                        key={
+                                                            "col-" + columnIndex
+                                                        }
+                                                        contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden"
+                                                    >
+                                                        {content}
+                                                    </SimpleTableCell>
+                                                );
+                                            }
+                                        }
+                                    ]}
+                                    itemProvider={this.itemProvider}
+                                    behaviors={[]}
+                                />
                             </div>
-                        </Card>
-                    </div>
+                        )}
+                    </Card>
                 </div>
             </Page>
         );

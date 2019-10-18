@@ -25,7 +25,6 @@ import CompliancyHeader from "./components/CompliancyHeader";
 import { Observer } from "azure-devops-ui/Observer";
 
 import "./css/styles.css";
-import { Card } from "azure-devops-ui/Card";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import { HasReconcilePermission } from "./services/CompliancyCheckerService";
 import { trackEvent, trackPageview } from "./services/ApplicationInsights";
@@ -142,6 +141,8 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                         onDismiss={() => this.setState({ errorText: "" })}
                     />
 
+                    <InfoBlock showMoreInfoText={true} />
+
                     {/* <TabBar
             selectedTabId={this.state.selectedTabId}
             onSelectedTabChanged={this.onSelectedTabChanged}
@@ -184,24 +185,12 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                         </div>
                     </ConditionalChildren>
 
-                    <div className="page-content page-content-top flex-row">
-                        <div className="flex-grow">
-                            {this.state.isLoading ? (
-                                <div>Loading...</div>
-                            ) : (
-                                this.getTabContent()
-                            )}
-                        </div>
-                        <div className="flex-grow">
-                            <Card
-                                className="card-info"
-                                titleProps={{ text: "More information" }}
-                            >
-                                <div>
-                                    <InfoBlock showMoreInfoText={true} />
-                                </div>
-                            </Card>
-                        </div>
+                    <div className="page-content page-content-top">
+                        {this.state.isLoading ? (
+                            <div>Loading...</div>
+                        ) : (
+                            this.getTabContent()
+                        )}
                     </div>
                 </Page>
             </Surface>
