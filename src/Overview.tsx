@@ -27,6 +27,7 @@ import {
 import { onSize } from "./components/TableBehaviors";
 import ReconcileButton from "./components/ReconcileButton";
 import InfoBlock from "./components/InfoBlock";
+import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 interface ITableItem {
     description: string;
     link: string | null;
@@ -109,98 +110,102 @@ class Overview extends React.Component<IOverviewProps, IState> {
 
     render() {
         return (
-            <Page>
-                <CompliancyHeader
-                    headerText="Project compliancy"
-                    lastScanDate={this.state.report.date}
-                    rescanUrl={this.state.report.rescanUrl}
-                    onRescanFinished={async () => {
-                        await this.getReportdata();
-                    }}
-                />
+            // @ts-ignore
+            <Surface background={SurfaceBackground.neutral}>
+                <Page className="flex-grow">
+                    <CompliancyHeader
+                        headerText="Project compliancy"
+                        lastScanDate={this.state.report.date}
+                        rescanUrl={this.state.report.rescanUrl}
+                        onRescanFinished={async () => {
+                            await this.getReportdata();
+                        }}
+                    />
 
-                <ErrorBar
-                    message={this.state.errorText}
-                    onDismiss={() => this.setState({ errorText: "" })}
-                />
+                    <ErrorBar
+                        message={this.state.errorText}
+                        onDismiss={() => this.setState({ errorText: "" })}
+                    />
 
-                <InfoBlock showMoreInfoText={true} />
+                    <InfoBlock showMoreInfoText={true} />
 
-                <div className="page-content page-content-top">
-                    <Card>
-                        {this.state.isLoading ? (
-                            <div>Loading...</div>
-                        ) : (
-                            <div>
-                                <Table<ITableItem>
-                                    columns={[
-                                        {
-                                            id: "description",
-                                            name: "Description",
-                                            renderCell: renderStringWithWhyTooltip,
-                                            onSize: onSize,
-                                            width: new ObservableValue(450)
-                                        },
-                                        {
-                                            id: "status",
-                                            name: "Status",
-                                            onSize: onSize,
-                                            width: new ObservableValue(75),
-                                            renderCell: renderCheckmark
-                                        },
-                                        {
-                                            id: "reconcileUrl",
-                                            name: "",
-                                            onSize: onSize,
-                                            width: new ObservableValue(130),
-                                            renderCell(
-                                                _rowIndex: number,
-                                                columnIndex: number,
-                                                tableColumn: ITableColumn<
-                                                    ITableItem
-                                                >,
-                                                item: ITableItem
-                                            ) {
-                                                let content =
-                                                    item.status !==
-                                                        Statuses.Success &&
-                                                    item.hasReconcilePermission ? (
-                                                        <ReconcileButton
-                                                            reconcilableItem={
-                                                                item
+                    <div className="page-content page-content-top">
+                        <Card>
+                            {this.state.isLoading ? (
+                                <div>Loading...</div>
+                            ) : (
+                                <div>
+                                    <Table<ITableItem>
+                                        columns={[
+                                            {
+                                                id: "description",
+                                                name: "Description",
+                                                renderCell: renderStringWithWhyTooltip,
+                                                onSize: onSize,
+                                                width: new ObservableValue(450)
+                                            },
+                                            {
+                                                id: "status",
+                                                name: "Status",
+                                                onSize: onSize,
+                                                width: new ObservableValue(75),
+                                                renderCell: renderCheckmark
+                                            },
+                                            {
+                                                id: "reconcileUrl",
+                                                name: "",
+                                                onSize: onSize,
+                                                width: new ObservableValue(130),
+                                                renderCell(
+                                                    _rowIndex: number,
+                                                    columnIndex: number,
+                                                    tableColumn: ITableColumn<
+                                                        ITableItem
+                                                    >,
+                                                    item: ITableItem
+                                                ) {
+                                                    let content =
+                                                        item.status !==
+                                                            Statuses.Success &&
+                                                        item.hasReconcilePermission ? (
+                                                            <ReconcileButton
+                                                                reconcilableItem={
+                                                                    item
+                                                                }
+                                                            />
+                                                        ) : (
+                                                            ""
+                                                        );
+
+                                                    return (
+                                                        <SimpleTableCell
+                                                            columnIndex={
+                                                                columnIndex
                                                             }
-                                                        />
-                                                    ) : (
-                                                        ""
+                                                            tableColumn={
+                                                                tableColumn
+                                                            }
+                                                            key={
+                                                                "col-" +
+                                                                columnIndex
+                                                            }
+                                                            contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden"
+                                                        >
+                                                            {content}
+                                                        </SimpleTableCell>
                                                     );
-
-                                                return (
-                                                    <SimpleTableCell
-                                                        columnIndex={
-                                                            columnIndex
-                                                        }
-                                                        tableColumn={
-                                                            tableColumn
-                                                        }
-                                                        key={
-                                                            "col-" + columnIndex
-                                                        }
-                                                        contentClassName="fontWeightSemiBold font-weight-semibold fontSizeM font-size-m scroll-hidden"
-                                                    >
-                                                        {content}
-                                                    </SimpleTableCell>
-                                                );
+                                                }
                                             }
-                                        }
-                                    ]}
-                                    itemProvider={this.itemProvider}
-                                    behaviors={[]}
-                                />
-                            </div>
-                        )}
-                    </Card>
-                </div>
-            </Page>
+                                        ]}
+                                        itemProvider={this.itemProvider}
+                                        behaviors={[]}
+                                    />
+                                </div>
+                            )}
+                        </Card>
+                    </div>
+                </Page>
+            </Surface>
         );
     }
 }

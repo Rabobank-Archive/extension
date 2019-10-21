@@ -10,19 +10,28 @@ interface IInfoBlockProps {
 const InfoBlock = ({ showMoreInfoText }: IInfoBlockProps) => {
     return (
         <div className="page-content">
-            This page is maintained by the Test &amp; Automation Support
-            department. You can use it to verify if you are working in
-            accordance with the{" "}
+            This page is maintained by{" "}
+            <i>'Rabobank Test &amp; Automation Support (TAS)'</i>. It can help
+            you with making your CI/CD pipelines compliant with the{" "}
             <Link
                 href="https://confluence.dev.rabobank.nl/x/JoQbBw"
                 target="_blank"
             >
-                current blueprint policies
+                DevOps security blueprint policy
             </Link>
-            .{" "}
+            . For more information about the AzDo compliance tools you can visit
+            the{" "}
+            <Link
+                href="https://confluence.dev.rabobank.nl/x/2GflCw"
+                target="_blank"
+            >
+                AzDo Compliance
+            </Link>{" "}
+            page.{" "}
             {showMoreInfoText &&
-                "For information about specific controls you can click on the information icon next to the rule."}{" "}
-            If you have any questions please contact us at{" "}
+                "If you require information about any specific controls you can click on the information icon next to the rule."}{" "}
+            Should you have any remaining questions or need for support, please
+            go to the TAS portal at{" "}
             <Link href="https://tools.rabobank.nl/vsts/request" target="_blank">
                 tools.rabobank.nl
             </Link>

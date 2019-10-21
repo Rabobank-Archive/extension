@@ -27,6 +27,7 @@ import {
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
 import InfoBlock from "./components/InfoBlock";
+import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -171,37 +172,43 @@ class Builds extends React.Component<
         ];
 
         return (
-            <Page>
-                <Header
-                    title={"Build compliancy"}
-                    // @ts-ignore
-                    titleSize={TitleSize.Large}
-                    titleIconProps={{ iconName: "OpenSource" }}
-                />
+            // @ts-ignore
+            <Surface background={SurfaceBackground.neutral}>
+                <Page className="flex-grow">
+                    <Header
+                        title={"Build compliancy"}
+                        // @ts-ignore
+                        titleSize={TitleSize.Large}
+                        titleIconProps={{ iconName: "OpenSource" }}
+                    />
 
-                <ErrorBar
-                    message={this.state.errorText}
-                    onDismiss={() => this.setState({ errorText: "" })}
-                />
+                    <ErrorBar
+                        message={this.state.errorText}
+                        onDismiss={() => this.setState({ errorText: "" })}
+                    />
 
-                <InfoBlock showMoreInfoText={false} />
+                    <InfoBlock showMoreInfoText={false} />
 
-                <div className="page-content page-content-top">
-                    <Card>
-                        {this.state.isLoading ? (
-                            <div>Loading...</div>
-                        ) : (
-                            <Table<ITableItem>
-                                columns={columns}
-                                itemProvider={this.itemProvider}
-                                behaviors={[
-                                    sortingBehavior(this.itemProvider, columns)
-                                ]}
-                            />
-                        )}
-                    </Card>
-                </div>
-            </Page>
+                    <div className="page-content page-content-top">
+                        <Card>
+                            {this.state.isLoading ? (
+                                <div>Loading...</div>
+                            ) : (
+                                <Table<ITableItem>
+                                    columns={columns}
+                                    itemProvider={this.itemProvider}
+                                    behaviors={[
+                                        sortingBehavior(
+                                            this.itemProvider,
+                                            columns
+                                        )
+                                    ]}
+                                />
+                            )}
+                        </Card>
+                    </div>
+                </Page>
+            </Surface>
         );
     }
 }
