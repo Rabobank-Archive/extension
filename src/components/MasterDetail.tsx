@@ -41,6 +41,7 @@ import ReconcileButton from "./ReconcileButton";
 import { appInsightsReactPlugin } from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import "./MasterDetail.css";
+import { getDevopsUiStatus } from "../services/Status";
 
 interface IReportMaster {
     item: string;
@@ -62,7 +63,7 @@ function compareItemReports(a: IItemReport, b: IItemReport) {
 
 function isCompliant(item: IReportMaster): boolean {
     return !item.rules.some(rule => {
-        return rule.status !== Statuses.Success;
+        return rule.status === Statuses.Failed;
     });
 }
 
@@ -101,7 +102,7 @@ class MasterDetail extends React.Component<
                             .hasReconcilePermission,
                         reconcileUrl: x.reconcile ? x.reconcile.url : "",
                         reconcileImpact: x.reconcile ? x.reconcile.impact : [],
-                        status: x.status ? Statuses.Success : Statuses.Failed
+                        status: getDevopsUiStatus(x.status)
                     };
                     return rule;
                 })
@@ -117,7 +118,7 @@ class MasterDetail extends React.Component<
         item: IReportRule
     ): JSX.Element {
         let content =
-            item.status !== Statuses.Success && item.hasReconcilePermission ? (
+            item.status === Statuses.Failed && item.hasReconcilePermission ? (
                 <ReconcileButton reconcilableItem={item} />
             ) : (
                 ""

@@ -59,6 +59,20 @@ export const DummyProjectRulesReport: IOverviewReport = {
                         ],
                         url: "http://something.com"
                     }
+                },
+                {
+                    description: "Another dummy other rule",
+                    link: null,
+                    status: null,
+                    reconcile: {
+                        impact: [
+                            "Dit is een test data zin, om te checken of blablablabal",
+                            "Dit is een test data zin, om te checken of blablablabal",
+                            "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                            "Delete team project permission is set to 'not set' for all other groups"
+                        ],
+                        url: "http://something.com"
+                    }
                 }
             ]
         }
@@ -150,7 +164,16 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
                 {
                     description: "Master and release branches are protected",
                     link: "http://documentation",
-                    status: true,
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
                     reconcile: {
                         url: "http://some-reconcile-url",
                         impact: ["some impact"]

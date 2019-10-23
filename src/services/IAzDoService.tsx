@@ -6,7 +6,7 @@ export interface IItemReport {
 export interface IRule {
     description: string;
     link: string | null;
-    status: boolean;
+    status: boolean | null | undefined;
     reconcile:
         | {
               impact: string[];

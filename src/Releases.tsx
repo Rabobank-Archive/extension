@@ -27,6 +27,7 @@ import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
 import InfoBlock from "./components/InfoBlock";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
+import { getDevopsUiStatus } from "./services/Status";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -73,15 +74,17 @@ class Releases extends React.Component<
                     release: x.release,
                     environment: x.environment,
                     createdDate: x.createdDate,
-                    hasApprovalOptions: getStatus(x.hasApprovalOptions),
-                    hasBranchFilterForAllArtifacts: getStatus(
+                    hasApprovalOptions: getDevopsUiStatus(x.hasApprovalOptions),
+                    hasBranchFilterForAllArtifacts: getDevopsUiStatus(
                         x.hasBranchFilterForAllArtifacts
                     ),
-                    usesManagedAgentsOnly: getStatus(x.usesManagedAgentsOnly),
-                    allArtifactsAreFromBuild: getStatus(
+                    usesManagedAgentsOnly: getDevopsUiStatus(
+                        x.usesManagedAgentsOnly
+                    ),
+                    allArtifactsAreFromBuild: getDevopsUiStatus(
                         x.allArtifactsAreFromBuild
                     ),
-                    relatedToSm9Change: getStatus(x.relatedToSm9Change)
+                    relatedToSm9Change: getDevopsUiStatus(x.relatedToSm9Change)
                 }))
             );
 
@@ -252,10 +255,3 @@ class Releases extends React.Component<
 }
 
 export default withAITracking(appInsightsReactPlugin, Releases);
-function getStatus(value: null | undefined | boolean): IStatusProps {
-    return value === null || value === undefined
-        ? Statuses.Queued
-        : value
-        ? Statuses.Success
-        : Statuses.Failed;
-}

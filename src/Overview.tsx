@@ -28,6 +28,7 @@ import { onSize } from "./components/TableBehaviors";
 import ReconcileButton from "./components/ReconcileButton";
 import InfoBlock from "./components/InfoBlock";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
+import { getDevopsUiStatus } from "./services/Status";
 interface ITableItem {
     description: string;
     link: string | null;
@@ -89,7 +90,7 @@ class Overview extends React.Component<IOverviewProps, IState> {
                     hasReconcilePermission: hasReconcilePermission,
                     reconcileUrl: x.reconcile!.url,
                     reconcileImpact: x.reconcile!.impact,
-                    status: x.status ? Statuses.Success : Statuses.Failed
+                    status: getDevopsUiStatus(x.status)
                 }))
             );
 
@@ -165,8 +166,8 @@ class Overview extends React.Component<IOverviewProps, IState> {
                                                     item: ITableItem
                                                 ) {
                                                     let content =
-                                                        item.status !==
-                                                            Statuses.Success &&
+                                                        item.status ===
+                                                            Statuses.Failed &&
                                                         item.hasReconcilePermission ? (
                                                             <ReconcileButton
                                                                 reconcilableItem={
