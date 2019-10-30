@@ -80,7 +80,8 @@ async function HasRealReconcilePermission(
     });
 
     try {
-        let response = await axios.get(hasReconcilePermissionUrl, config);
+        const url = `${hasReconcilePermissionUrl}?userId=${user.id}`;
+        const response = await axios.get(url, config);
         hasReconcilePermission = response.data as boolean;
     } catch (e) {
         // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm

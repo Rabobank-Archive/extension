@@ -6,7 +6,7 @@ import {
     renderSimpleCell,
     Table
 } from "azure-devops-ui/Table";
-import { IStatusProps, Statuses } from "azure-devops-ui/Status";
+import { IStatusProps } from "azure-devops-ui/Status";
 import {
     ObservableArray,
     ObservableValue
