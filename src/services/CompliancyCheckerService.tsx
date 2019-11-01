@@ -106,10 +106,13 @@ async function HasRealReconcilePermission(
 
 async function DoRealReconcileRequest(reconcileUrl: string): Promise<void> {
     const token = await GetAzDoAppToken();
+    const user = GetAzDoUser();
+
     let config: AxiosRequestConfig = {
         headers: { Authorization: `Bearer ${token}` }
     };
-    await axios.get(reconcileUrl, config);
+
+    await axios.get(`${reconcileUrl}?userId=${user.id}`, config);
 }
 
 async function DoRealRescanRequest(
