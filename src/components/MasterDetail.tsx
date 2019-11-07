@@ -61,10 +61,24 @@ function compareItemReports(a: IItemReport, b: IItemReport) {
     return a.item.localeCompare(b.item);
 }
 
-function isCompliant(item: IReportMaster): boolean {
-    return !item.rules.some(rule => {
-        return rule.status === Statuses.Failed;
-    });
+function getComplianceStatus(item: IReportMaster): IStatusProps {
+    if (
+        item.rules.some(rule => {
+            return rule.status === Statuses.Failed;
+        })
+    ) {
+        return Statuses.Failed;
+    }
+
+    if (
+        item.rules.some(rule => {
+            return rule.status === Statuses.Queued;
+        })
+    ) {
+        return Statuses.Queued;
+    }
+
+    return Statuses.Success;
 }
 
 class MasterDetail extends React.Component<
@@ -198,8 +212,10 @@ class MasterDetail extends React.Component<
         ).filter((value, index, array) => {
             return (
                 value.item.toLowerCase().includes(searchFilter.toLowerCase()) &&
-                ((showCompliantRepos && isCompliant(value)) ||
-                    (showNonCompliantRepos && !isCompliant(value)))
+                ((showCompliantRepos &&
+                    getComplianceStatus(value) === Statuses.Success) ||
+                    (showNonCompliantRepos &&
+                        getComplianceStatus(value) !== Statuses.Success))
             );
         });
     }
@@ -414,10 +430,20 @@ const renderRow = (
                         {item.item}
                     </div>
                     <div className="secondary-text">
-                        {isCompliant(item) ? (
+                        {getComplianceStatus(item) === Statuses.Success ? (
                             <div>
                                 <Status
                                     {...Statuses.Success}
+                                    className="icon-large-margin"
+                                    // @ts-ignore
+                                    size={StatusSize.s}
+                                />
+                                Compliant
+                            </div>
+                        ) : getComplianceStatus(item) === Statuses.Queued ? (
+                            <div>
+                                <Status
+                                    {...Statuses.Queued}
                                     className="icon-large-margin"
                                     // @ts-ignore
                                     size={StatusSize.s}
