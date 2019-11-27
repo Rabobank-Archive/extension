@@ -1,3 +1,13 @@
 .ci-identifiers {
     margin-left: 32px;
+    display: flex;
+}
+
+.ci-identifiers-label {
+    vertical-align: middle;
+    margin: auto 0;
+}
+
+.ci-identifiers-pillgroup {
+    margin-left: 10px;
 }

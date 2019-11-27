@@ -3,11 +3,6 @@
     height: 100%;
 }
 
-.page-content.page-content-top {
-    height: 100%;
-    overflow: scroll;
-}
-
 .page-content.flex-row {
     height: 100%;
 }
@@ -28,4 +23,8 @@
 
 #root > div {
     height: 100%;
+}
+
+.v-scroll-auto {
+    overflow-y: initial;
 }

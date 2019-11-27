@@ -9,21 +9,24 @@ const CiIdentifierPillGroup = ({
 }: {
     ciIdentifiers: string;
 }) => (
-    <PillGroup className="ci-identifiers">
-        {ciIdentifiers.split(",").map(id => (
-            <Pill
-                key={id.trim()}
-                color={{
-                    red: 182,
-                    green: 15,
-                    blue: 160
-                }}
-                variant={2}
-            >
-                {id.trim()}
-            </Pill>
-        ))}
-    </PillGroup>
+    <div className="ci-identifiers">
+        <label className="ci-identifiers-label">CI identifiers: </label>
+        <PillGroup className="ci-identifiers-pillgroup">
+            {ciIdentifiers.split(",").map(id => (
+                <Pill
+                    key={id.trim()}
+                    color={{
+                        red: 182,
+                        green: 15,
+                        blue: 160
+                    }}
+                    variant={2}
+                >
+                    {id.trim()}
+                </Pill>
+            ))}
+        </PillGroup>
+    </div>
 );
 
 export default CiIdentifierPillGroup;
