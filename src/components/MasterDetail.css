@@ -3,12 +3,21 @@
     height: 100%;
 }
 
+.page-content.page-content-top {
+    height: 100%;
+    overflow: scroll;
+}
+
 .page-content.flex-row {
     height: 100%;
 }
 
 /* hack for application insights plugin generating div wrappers arround exported components */
 .page-content > .flex-grow > div[class=""] {
+    height: 100%;
+}
+
+.page-content.page-content.page-content-top > div[class=""] {
     height: 100%;
 }
 

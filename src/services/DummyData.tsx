@@ -182,6 +182,294 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
             ]
         },
         {
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    link: "http://documentation",
+                    status: true,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "Master and release branches are protected",
+                    link: "http://documentation",
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                }
+            ]
+        },
+        {
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    link: "http://documentation",
+                    status: true,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "Master and release branches are protected",
+                    link: "http://documentation",
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                }
+            ]
+        },
+        {
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    link: "http://documentation",
+                    status: true,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "Master and release branches are protected",
+                    link: "http://documentation",
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                }
+            ]
+        },
+        {
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    link: "http://documentation",
+                    status: true,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "Master and release branches are protected",
+                    link: "http://documentation",
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                }
+            ]
+        },
+        {
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    link: "http://documentation",
+                    status: true,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "Master and release branches are protected",
+                    link: "http://documentation",
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                }
+            ]
+        },
+        {
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    link: "http://documentation",
+                    status: true,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "Master and release branches are protected",
+                    link: "http://documentation",
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                }
+            ]
+        },
+        {
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    link: "http://documentation",
+                    status: true,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "Master and release branches are protected",
+                    link: "http://documentation",
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                }
+            ]
+        },
+        {
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    link: "http://documentation",
+                    status: true,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "Master and release branches are protected",
+                    link: "http://documentation",
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                }
+            ]
+        },
+        {
+            item: "investment-application-messages",
+            rules: [
+                {
+                    description: "Nobody can delete the repository",
+                    link: "http://documentation",
+                    status: true,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "Master and release branches are protected",
+                    link: "http://documentation",
+                    status: false,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                },
+                {
+                    description: "No secrets",
+                    link: "http://documentation",
+                    status: null,
+                    reconcile: {
+                        url: "http://some-reconcile-url",
+                        impact: ["some impact"]
+                    }
+                }
+            ]
+        },
+        {
             item: "rbo-feature-settings-ked",
             rules: [
                 {

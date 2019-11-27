@@ -14,7 +14,7 @@ describe("MasterDetail", () => {
         );
 
         const visibleMasterItems = queryAllByRole("option");
-        expect(visibleMasterItems).toHaveLength(2);
+        expect(visibleMasterItems).toHaveLength(10);
 
         const searchBox = await getByLabelText("Search...");
         fireEvent.change(searchBox, { target: { value: "rbo" } });
@@ -33,7 +33,7 @@ describe("MasterDetail", () => {
         );
 
         let visibleMasterItems = queryAllByRole("option");
-        expect(visibleMasterItems).toHaveLength(2);
+        expect(visibleMasterItems).toHaveLength(10);
 
         const searchBox = await getByLabelText("Search...");
         fireEvent.change(searchBox, { target: { value: "RBO" } });
