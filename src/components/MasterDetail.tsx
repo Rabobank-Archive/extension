@@ -42,10 +42,12 @@ import { appInsightsReactPlugin } from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import "./MasterDetail.css";
 import { getDevopsUiStatus } from "../services/Status";
+import CiIdentifierPillGroup from "./CiIdentifierPillGroup";
 
 interface IReportMaster {
     item: string;
     rules: IReportRule[];
+    ciIdentifiers?: string | null | undefined;
 }
 
 interface IReportRule {
@@ -119,7 +121,8 @@ class MasterDetail extends React.Component<
                         status: getDevopsUiStatus(x.status)
                     };
                     return rule;
-                })
+                }),
+                ciIdentifiers: m.ciIdentifiers
             };
             return master;
         });
@@ -322,6 +325,11 @@ class MasterDetail extends React.Component<
                         // @ts-ignore
                         titleSize={TitleSize.Large}
                     />
+                    {detailItem.ciIdentifiers && (
+                        <CiIdentifierPillGroup
+                            ciIdentifiers={detailItem.ciIdentifiers}
+                        />
+                    )}
                     <div className="page-content page-content-top">
                         <Card
                             className="bolt-card-no-vertical-padding"

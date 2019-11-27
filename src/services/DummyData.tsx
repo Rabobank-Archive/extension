@@ -288,7 +288,8 @@ export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
                         impact: ["some impact"]
                     }
                 }
-            ]
+            ],
+            ciIdentifiers: "CI1312312,CI23444432,CI1231122"
         },
         {
             item: "microservice-architecture",
@@ -302,7 +303,8 @@ export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
                         impact: ["some impact"]
                     }
                 }
-            ]
+            ],
+            ciIdentifiers: "CI4234424"
         },
         {
             item: "mobile-ios-app",

@@ -1,6 +1,7 @@
 export interface IItemReport {
     item: string;
     rules: IRule[];
+    ciIdentifiers?: string | null | undefined;
 }
 
 export interface IRule {
