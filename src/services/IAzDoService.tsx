@@ -1,13 +1,21 @@
+export interface IEnvironment {
+    id: string;
+    name: string;
+}
 export interface IItemReport {
     item: string;
+    itemId: string;
+    projectId: string;
     rules: IRule[];
     ciIdentifiers?: string | null | undefined;
+    environments?: IEnvironment[];
 }
 
 export interface IRule {
     description: string;
     link: string | null;
     status: boolean | null | undefined;
+    name: string;
     reconcile:
         | {
               impact: string[];

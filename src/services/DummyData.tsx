@@ -9,6 +9,67 @@ import {
 import { ObservableValue } from "azure-devops-ui/Core/Observable";
 import { IPipelineItem } from "../components/BuildPipelinesList";
 
+const projectRules = [
+    {
+        description: "No one should be able to delete the Team Project",
+        name: "Dummy",
+        link: "http://documentation",
+        status: true,
+        reconcile: {
+            impact: [
+                "Rabobank Project Administrators group is created and added to Project Administrators",
+                "Delete team project permissions of the Rabobank Project Administrators group is set to deny",
+                "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                "Delete team project permission is set to 'not set' for all other groups"
+            ],
+            url: "http://something.com"
+        }
+    },
+    {
+        description: "Some rule that cannot autofix",
+        name: "Dummy",
+        link: "http://documentation",
+        status: false,
+        reconcile: {
+            impact: [
+                "Typ gewoon blablabal wat mij betreft zet je er",
+                "henkie is een test"
+            ],
+            url: ""
+        }
+    },
+    {
+        description: "Just some dummy other rule",
+        name: "Dummy",
+        link: null,
+        status: false,
+        reconcile: {
+            impact: [
+                "Dit is een test data zin, om te checken of blablablabal",
+                "Dit is een test data zin, om te checken of blablablabal",
+                "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                "Delete team project permission is set to 'not set' for all other groups"
+            ],
+            url: "http://something.com"
+        }
+    },
+    {
+        description: "Another dummy other rule",
+        name: "Dummy",
+        link: null,
+        status: null,
+        reconcile: {
+            impact: [
+                "Dit is een test data zin, om te checken of blablablabal",
+                "Dit is een test data zin, om te checken of blablablabal",
+                "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                "Delete team project permission is set to 'not set' for all other groups"
+            ],
+            url: "http://something.com"
+        }
+    }
+];
+
 export const DummyProjectRulesReport: IOverviewReport = {
     date: new Date(),
     rescanUrl:
@@ -18,63 +79,9 @@ export const DummyProjectRulesReport: IOverviewReport = {
     reports: [
         {
             item: "",
-            rules: [
-                {
-                    description:
-                        "No one should be able to delete the Team Project",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        impact: [
-                            "Rabobank Project Administrators group is created and added to Project Administrators",
-                            "Delete team project permissions of the Rabobank Project Administrators group is set to deny",
-                            "Members of the Project Administrators are moved to Rabobank Project Administrators",
-                            "Delete team project permission is set to 'not set' for all other groups"
-                        ],
-                        url: "http://something.com"
-                    }
-                },
-                {
-                    description: "Some rule that cannot autofix",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        impact: [
-                            "Typ gewoon blablabal wat mij betreft zet je er",
-                            "henkie is een test"
-                        ],
-                        url: ""
-                    }
-                },
-                {
-                    description: "Just some dummy other rule",
-                    link: null,
-                    status: false,
-                    reconcile: {
-                        impact: [
-                            "Dit is een test data zin, om te checken of blablablabal",
-                            "Dit is een test data zin, om te checken of blablablabal",
-                            "Members of the Project Administrators are moved to Rabobank Project Administrators",
-                            "Delete team project permission is set to 'not set' for all other groups"
-                        ],
-                        url: "http://something.com"
-                    }
-                },
-                {
-                    description: "Another dummy other rule",
-                    link: null,
-                    status: null,
-                    reconcile: {
-                        impact: [
-                            "Dit is een test data zin, om te checken of blablablabal",
-                            "Dit is een test data zin, om te checken of blablablabal",
-                            "Members of the Project Administrators are moved to Rabobank Project Administrators",
-                            "Delete team project permission is set to 'not set' for all other groups"
-                        ],
-                        url: "http://something.com"
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: projectRules
         }
     ]
 };
@@ -144,6 +151,39 @@ export const DummyReleaseReport: IReleaseReport = {
     ]
 };
 
+const repoRules = [
+    {
+        description: "Nobody can delete the repository",
+        name: "Dummy",
+        link: "http://documentation",
+        status: true,
+        reconcile: {
+            url: "http://some-reconcile-url",
+            impact: ["some impact"]
+        }
+    },
+    {
+        description: "Master and release branches are protected",
+        name: "Dummy",
+        link: "http://documentation",
+        status: false,
+        reconcile: {
+            url: "http://some-reconcile-url",
+            impact: ["some impact"]
+        }
+    },
+    {
+        description: "No secrets",
+        name: "Dummy",
+        link: "http://documentation",
+        status: null,
+        reconcile: {
+            url: "http://some-reconcile-url",
+            impact: ["some impact"]
+        }
+    }
+];
+
 export const DummyRepositoriesReport: IRepositoriesReport = {
     date: new Date(),
     rescanUrl: "https://reqres.in",
@@ -151,349 +191,85 @@ export const DummyRepositoriesReport: IRepositoriesReport = {
     reports: [
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "investment-application-messages",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "No secrets",
-                    link: "http://documentation",
-                    status: null,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         },
         {
             item: "rbo-feature-settings-ked",
-            rules: [
-                {
-                    description: "Nobody can delete the repository",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                },
-                {
-                    description: "Master and release branches are protected",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: repoRules
         }
     ]
 };
+
+const buildRules = [
+    {
+        description: "Nobody can delete the pipeline",
+        name: "Dummy",
+        link: "http://documentation",
+        status: true,
+        reconcile: {
+            url: "http://some-reconcile-url",
+            impact: ["some impact"]
+        }
+    }
+];
 
 export const DummyBuildPipelinesReport: IBuildPipelinesReport = {
     date: new Date(),
@@ -502,62 +278,54 @@ export const DummyBuildPipelinesReport: IBuildPipelinesReport = {
     reports: [
         {
             item: "enterprise-distributed-service",
-            rules: [
-                {
-                    description: "Nobody can delete the pipeline",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: buildRules
         },
         {
             item: "microservice-architecture",
-            rules: [
-                {
-                    description: "Nobody can delete the pipeline",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: buildRules
         },
         {
             item: "mobile-ios-app",
-            rules: [
-                {
-                    description: "Nobody can delete the pipeline",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: buildRules
         },
         {
             item: "node-package",
-            rules: [
-                {
-                    description: "Nobody can delete the pipeline",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: buildRules
         }
     ]
 };
+
+const releasePipelineRules = [
+    {
+        description: "Nobody can delete the pipeline",
+        name: "Dummy",
+        link: "http://documentation",
+        status: false,
+        reconcile: {
+            url: "http://some-reconcile-url",
+            impact: ["some impact"]
+        }
+    },
+    {
+        description: "Release pipeline has valid CMDB link",
+        link: "https://confluence.dev.rabobank.nl/x/PqKbD",
+        status: false,
+        name: "ReleasePipelineHasDeploymentMethod",
+        reconcile: {
+            url:
+                "https://azdocompliancydev.azurewebsites.net/api/reconcile/raboweb-test/53410703-e2e5-4238-9025-233bd7c811b3/releasepipelines/ReleasePipelineHasDeploymentMethod/4",
+            impact: []
+        }
+    }
+];
 
 export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
     date: new Date(),
@@ -566,61 +334,33 @@ export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
     reports: [
         {
             item: "enterprise-distributed-service",
-            rules: [
-                {
-                    description: "Nobody can delete the pipeline",
-                    link: "http://documentation",
-                    status: true,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ],
-            ciIdentifiers: "CI1312312,CI23444432,CI1231122"
+            itemId: "71",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: releasePipelineRules,
+            ciIdentifiers: "CI1312312,CI23444432,CI1231122",
+            environments: [
+                { id: "1", name: "UAT" },
+                { id: "2", name: "PROD" }
+            ]
         },
         {
             item: "microservice-architecture",
-            rules: [
-                {
-                    description: "Nobody can delete the pipeline",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ],
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: releasePipelineRules,
             ciIdentifiers: "CI4234424"
         },
         {
             item: "mobile-ios-app",
-            rules: [
-                {
-                    description: "Nobody can delete the pipeline",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: releasePipelineRules
         },
         {
             item: "node-package",
-            rules: [
-                {
-                    description: "Nobody can delete the pipeline",
-                    link: "http://documentation",
-                    status: false,
-                    reconcile: {
-                        url: "http://some-reconcile-url",
-                        impact: ["some impact"]
-                    }
-                }
-            ]
+            itemId: "1",
+            projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
+            rules: releasePipelineRules
         }
     ]
 };

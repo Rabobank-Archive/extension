@@ -36,21 +36,26 @@ import {
 } from "azure-devops-ui/Status";
 import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
-import { IItemReport } from "../services/IAzDoService";
+import { IItemReport, IEnvironment } from "../services/IAzDoService";
 import ReconcileButton from "./ReconcileButton";
 import { appInsightsReactPlugin } from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import "./MasterDetail.css";
 import { getDevopsUiStatus } from "../services/Status";
 import CiIdentifierPillGroup from "./CiIdentifierPillGroup";
+import DeploymentMethodReconcileButton from "./DeploymentMethodReconcileButton";
 
 interface IReportMaster {
     item: string;
+    itemId: string;
+    projectId: string;
     rules: IReportRule[];
     ciIdentifiers?: string | null | undefined;
+    environments?: IEnvironment[];
 }
 
 interface IReportRule {
+    name: string | null | undefined;
     description: string;
     link: string | null;
     status: IStatusProps;
@@ -110,8 +115,11 @@ class MasterDetail extends React.Component<
         return itemReports.map(m => {
             let master: IReportMaster = {
                 item: m.item,
+                itemId: m.itemId,
+                projectId: m.projectId,
                 rules: m.rules.map(x => {
                     let rule: IReportRule = {
+                        name: x.name,
                         description: x.description,
                         link: x.link,
                         hasReconcilePermission: this.props
@@ -122,20 +130,25 @@ class MasterDetail extends React.Component<
                     };
                     return rule;
                 }),
-                ciIdentifiers: m.ciIdentifiers
+                ciIdentifiers: m.ciIdentifiers,
+                environments: m.environments
             };
             return master;
         });
     }
 
     renderReconcileButton(
-        rowIndex: number,
         columnIndex: number,
         tableColumn: ITableColumn<IReportRule>,
-        item: IReportRule
+        item: IReportRule,
+        report: IReportMaster
     ): JSX.Element {
-        let content =
-            item.status === Statuses.Failed && item.hasReconcilePermission ? (
+        const content =
+            item.hasReconcilePermission &&
+            item.name === "ReleasePipelineHasDeploymentMethod" ? (
+                <DeploymentMethodReconcileButton {...report} />
+            ) : item.hasReconcilePermission &&
+              item.status === Statuses.Failed ? (
                 <ReconcileButton reconcilableItem={item} />
             ) : (
                 ""
@@ -307,7 +320,8 @@ class MasterDetail extends React.Component<
             {
                 id: "reconcile",
                 width: new ObservableValue(130),
-                renderCell: this.renderReconcileButton,
+                renderCell: (_r, c, t, i, _a) =>
+                    this.renderReconcileButton(c, t, i, detailItem),
                 sortProps: {}
             }
         ];

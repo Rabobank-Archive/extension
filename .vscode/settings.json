@@ -9,7 +9,6 @@
     ],
     "eslint.autoFixOnSave": true,
     "eslint.provideLintTask": true,
-    "prettier.eslintIntegration": true,
     "editor.formatOnSave": true,
     "[typescriptreact]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"

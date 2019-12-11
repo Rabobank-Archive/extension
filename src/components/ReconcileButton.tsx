@@ -12,6 +12,7 @@ interface IReconcileButtonProps {
     reconcilableItem: {
         reconcileUrl: string;
         reconcileImpact: string[];
+        name?: string | null | undefined;
     };
 }
 
@@ -30,7 +31,7 @@ const ReconcileButton = ({ reconcilableItem }: IReconcileButtonProps) => {
                 text="Reconcile"
                 disabled={reconcilableItem.reconcileUrl === ""}
             />
-            {isDialogOpen && (
+            {isDialogOpen ? (
                 <ConfirmReconcileDialog
                     impact={reconcilableItem.reconcileImpact}
                     reconcileUrl={reconcilableItem.reconcileUrl}
@@ -41,6 +42,8 @@ const ReconcileButton = ({ reconcilableItem }: IReconcileButtonProps) => {
                         setIsDialogOpen(false);
                     }}
                 />
+            ) : (
+                ""
             )}
         </div>
     );
