@@ -83,23 +83,19 @@ const ConfirmDeploymentMethodDialog = ({
                 setErrorText("");
             }}
         >
-            <p className="no-padding">
+            <p className="no-padding no-margin">
                 To change the deployment method you should:
-                <ul className="margin-16">
-                    <li>
-                        1. Select the production environment from the dropdown
-                    </li>
-                    <li>2. Copy the generated JSON</li>
-                    <li>
-                        3. Add a Deployment Method in SM9 and paste the JSON in
-                        the Supplemenary Information field
-                    </li>
-                </ul>
             </p>
+            <ul className="margin-16">
+                <li>- Select the production environment from the dropdown</li>
+                <li>- Copy the generated JSON</li>
+                <li>- Add a Deployment Method in SM9</li>
+                <li>- Paste the JSON in the Supplementary Information field</li>
+            </ul>
 
             <FormItem label="Production Environment">
                 <Dropdown
-                    className="environment-dropdown"
+                    data-testid="environment-dropdown"
                     placeholder="Select the production environment"
                     items={
                         environments
