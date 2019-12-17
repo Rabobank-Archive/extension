@@ -99,9 +99,9 @@ class ReleasePipelines extends React.Component<IReleasePipelinesProps, IState> {
 
                     <InfoBlock showMoreInfoText={true} />
 
-                    <div className="page-content page-content-top">
+                    <div className="page-content-top full-size">
                         {this.state.isLoading ? (
-                            <div>Loading...</div>
+                            <div className="page-content">Loading...</div>
                         ) : (
                             this.getTabContent()
                         )}

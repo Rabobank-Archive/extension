@@ -59,7 +59,7 @@ class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
     render() {
         return (
             <div>
-                <CustomHeader className="bolt-header-with-commandbar">
+                <CustomHeader className="bolt-header-with-commandbar margin-right-16">
                     <HeaderIcon
                         className="bolt-table-status-icon-large"
                         iconProps={{ iconName: "OpenSource" }}

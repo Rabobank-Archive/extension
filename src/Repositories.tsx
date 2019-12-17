@@ -95,9 +95,9 @@ class Repositories extends React.Component<IRepositoriesProps, IState> {
 
                     <InfoBlock showMoreInfoText={true} />
 
-                    <div className="page-content page-content-top">
+                    <div className="page-content-top full-size">
                         {this.state.isLoading ? (
-                            <div>Loading...</div>
+                            <div className="page-content">Loading...</div>
                         ) : (
                             <MasterDetail
                                 title="Repositories"

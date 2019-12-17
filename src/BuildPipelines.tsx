@@ -185,9 +185,9 @@ export default class extends React.Component<IBuildPipelinesProps, IState> {
                         </div>
                     </ConditionalChildren>
 
-                    <div className="page-content page-content-top">
+                    <div className="page-content-top full-size">
                         {this.state.isLoading ? (
-                            <div>Loading...</div>
+                            <div className="page-content">Loading...</div>
                         ) : (
                             this.getTabContent()
                         )}

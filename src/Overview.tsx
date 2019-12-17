@@ -133,7 +133,7 @@ class Overview extends React.Component<IOverviewProps, IState> {
                     <div className="page-content page-content-top">
                         <Card>
                             {this.state.isLoading ? (
-                                <div>Loading...</div>
+                                <div className="page-content">Loading...</div>
                             ) : (
                                 <div>
                                     <Table<ITableItem>

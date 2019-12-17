@@ -233,7 +233,7 @@ class Releases extends React.Component<
                     <div className="page-content page-content-top">
                         <Card>
                             {this.state.isLoading ? (
-                                <div>Loading...</div>
+                                <div className="page-content">Loading...</div>
                             ) : (
                                 <Table<ITableItem>
                                     columns={columns}
