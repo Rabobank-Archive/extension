@@ -44,7 +44,7 @@ export interface IReleaseRule {
     hasBranchFilterForAllArtifacts: boolean | null | undefined;
     usesManagedAgentsOnly: boolean | null | undefined;
     allArtifactsAreFromBuild: boolean | null | undefined;
-    relatedToSm9Change: boolean | null | undefined;
+    sM9ChangeId: string | null | undefined;
 }
 
 export interface IExtensionDocument<TReport> {

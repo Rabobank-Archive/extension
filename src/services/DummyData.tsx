@@ -120,7 +120,7 @@ export const DummyReleaseReport: IReleaseReport = {
             hasBranchFilterForAllArtifacts: true,
             usesManagedAgentsOnly: false,
             allArtifactsAreFromBuild: false,
-            relatedToSm9Change: null
+            sM9ChangeId: null
         },
         {
             release: "Release-199",
@@ -133,7 +133,7 @@ export const DummyReleaseReport: IReleaseReport = {
             hasBranchFilterForAllArtifacts: false,
             usesManagedAgentsOnly: true,
             allArtifactsAreFromBuild: true,
-            relatedToSm9Change: false
+            sM9ChangeId: null
         },
         {
             release: "Release-198",
@@ -146,7 +146,7 @@ export const DummyReleaseReport: IReleaseReport = {
             hasBranchFilterForAllArtifacts: false,
             usesManagedAgentsOnly: null,
             allArtifactsAreFromBuild: null,
-            relatedToSm9Change: true
+            sM9ChangeId: "C000691701"
         }
     ]
 };

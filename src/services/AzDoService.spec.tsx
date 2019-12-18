@@ -18,7 +18,7 @@ describe("AzDoService", () => {
         };
 
         let castedObject = objectWithoutProperty as IReleaseRule;
-        expect(castedObject.relatedToSm9Change).toBe(undefined);
+        expect(castedObject.sM9ChangeId).toBe(undefined);
     });
 
     it("should return true if token expired", () => {
