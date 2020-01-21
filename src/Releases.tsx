@@ -15,7 +15,11 @@ import { Card } from "azure-devops-ui/Card";
 import { Page } from "azure-devops-ui/Page";
 import { Header, TitleSize } from "azure-devops-ui/Header";
 import { sortingBehavior, onSize } from "./components/TableBehaviors";
-import { renderDate, renderCheckmark, renderLink } from "./components/TableRenderers";
+import {
+    renderDate,
+    renderCheckmark,
+    renderLink
+} from "./components/TableRenderers";
 import "./Releases.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import {
