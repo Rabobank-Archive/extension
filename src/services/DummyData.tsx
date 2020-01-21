@@ -120,7 +120,8 @@ export const DummyReleaseReport: IReleaseReport = {
             hasBranchFilterForAllArtifacts: true,
             usesManagedAgentsOnly: false,
             allArtifactsAreFromBuild: false,
-            sM9ChangeId: null
+            sM9ChangeId: null,
+            sM9ChangeUrl: null
         },
         {
             release: "Release-199",
@@ -133,7 +134,8 @@ export const DummyReleaseReport: IReleaseReport = {
             hasBranchFilterForAllArtifacts: false,
             usesManagedAgentsOnly: true,
             allArtifactsAreFromBuild: true,
-            sM9ChangeId: null
+            sM9ChangeId: null,
+            sM9ChangeUrl: null
         },
         {
             release: "Release-198",
@@ -146,7 +148,8 @@ export const DummyReleaseReport: IReleaseReport = {
             hasBranchFilterForAllArtifacts: false,
             usesManagedAgentsOnly: null,
             allArtifactsAreFromBuild: null,
-            sM9ChangeId: "C000691701"
+            sM9ChangeId: "C000691701",
+            sM9ChangeUrl: "http://itsm.rabobank.nl/SM"
         }
     ]
 };

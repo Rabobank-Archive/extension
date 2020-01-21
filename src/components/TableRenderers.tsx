@@ -44,6 +44,31 @@ export function renderString(
     );
 }
 
+export function renderLink(
+    _rowIndex: number,
+    columnIndex: number,
+    tableColumn: ITableColumn<any>,
+    item: any
+): JSX.Element {
+    let value = item[tableColumn.id] as string;
+    let link = item["sM9ChangeUrl"] as string;
+
+    return (
+        <SimpleTableCell
+            columnIndex={columnIndex}
+            tableColumn={tableColumn}
+            key={"col-" + columnIndex}
+        >
+            {link === "" && value}
+            {link !== "" && (
+                <Link href={link} target="_blank">
+                    {value}
+                </Link>
+            )}
+        </SimpleTableCell>
+    );
+}
+
 export function renderStringWithWhyTooltip(
     _rowIndex: number,
     columnIndex: number,

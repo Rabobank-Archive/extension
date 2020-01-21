@@ -45,6 +45,7 @@ export interface IReleaseRule {
     usesManagedAgentsOnly: boolean | null | undefined;
     allArtifactsAreFromBuild: boolean | null | undefined;
     sM9ChangeId: string | null | undefined;
+    sM9ChangeUrl: string | null;
 }
 
 export interface IExtensionDocument<TReport> {

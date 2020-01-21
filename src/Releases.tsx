@@ -15,7 +15,7 @@ import { Card } from "azure-devops-ui/Card";
 import { Page } from "azure-devops-ui/Page";
 import { Header, TitleSize } from "azure-devops-ui/Header";
 import { sortingBehavior, onSize } from "./components/TableBehaviors";
-import { renderDate, renderCheckmark } from "./components/TableRenderers";
+import { renderDate, renderCheckmark, renderLink } from "./components/TableRenderers";
 import "./Releases.css";
 import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import {
@@ -39,6 +39,7 @@ interface ITableItem extends ISimpleTableCell {
     usesManagedAgentsOnly: IStatusProps;
     allArtifactsAreFromBuild: IStatusProps;
     sM9ChangeId: string;
+    sM9ChangeUrl: string;
 }
 
 interface IReleaseProps {}
@@ -84,7 +85,8 @@ class Releases extends React.Component<
                     allArtifactsAreFromBuild: getDevopsUiStatus(
                         x.allArtifactsAreFromBuild
                     ),
-                    sM9ChangeId: x.sM9ChangeId || "-"
+                    sM9ChangeId: x.sM9ChangeId || "-",
+                    sM9ChangeUrl: x.sM9ChangeUrl || ""
                 }))
             );
 
@@ -202,7 +204,7 @@ class Releases extends React.Component<
                 id: "sM9ChangeId",
                 name: "SM9 Change",
                 onSize: onSize,
-                renderCell: renderSimpleCell,
+                renderCell: renderLink,
                 width: new ObservableValue(130),
                 sortProps: {
                     ariaLabelAscending: "Sorted A to Z",
