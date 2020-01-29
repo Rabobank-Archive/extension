@@ -280,13 +280,13 @@ export const DummyBuildPipelinesReport: IBuildPipelinesReport = {
     hasReconcilePermissionUrl: "some-url",
     reports: [
         {
-            item: "enterprise-distributed-service",
+            item: "microservice-architecture",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
             rules: buildRules
         },
         {
-            item: "microservice-architecture",
+            item: "enterprise-distributed-service",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
             rules: buildRules

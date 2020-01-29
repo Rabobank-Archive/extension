@@ -109,9 +109,12 @@ class MasterDetail extends React.Component<
     > = new ObservableArray<IReportMaster>();
     private selectedMasterItem: ObservableValue<
         IReportMaster
-    > = new ObservableValue<IReportMaster>(
-        this.ToIReportMasterArray(this.props.data)[0]
-    );
+    > = new ObservableValue<IReportMaster>({
+        item: "",
+        itemId: "",
+        projectId: "",
+        rules: []
+    });
 
     private searchValue = new ObservableValue<string>("");
     private showCompliantRepos = new ObservableValue<boolean>(true);
@@ -248,6 +251,8 @@ class MasterDetail extends React.Component<
                         getComplianceStatus(value) !== Statuses.Success))
             );
         });
+
+        this.selectedMasterItem.value = this.filteredDataProvider.value[0];
     }
 
     private initialPayload: IMasterDetailsContextLayer<
