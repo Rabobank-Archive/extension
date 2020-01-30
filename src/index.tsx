@@ -7,6 +7,7 @@ import Overview from "./Overview";
 import Builds from "./Builds";
 import BuildPipelines from "./BuildPipelines";
 import ReleasePipelines from "./ReleasePipelines";
+import "azure-devops-ui/Core/override.css";
 
 import * as SDK from "azure-devops-extension-sdk";
 import { USE_AZDO_SDK } from "./services/Environment";

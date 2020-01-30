@@ -160,7 +160,7 @@ const Overview = () => {
                     lastScanDate={data.date}
                     rescanUrl={data.rescanUrl}
                     onRescanFinished={async () => {
-                        forceReload({});
+                        forceReload();
                     }}
                 />
 
