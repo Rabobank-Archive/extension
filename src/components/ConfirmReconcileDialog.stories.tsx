@@ -11,5 +11,6 @@ storiesOf("ConfirmReconcileDialog", module).add("default", () => (
             "Delete team project permission is set to 'not set' for all other groups"
         ]}
         reconcileUrl={"Mock url"}
+        reconcileDisabled={false}
     />
 ));

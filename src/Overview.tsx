@@ -170,6 +170,9 @@ class Overview extends React.Component<IOverviewProps, IState> {
                                                             Statuses.Failed &&
                                                         item.hasReconcilePermission ? (
                                                             <ReconcileButton
+                                                                reconcileDisabled={
+                                                                    false
+                                                                }
                                                                 reconcilableItem={
                                                                     item
                                                                 }

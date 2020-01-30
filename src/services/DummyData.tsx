@@ -325,7 +325,9 @@ const releasePipelineRules = [
         reconcile: {
             url:
                 "https://azdocompliancydev.azurewebsites.net/api/reconcile/raboweb-test/53410703-e2e5-4238-9025-233bd7c811b3/releasepipelines/ReleasePipelineHasDeploymentMethod/4",
-            impact: []
+            impact: [
+                "In the CMDB the deployment method for the CI is set to Azure DevOps and coupled to this release pipeline"
+            ]
         }
     }
 ];

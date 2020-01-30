@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ReactNode } from "react";
 import { Dialog } from "azure-devops-ui/Dialog";
 import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
@@ -17,13 +17,21 @@ interface IConfirmReconcileDialogProps {
     impact: string[];
     onReconcileCompleted?: () => void;
     onCancel?: () => void;
+    children?: ReactNode;
+    data?: {};
+    reconcileDisabled: boolean;
+    onReconcile?: () => void;
 }
 
 const ConfirmReconcileDialog = ({
     impact,
     reconcileUrl,
     onReconcileCompleted,
-    onCancel
+    onCancel,
+    children,
+    data,
+    reconcileDisabled,
+    onReconcile = () => {}
 }: IConfirmReconcileDialogProps) => {
     const [isReconciling, setIsReconciling] = useState<boolean>(false);
     const [errorText, setErrorText] = useState<string>("");
@@ -35,7 +43,8 @@ const ConfirmReconcileDialog = ({
     useEffect(() => {
         const doFetch = async () => {
             try {
-                await DoReconcileRequest(reconcileUrl);
+                onReconcile();
+                await DoReconcileRequest(reconcileUrl, data);
                 setErrorText("");
                 trackEvent("[Confirm Reconcile Dialog] Reconcile completed");
                 if (onReconcileCompleted) onReconcileCompleted();
@@ -49,7 +58,7 @@ const ConfirmReconcileDialog = ({
         if (isReconciling) {
             doFetch();
         }
-    }, [isReconciling, onReconcileCompleted, reconcileUrl]);
+    }, [data, isReconciling, onReconcileCompleted, reconcileUrl, onReconcile]);
 
     return (
         <Dialog
@@ -70,7 +79,7 @@ const ConfirmReconcileDialog = ({
                         trackEvent("[Confirm Reconcile Dialog] Confirmed");
                     },
                     primary: true,
-                    disabled: isReconciling
+                    disabled: isReconciling || reconcileDisabled
                 }
             ]}
             onDismiss={() => {
@@ -91,6 +100,7 @@ const ConfirmReconcileDialog = ({
             <UnorderedList
                 itemProvider={new ArrayItemProvider<string>(impact)}
             />
+            {children}
         </Dialog>
     );
 };

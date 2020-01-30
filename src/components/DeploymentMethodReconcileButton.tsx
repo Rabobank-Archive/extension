@@ -1,82 +1,75 @@
 import * as React from "react";
-import { useState, useRef, useEffect } from "react";
-import { Button } from "azure-devops-ui/Button";
-import {
-    appInsightsReactPlugin,
-    trackEvent
-} from "../services/ApplicationInsights";
-import { withAITracking } from "@microsoft/applicationinsights-react-js";
+import { FormItem } from "azure-devops-ui/FormItem";
+import { TextField } from "azure-devops-ui/TextField";
+import { Dropdown } from "azure-devops-ui/Dropdown";
+import ReconcileButton from "./ReconcileButton";
 import { IEnvironment } from "../services/IAzDoService";
-import ConfirmDeploymentMethodDialog from "./ConfirmDeploymentMethodDialog";
-import { Toast } from "azure-devops-ui/Toast";
-
-interface IReconcileButtonProps {
-    environments?: IEnvironment[];
-    projectId: string;
-    itemId: string;
-}
+import { useState } from "react";
+import { MessageCard, MessageCardSeverity } from "azure-devops-ui/MessageCard";
 
 const DeploymentMethodReconcileButton = ({
-    environments,
-    projectId,
-    itemId
-}: IReconcileButtonProps) => {
-    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-    const [isToastVisible, setIsToastVisible] = useState<boolean>(false);
-    const toastRef = useRef<Toast>(null);
+    reconcilableItem,
+    environments
+}: {
+    reconcilableItem: {
+        reconcileUrl: string;
+        reconcileImpact: string[];
+        name?: string | null | undefined;
+    };
+    environments?: IEnvironment[];
+}) => {
+    const [ciIdentifier, setCiIdentifier] = useState<string>("");
+    const [environment, setEnvironment] = useState<string>("");
+    const regexCiIdentifier: RegExp = /^CI[+ 0-9]{7}$/;
+    const isReconcileDisabled =
+        !regexCiIdentifier.test(ciIdentifier) || environment.length === 0;
 
-    useEffect(() => {
-        const showToast = async () => {
-            const timer = setTimeout(async () => {
-                toastRef!.current!.fadeOut().promise.then(() => {
-                    setIsToastVisible(false);
-                });
-            }, 2000);
-            return () => clearTimeout(timer);
-        };
-
-        if (isToastVisible && toastRef && toastRef.current) {
-            showToast();
-        }
-    }, [isToastVisible, toastRef]);
+    const resetState = () => {
+        setEnvironment("");
+        setCiIdentifier("");
+    };
 
     return (
-        <div>
-            <Button
-                primary={true}
-                iconProps={{ iconName: "TriggerAuto" }}
-                onClick={() => {
-                    setIsDialogOpen(true);
-                    trackEvent("[Reconcile Button] Clicked");
-                }}
-                text="Reconcile"
-                disabled={false}
-            />
-            {isDialogOpen && (
-                <ConfirmDeploymentMethodDialog
-                    onReconcileCompleted={() => {
-                        setIsDialogOpen(false);
-                        setIsToastVisible(true);
-                    }}
-                    onCancel={() => {
-                        setIsDialogOpen(false);
-                    }}
-                    environments={environments}
-                    projectId={projectId}
-                    itemId={itemId}
+        <ReconcileButton
+            reconcileDisabled={isReconcileDisabled}
+            data={{ ciIdentifier, environment }}
+            reconcilableItem={reconcilableItem}
+            onReconcile={resetState}
+        >
+            <MessageCard
+                className="margin-8"
+                // @ts-ignore
+                severity={MessageCardSeverity.Warning}
+            >
+                Within ITSM you need to have permission to update the
+                Configuration Item. After submitting it can take up to 1 hour
+                before the CI identifier is visible in Azure DevOps.
+            </MessageCard>
+            <FormItem className="margin-8" label="CI Identifier">
+                <TextField
+                    value={ciIdentifier}
+                    onChange={(_, newValue) => setCiIdentifier(newValue)}
+                    placeholder="CIxxxxxxx"
+                    data-testid="ci-identifier"
                 />
-            )}
-            {isToastVisible && (
-                <Toast
-                    ref={toastRef}
-                    message="Copied the deployment method JSON to the clipboard."
+            </FormItem>
+            <FormItem className="margin-8" label="Production Environment">
+                <Dropdown
+                    data-testid="environment-dropdown"
+                    placeholder="Select the production environment"
+                    items={
+                        environments
+                            ? environments.map(e => ({
+                                  id: e.id,
+                                  text: e.name
+                              }))
+                            : []
+                    }
+                    onSelect={(_, item) => setEnvironment(item.id)}
                 />
-            )}
-        </div>
+            </FormItem>
+        </ReconcileButton>
     );
 };
 
-export default withAITracking(
-    appInsightsReactPlugin,
-    DeploymentMethodReconcileButton
-);
+export default DeploymentMethodReconcileButton;

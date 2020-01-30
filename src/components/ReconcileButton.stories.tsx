@@ -13,5 +13,6 @@ storiesOf("ReconcileButton", module).add("default", () => (
                 "Delete team project permission is set to 'not set' for all other groups"
             ]
         }}
+        reconcileDisabled={false}
     />
 ));

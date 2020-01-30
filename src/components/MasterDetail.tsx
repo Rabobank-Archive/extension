@@ -63,6 +63,10 @@ interface IReportRule {
     reconcileUrl: string;
     reconcileImpact: string[];
 }
+interface State {
+    ciIdentifier: string;
+    environment: string;
+}
 
 function compareItemReports(a: IItemReport, b: IItemReport) {
     return a.item.localeCompare(b.item);
@@ -94,8 +98,12 @@ class MasterDetail extends React.Component<
         data: IItemReport[];
         hasReconcilePermission: boolean;
     },
-    {}
+    State
 > {
+    state: State = {
+        ciIdentifier: "",
+        environment: ""
+    };
     private filteredDataProvider: ObservableArray<
         IReportMaster
     > = new ObservableArray<IReportMaster>();
@@ -146,10 +154,16 @@ class MasterDetail extends React.Component<
         const content =
             item.hasReconcilePermission &&
             item.name === "ReleasePipelineHasDeploymentMethod" ? (
-                <DeploymentMethodReconcileButton {...report} />
+                <DeploymentMethodReconcileButton
+                    reconcilableItem={item}
+                    environments={report.environments}
+                />
             ) : item.hasReconcilePermission &&
               item.status === Statuses.Failed ? (
-                <ReconcileButton reconcilableItem={item} />
+                <ReconcileButton
+                    reconcileDisabled={false}
+                    reconcilableItem={item}
+                />
             ) : (
                 ""
             );

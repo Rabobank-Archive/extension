@@ -12,9 +12,12 @@ export function HasReconcilePermission(
         : HasDummyReconcilePermission(hasReconcilePermissionUrl);
 }
 
-export function DoReconcileRequest(reconcileUrl: string): Promise<void> {
+export function DoReconcileRequest(
+    reconcileUrl: string,
+    data?: {}
+): Promise<void> {
     return USE_COMPLIANCYCHECKER_SERVICE
-        ? DoRealReconcileRequest(reconcileUrl)
+        ? DoRealReconcileRequest(reconcileUrl, data)
         : DoDummyReconcileRequest(reconcileUrl);
 }
 
@@ -104,7 +107,10 @@ async function HasRealReconcilePermission(
     return hasReconcilePermission;
 }
 
-async function DoRealReconcileRequest(reconcileUrl: string): Promise<void> {
+async function DoRealReconcileRequest(
+    reconcileUrl: string,
+    data?: {}
+): Promise<void> {
     const token = await GetAzDoAppToken();
     const user = GetAzDoUser();
 
@@ -112,7 +118,7 @@ async function DoRealReconcileRequest(reconcileUrl: string): Promise<void> {
         headers: { Authorization: `Bearer ${token}` }
     };
 
-    await axios.get(`${reconcileUrl}?userId=${user.id}`, config);
+    await axios.post(`${reconcileUrl}?userId=${user.id}`, data, config);
 }
 
 async function DoRealRescanRequest(

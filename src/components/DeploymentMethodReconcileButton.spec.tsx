@@ -1,25 +1,37 @@
 import React from "react";
 
-import { fireEvent, render, wait } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import DeploymentMethodReconcileButton from "./DeploymentMethodReconcileButton";
 
 describe("DeploymentMethodReconcileButton", () => {
     it("should render the reconcile button", async () => {
-        const { getByText, findByText } = render(
+        const { getByText, getAllByText, getByPlaceholderText } = render(
             <DeploymentMethodReconcileButton
-                projectId={"abc"}
-                itemId={"2"}
                 environments={[
                     { id: "1", name: "DEV" },
                     { id: "2", name: "PROD" }
                 ]}
+                reconcilableItem={{
+                    reconcileUrl: "/mock-url",
+                    reconcileImpact: ["mock-impact"]
+                }}
             />
         );
 
         fireEvent.click(getByText("Reconcile"));
 
-        wait(async () => {
-            expect(await findByText("Create Deployment Method")).toBeDefined();
-        });
+        const reconcileButtons = getAllByText("Reconcile");
+        expect(reconcileButtons).toHaveLength(2);
+
+        const btn = reconcileButtons[1].closest("button");
+        expect(btn!.classList).toContain("disabled");
+
+        const ciInput = getByPlaceholderText("CIxxxxxxx").closest("input");
+        expect(ciInput).toBeDefined();
+
+        const environmentDropdown = getByPlaceholderText(
+            "Select the production environment"
+        ).closest("input");
+        expect(environmentDropdown).toBeDefined();
     });
 });
