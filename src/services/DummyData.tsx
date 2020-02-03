@@ -6,8 +6,6 @@ import {
     IBuildPipelinesReport,
     IReleasePipelinesReport
 } from "./IAzDoService";
-import { ObservableValue } from "azure-devops-ui/Core/Observable";
-import { IPipelineItem } from "../components/BuildPipelinesList";
 
 const projectRules = [
     {
@@ -369,83 +367,3 @@ export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
         }
     ]
 };
-
-const tempPipelineItems: IPipelineItem[] = [
-    {
-        name: "enterprise-distributed-service",
-        isCompliant: true,
-        lastRunData: {
-            buildId: 1234,
-            buildName: "Update dependencies and resolve TypeScript errors",
-            buildNumber: "832674.2",
-            isCompliant: false,
-            startTime: new Date(2018, 12, 4, 11, 12, 13)
-        },
-        favorite: new ObservableValue<boolean>(true)
-    },
-    {
-        name: "microservice-architecture",
-        isCompliant: true,
-        lastRunData: {
-            buildId: 1234,
-            buildName: "Moved rescan button to header",
-            buildNumber: "35672.2",
-            isCompliant: false,
-            startTime: new Date(2018, 12, 4, 11, 12, 13)
-        },
-        favorite: new ObservableValue<boolean>(true)
-    },
-    {
-        name: "mobile-ios-app",
-        isCompliant: false,
-        lastRunData: {
-            buildId: 1234,
-            buildName: "Changes required for running as separate repo",
-            buildNumber: "48213.5",
-            isCompliant: false,
-            startTime: new Date(2018, 12, 4, 11, 12, 13)
-        },
-        favorite: new ObservableValue<boolean>(false)
-    },
-    {
-        name: "node-package",
-        isCompliant: true,
-        lastRunData: {
-            buildId: 1234,
-            buildName: "Added why description to rules",
-            buildNumber: "32828.1",
-            isCompliant: false,
-            startTime: new Date(2018, 12, 4, 11, 12, 13)
-        },
-        favorite: new ObservableValue<boolean>(true)
-    },
-    {
-        name: "parallel-stages",
-        isCompliant: false,
-        lastRunData: {
-            buildId: 1234,
-            buildName: "Merge reconcile-impact to refs/head/master",
-            buildNumber: "847567.2",
-            isCompliant: true,
-            startTime: new Date(2018, 12, 4, 11, 12, 13)
-        },
-        favorite: new ObservableValue<boolean>(false)
-    },
-    {
-        name: "simple-web-app",
-        isCompliant: true,
-        lastRunData: {
-            buildId: 1234,
-            buildName: "Initial commit",
-            buildNumber: "22467.2",
-            isCompliant: false,
-            startTime: new Date(2018, 12, 4, 11, 12, 13)
-        },
-        favorite: new ObservableValue<boolean>(false)
-    }
-];
-
-export const dummyPipelineItems: IPipelineItem[] = [];
-for (let i = 0; i < 20; i++) {
-    dummyPipelineItems.push(...tempPipelineItems);
-}
