@@ -9,8 +9,8 @@
     "postbuild": "rimraf ./build/static/js/runtime~*",
     "test": "tsc && react-scripts test --transformIgnorePatterns \"node_modules/(?!(azure-devops-ui))/\"",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public",
     "lint": "eslint --cache --ext .js,.jsx,.ts,.tsx .",
     "lint:fix": "eslint --cache --ext .js,.jsx,.ts,.tsx --fix ."
   },
@@ -43,6 +43,7 @@
     "@storybook/addon-actions": "^5.3.10",
     "@storybook/addon-links": "^5.3.10",
     "@storybook/addons": "^5.3.10",
+    "@storybook/preset-create-react-app": "^1.5.2",
     "@storybook/react": "^5.3.10",
     "@testing-library/react": "^9.4.0",
     "@types/axios": "^0.14.0",
