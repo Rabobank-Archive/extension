@@ -89,7 +89,7 @@ class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
                                         />
                                     </div>
                                 ) : this.props.lastScanDate ? (
-                                    <div>
+                                    <div data-testid="scan-label">
                                         Last scanned:{" "}
                                         <Ago
                                             date={this.props.lastScanDate}
