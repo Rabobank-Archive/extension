@@ -16,121 +16,106 @@ import { DoRescanRequest } from "../services/CompliancyCheckerService";
 import { appInsightsReactPlugin } from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./ErrorBar";
+import { useState } from "react";
 
-interface ICompliancyHeaderProps {
+const CompliancyHeader = ({
+    headerText,
+    lastScanDate,
+    rescanUrl,
+    onRescanFinished
+}: {
     headerText: string;
     lastScanDate?: Date;
     rescanUrl?: string;
     onRescanFinished?: () => Promise<void>;
-}
+}) => {
+    const [isRescanning, setIsRescanning] = useState(false);
+    const [errorText, setErrorText] = useState("");
 
-interface IState {
-    isRescanning: boolean;
-    errorText: string;
-}
-
-class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
-    constructor(props: ICompliancyHeaderProps) {
-        super(props);
-        this.state = {
-            isRescanning: false,
-            errorText: ""
-        };
-    }
-
-    private async doRescanRequest(): Promise<void> {
-        this.setState({ isRescanning: true });
+    const doRescanRequest = async (): Promise<void> => {
+        setIsRescanning(true);
         await DoRescanRequest(
-            this.props.rescanUrl!,
+            rescanUrl!,
             () => {
-                this.setState({ isRescanning: false, errorText: "" });
+                setIsRescanning(false);
+                setErrorText("");
             },
             () => {
-                this.setState({
-                    isRescanning: false,
-                    errorText:
-                        "Something went wrong while rescanning your project. Please try again later, or contact TAS if the issue persists."
-                });
+                setIsRescanning(false);
+                setErrorText(
+                    "Something went wrong while rescanning your project. Please try again later, or contact TAS if the issue persists."
+                );
             }
         );
-        if (this.props.onRescanFinished) await this.props.onRescanFinished();
-    }
+        if (onRescanFinished) await onRescanFinished();
+    };
 
-    render() {
-        return (
-            <div>
-                <CustomHeader className="bolt-header-with-commandbar margin-right-16">
-                    <HeaderIcon
-                        className="bolt-table-status-icon-large"
-                        iconProps={{ iconName: "OpenSource" }}
-                        // @ts-ignore
-                        titleSize={TitleSize.Large}
-                    />
-                    <HeaderTitleArea>
-                        <HeaderTitleRow>
-                            <HeaderTitle
-                                className="text-ellipsis"
-                                // @ts-ignore
-                                titleSize={TitleSize.Large}
-                            >
-                                {this.props.headerText}
-                            </HeaderTitle>
-                        </HeaderTitleRow>
-                        <HeaderDescription>
-                            <div className="flex-row">
-                                {this.state.isRescanning ? (
-                                    <div>
-                                        <Status
-                                            {...Statuses.Running}
-                                            key="scanning"
-                                            // @ts-ignore
-                                            size={StatusSize.l}
-                                            text="Scanning..."
-                                        />
-                                    </div>
-                                ) : this.props.lastScanDate ? (
-                                    <div data-testid="scan-label">
-                                        Last scanned:{" "}
-                                        <Ago
-                                            date={this.props.lastScanDate}
-                                            // @ts-ignore
-                                            format={AgoFormat.Extended}
-                                        />
-                                    </div>
-                                ) : (
-                                    <div>&nbsp;</div>
-                                )}
-                                <div className="flex-grow" />
-                            </div>
-                        </HeaderDescription>
-                    </HeaderTitleArea>
-                    <HeaderCommandBar
-                        items={[
-                            {
-                                iconProps: { iconName: "TriggerAuto" },
-                                id: "rescan",
-                                important: true,
-                                disabled:
-                                    this.state.isRescanning ||
-                                    this.props.rescanUrl == undefined,
-                                isPrimary: true,
-                                onActivate: () => {
-                                    this.doRescanRequest();
-                                },
-                                text: "Rescan"
-                            }
-                        ]}
-                    />
-                </CustomHeader>
-                <ErrorBar
-                    message={this.state.errorText}
-                    onDismiss={() => {
-                        this.setState({ errorText: "" });
-                    }}
+    return (
+        <div>
+            <CustomHeader className="bolt-header-with-commandbar margin-right-16">
+                <HeaderIcon
+                    className="bolt-table-status-icon-large"
+                    iconProps={{ iconName: "OpenSource" }}
+                    // @ts-ignore
+                    titleSize={TitleSize.Large}
                 />
-            </div>
-        );
-    }
-}
+                <HeaderTitleArea>
+                    <HeaderTitleRow>
+                        <HeaderTitle
+                            className="text-ellipsis"
+                            // @ts-ignore
+                            titleSize={TitleSize.Large}
+                        >
+                            {headerText}
+                        </HeaderTitle>
+                    </HeaderTitleRow>
+                    <HeaderDescription>
+                        <div className="flex-row">
+                            {isRescanning ? (
+                                <div>
+                                    <Status
+                                        {...Statuses.Running}
+                                        key="scanning"
+                                        // @ts-ignore
+                                        size={StatusSize.l}
+                                        text="Scanning..."
+                                    />
+                                </div>
+                            ) : lastScanDate ? (
+                                <div data-testid="scan-label">
+                                    Last scanned:{" "}
+                                    <Ago
+                                        date={lastScanDate}
+                                        // @ts-ignore
+                                        format={AgoFormat.Extended}
+                                    />
+                                </div>
+                            ) : (
+                                <div>&nbsp;</div>
+                            )}
+                            <div className="flex-grow" />
+                        </div>
+                    </HeaderDescription>
+                </HeaderTitleArea>
+                <HeaderCommandBar
+                    items={[
+                        {
+                            iconProps: { iconName: "TriggerAuto" },
+                            id: "rescan",
+                            important: true,
+                            disabled: isRescanning || rescanUrl == undefined,
+                            isPrimary: true,
+                            onActivate: () => {
+                                doRescanRequest();
+                            },
+                            text: "Rescan"
+                        }
+                    ]}
+                />
+            </CustomHeader>
+            <ErrorBar message={errorText} onDismiss={() => setErrorText("")} />
+        </div>
+    );
+};
 
 export default withAITracking(appInsightsReactPlugin, CompliancyHeader);
