@@ -52,25 +52,7 @@ export interface IExtensionDocument<TReport> {
     reports: TReport[];
 }
 
-export interface IOverviewReport extends IExtensionDocument<IItemReport> {
-    date: Date;
-    rescanUrl: string;
-    hasReconcilePermissionUrl: string;
-}
-
-export interface IRepositoriesReport extends IExtensionDocument<IItemReport> {
-    date: Date;
-    rescanUrl: string;
-    hasReconcilePermissionUrl: string;
-}
-
-export interface IBuildPipelinesReport extends IExtensionDocument<IItemReport> {
-    date: Date;
-    rescanUrl: string;
-    hasReconcilePermissionUrl: string;
-}
-
-export interface IReleasePipelinesReport
+export interface IPreventiveRulesReport
     extends IExtensionDocument<IItemReport> {
     date: Date;
     rescanUrl: string;

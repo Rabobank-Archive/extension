@@ -1,10 +1,7 @@
 import {
     IReleaseReport,
     IBuildReport,
-    IOverviewReport,
-    IRepositoriesReport,
-    IBuildPipelinesReport,
-    IReleasePipelinesReport
+    IPreventiveRulesReport
 } from "./IAzDoService";
 
 const projectRules = [
@@ -68,7 +65,7 @@ const projectRules = [
     }
 ];
 
-export const DummyProjectRulesReport: IOverviewReport = {
+export const DummyProjectRulesReport: IPreventiveRulesReport = {
     date: new Date(),
     rescanUrl:
         "https://azdoanalyticsdev.azurewebsites.net/api/scan/raboweb-test/WV%20New%20Project%20Test%204/globalpermissions",
@@ -185,7 +182,7 @@ const repoRules = [
     }
 ];
 
-export const DummyRepositoriesReport: IRepositoriesReport = {
+export const DummyRepositoriesReport: IPreventiveRulesReport = {
     date: new Date(),
     rescanUrl: "https://reqres.in",
     hasReconcilePermissionUrl: "some-url",
@@ -272,7 +269,7 @@ const buildRules = [
     }
 ];
 
-export const DummyBuildPipelinesReport: IBuildPipelinesReport = {
+export const DummyBuildPipelinesReport: IPreventiveRulesReport = {
     date: new Date(),
     rescanUrl: "https://reqres.in",
     hasReconcilePermissionUrl: "some-url",
@@ -330,7 +327,7 @@ const releasePipelineRules = [
     }
 ];
 
-export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
+export const DummyReleasePipelinesReport: IPreventiveRulesReport = {
     date: new Date(),
     rescanUrl: "https://reqres.in",
     hasReconcilePermissionUrl: "some-url",
