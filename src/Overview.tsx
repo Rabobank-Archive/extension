@@ -25,7 +25,7 @@ import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import { getDevopsUiStatus } from "./services/Status";
 import { useEffect } from "react";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
-import { useReport } from "./hooks/useReport";
+import { useReconcileReport } from "./hooks/useReconcileReport";
 
 interface ITableItem {
     description: string;
@@ -37,7 +37,7 @@ interface ITableItem {
 }
 
 const Overview = () => {
-    const report = useReport("globalpermissions");
+    const report = useReconcileReport("globalpermissions");
 
     useEffect(() => {
         trackEvent("[Overview] Page opened");
@@ -93,16 +93,14 @@ const Overview = () => {
     ];
 
     const itemProvider = new ArrayItemProvider(
-        report.loading
-            ? []
-            : report.data.reports[0].rules.map<ITableItem>(x => ({
-                  description: x.description,
-                  link: x.link,
-                  hasReconcilePermission: report.hasReconcilePermission,
-                  reconcileUrl: x.reconcile!.url,
-                  reconcileImpact: x.reconcile!.impact,
-                  status: getDevopsUiStatus(x.status)
-              }))
+        report.data?.reports[0].rules.map<ITableItem>(x => ({
+            description: x.description,
+            link: x.link,
+            hasReconcilePermission: report.hasReconcilePermission,
+            reconcileUrl: x.reconcile!.url,
+            reconcileImpact: x.reconcile!.impact,
+            status: getDevopsUiStatus(x.status)
+        })) || []
     );
 
     return (
@@ -111,8 +109,8 @@ const Overview = () => {
             <Page className="flex-grow">
                 <CompliancyHeader
                     headerText="Project compliancy"
-                    lastScanDate={report.data.date}
-                    rescanUrl={report.data.rescanUrl}
+                    lastScanDate={report.data?.date}
+                    rescanUrl={report.data?.rescanUrl}
                     onRescanFinished={async () => {
                         report.forceReload();
                     }}

@@ -19,8 +19,8 @@ import ErrorBar from "./ErrorBar";
 
 interface ICompliancyHeaderProps {
     headerText: string;
-    lastScanDate: Date;
-    rescanUrl: string;
+    lastScanDate?: Date;
+    rescanUrl?: string;
     onRescanFinished?: () => Promise<void>;
 }
 
@@ -41,7 +41,7 @@ class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
     private async doRescanRequest(): Promise<void> {
         this.setState({ isRescanning: true });
         await DoRescanRequest(
-            this.props.rescanUrl,
+            this.props.rescanUrl!,
             () => {
                 this.setState({ isRescanning: false, errorText: "" });
             },
@@ -88,7 +88,7 @@ class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
                                             text="Scanning..."
                                         />
                                     </div>
-                                ) : (
+                                ) : this.props.lastScanDate ? (
                                     <div>
                                         Last scanned:{" "}
                                         <Ago
@@ -97,6 +97,8 @@ class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
                                             format={AgoFormat.Extended}
                                         />
                                     </div>
+                                ) : (
+                                    <div>&nbsp;</div>
                                 )}
                                 <div className="flex-grow" />
                             </div>
@@ -108,7 +110,9 @@ class CompliancyHeader extends React.Component<ICompliancyHeaderProps, IState> {
                                 iconProps: { iconName: "TriggerAuto" },
                                 id: "rescan",
                                 important: true,
-                                disabled: this.state.isRescanning,
+                                disabled:
+                                    this.state.isRescanning ||
+                                    this.props.rescanUrl == undefined,
                                 isPrimary: true,
                                 onActivate: () => {
                                     this.doRescanRequest();

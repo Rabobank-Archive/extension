@@ -26,7 +26,7 @@ import ErrorBar from "./components/ErrorBar";
 import InfoBlock from "./components/InfoBlock";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import { useEffect } from "react";
-import { useOtherReport } from "./hooks/useOtherReport";
+import { useReport } from "./hooks/useReport";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -38,7 +38,7 @@ interface ITableItem extends ISimpleTableCell {
 }
 
 const Builds = () => {
-    const report = useOtherReport<IBuildReport>("BuildReports");
+    const report = useReport<IBuildReport>("BuildReports");
 
     useEffect(() => {
         trackEvent("[Builds] Page opened");

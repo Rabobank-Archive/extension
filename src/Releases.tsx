@@ -32,7 +32,7 @@ import InfoBlock from "./components/InfoBlock";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import { getDevopsUiStatus } from "./services/Status";
 import { useEffect } from "react";
-import { useOtherReport } from "./hooks/useOtherReport";
+import { useReport } from "./hooks/useReport";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -48,7 +48,7 @@ interface ITableItem extends ISimpleTableCell {
 }
 
 const Releases = () => {
-    const report = useOtherReport<IReleaseReport>("Releases");
+    const report = useReport<IReleaseReport>("Releases");
 
     useEffect(() => {
         trackEvent("[Releases] Page opened");

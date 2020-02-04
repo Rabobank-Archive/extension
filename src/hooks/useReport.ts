@@ -1,51 +1,30 @@
-import { useEffect, useState, useReducer } from "react";
-import { HasReconcilePermission } from "../services/CompliancyCheckerService";
+import { useState, useEffect, useReducer } from "react";
 import { GetAzDoReportsFromDocumentStorage } from "../services/AzDoService";
-import { IPreventiveRulesReport } from "../services/IAzDoService";
 
-export const useReport = (type: string) => {
-    const [data, setData] = useState<IPreventiveRulesReport>({
-        date: new Date(),
-        hasReconcilePermissionUrl: "",
-        rescanUrl: "",
-        reports: []
-    });
+export const useReport = <T>(type: string) => {
+    const [data, setData] = useState<T>();
     const [loading, setLoading] = useState<boolean>(true);
-    const [reload, forceReload] = useReducer(x => x + 1, 0); // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
-    const [hasReconcilePermission, setHasReconcilePermission] = useState<
-        boolean
-    >(false);
     const [error, setError] = useState<string>("");
+    const [reload, forceReload] = useReducer(x => x + 1, 0); // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const report = await GetAzDoReportsFromDocumentStorage<
-                    IPreventiveRulesReport
-                >(type);
-                const hasReconcilePermission = await HasReconcilePermission(
-                    report.hasReconcilePermissionUrl
-                );
+                const report = await GetAzDoReportsFromDocumentStorage<T>(type);
 
-                setHasReconcilePermission(hasReconcilePermission);
                 setData(report);
                 setError("");
-            } catch {
-                setError(
-                    "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
-                );
+            } catch (e) {
+                if (e.status !== 404) {
+                    setError(
+                        "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
+                    );
+                }
             }
             setLoading(false);
         };
         fetchData();
-    }, [reload, type]);
+    }, [type, reload]);
 
-    return {
-        loading,
-        hasReconcilePermission,
-        data,
-        error,
-        forceReload,
-        setError
-    };
+    return { loading, error, setError, data, forceReload };
 };

@@ -15,10 +15,10 @@ import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
 import InfoBlock from "./components/InfoBlock";
 import { useEffect } from "react";
-import { useReport } from "./hooks/useReport";
+import { useReconcileReport } from "./hooks/useReconcileReport";
 
 const Repositories = () => {
-    const report = useReport("repository");
+    const report = useReconcileReport("repository");
 
     useEffect(() => {
         trackEvent("[Repositories] Page opened");
@@ -31,8 +31,8 @@ const Repositories = () => {
             <Page className="flex-grow">
                 <CompliancyHeader
                     headerText="Repository compliancy"
-                    lastScanDate={report.data.date}
-                    rescanUrl={report.data.rescanUrl}
+                    lastScanDate={report.data?.date}
+                    rescanUrl={report.data?.rescanUrl}
                     onRescanFinished={async () => {
                         report.forceReload();
                     }}
@@ -44,7 +44,7 @@ const Repositories = () => {
                 />
                 <InfoBlock showMoreInfoText={true} />
                 <div className="page-content-top full-size">
-                    {report.loading ? (
+                    {report.loading || !report.data ? (
                         <div className="page-content">Loading...</div>
                     ) : (
                         <MasterDetail

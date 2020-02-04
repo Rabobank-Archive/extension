@@ -15,10 +15,10 @@ import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
 import InfoBlock from "./components/InfoBlock";
 import { useEffect } from "react";
-import { useReport } from "./hooks/useReport";
+import { useReconcileReport } from "./hooks/useReconcileReport";
 
 const ReleasePipelines = () => {
-    const report = useReport("releasepipelines");
+    const report = useReconcileReport("releasepipelines");
 
     useEffect(() => {
         trackEvent("[Release Pipelines] Page opened");
@@ -31,8 +31,8 @@ const ReleasePipelines = () => {
             <Page className="flex-grow">
                 <CompliancyHeader
                     headerText="Release pipeline compliancy"
-                    lastScanDate={report.data.date}
-                    rescanUrl={report.data.rescanUrl}
+                    lastScanDate={report.data?.date}
+                    rescanUrl={report.data?.rescanUrl}
                     onRescanFinished={async () => {
                         report.forceReload();
                     }}
@@ -44,7 +44,7 @@ const ReleasePipelines = () => {
                 />
                 <InfoBlock showMoreInfoText={true} />
                 <div className="page-content-top full-size">
-                    {report.loading ? (
+                    {report.loading || !report.data ? (
                         <div className="page-content">Loading...</div>
                     ) : (
                         <MasterDetail
