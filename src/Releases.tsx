@@ -21,7 +21,6 @@ import {
     renderLink
 } from "./components/TableRenderers";
 import "./Releases.css";
-import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import {
     appInsightsReactPlugin,
     trackEvent,
@@ -32,7 +31,8 @@ import ErrorBar from "./components/ErrorBar";
 import InfoBlock from "./components/InfoBlock";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import { getDevopsUiStatus } from "./services/Status";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useOtherReport } from "./hooks/useOtherReport";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -48,56 +48,12 @@ interface ITableItem extends ISimpleTableCell {
 }
 
 const Releases = () => {
-    const itemProvider = new ObservableArray<ITableItem>();
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>("");
+    const report = useOtherReport<IReleaseReport>("Releases");
 
     useEffect(() => {
         trackEvent("[Releases] Page opened");
         trackPageview();
     }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const report = await GetAzDoReportsFromDocumentStorage<
-                    IReleaseReport
-                >("Releases");
-                itemProvider.push(
-                    ...report.reports.map<ITableItem>(x => ({
-                        pipeline: x.pipeline,
-                        release: x.release,
-                        environment: x.environment,
-                        createdDate: x.createdDate,
-                        hasApprovalOptions: getDevopsUiStatus(
-                            x.hasApprovalOptions
-                        ),
-                        hasBranchFilterForAllArtifacts: getDevopsUiStatus(
-                            x.hasBranchFilterForAllArtifacts
-                        ),
-                        usesManagedAgentsOnly: getDevopsUiStatus(
-                            x.usesManagedAgentsOnly
-                        ),
-                        allArtifactsAreFromBuild: getDevopsUiStatus(
-                            x.allArtifactsAreFromBuild
-                        ),
-                        sM9ChangeId: x.sM9ChangeId || "-",
-                        sM9ChangeUrl: x.sM9ChangeUrl || ""
-                    }))
-                );
-
-                setError("");
-            } catch (e) {
-                if (e.status !== 404) {
-                    setError(
-                        "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
-                    );
-                }
-            }
-            setLoading(false);
-        };
-        fetchData();
-    }, [itemProvider]);
 
     const columns: ITableColumn<ITableItem>[] = [
         {
@@ -205,6 +161,25 @@ const Releases = () => {
         }
     ];
 
+    const itemProvider = new ObservableArray(
+        report.data?.reports.map<ITableItem>(x => ({
+            pipeline: x.pipeline,
+            release: x.release,
+            environment: x.environment,
+            createdDate: x.createdDate,
+            hasApprovalOptions: getDevopsUiStatus(x.hasApprovalOptions),
+            hasBranchFilterForAllArtifacts: getDevopsUiStatus(
+                x.hasBranchFilterForAllArtifacts
+            ),
+            usesManagedAgentsOnly: getDevopsUiStatus(x.usesManagedAgentsOnly),
+            allArtifactsAreFromBuild: getDevopsUiStatus(
+                x.allArtifactsAreFromBuild
+            ),
+            sM9ChangeId: x.sM9ChangeId || "-",
+            sM9ChangeUrl: x.sM9ChangeUrl || ""
+        }))
+    );
+
     return (
         // @ts-ignore
         <Surface background={SurfaceBackground.neutral}>
@@ -216,11 +191,14 @@ const Releases = () => {
                     titleIconProps={{ iconName: "OpenSource" }}
                 />
 
-                <ErrorBar message={error} onDismiss={() => setError("")} />
+                <ErrorBar
+                    message={report.error}
+                    onDismiss={() => report.setError("")}
+                />
                 <InfoBlock showMoreInfoText={false} />
                 <div className="page-content page-content-top">
                     <Card>
-                        {loading ? (
+                        {report.loading ? (
                             <div className="page-content">Loading...</div>
                         ) : (
                             <Table<ITableItem>

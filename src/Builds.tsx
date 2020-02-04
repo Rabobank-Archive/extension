@@ -16,7 +16,6 @@ import { Page } from "azure-devops-ui/Page";
 import { Header, TitleSize } from "azure-devops-ui/Header";
 import { onSize, sortingBehavior } from "./components/TableBehaviors";
 import { renderDate, renderCheckmark } from "./components/TableRenderers";
-import { GetAzDoReportsFromDocumentStorage } from "./services/AzDoService";
 import {
     appInsightsReactPlugin,
     trackEvent,
@@ -26,7 +25,8 @@ import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
 import InfoBlock from "./components/InfoBlock";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useOtherReport } from "./hooks/useOtherReport";
 
 interface ITableItem extends ISimpleTableCell {
     pipeline: string;
@@ -38,36 +38,11 @@ interface ITableItem extends ISimpleTableCell {
 }
 
 const Builds = () => {
-    const [data, setData] = useState<IBuildReport>({
-        reports: []
-    });
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>("");
+    const report = useOtherReport<IBuildReport>("BuildReports");
 
     useEffect(() => {
         trackEvent("[Builds] Page opened");
         trackPageview();
-    }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const report = await GetAzDoReportsFromDocumentStorage<
-                    IBuildReport
-                >("BuildReports");
-
-                setData(report);
-                setError("");
-            } catch (e) {
-                if (e.status !== 404) {
-                    setError(
-                        "Something went wrong while retrieving report data. Please try again later, or contact TAS if the issue persists."
-                    );
-                }
-            }
-            setLoading(false);
-        };
-        fetchData();
     }, []);
 
     const columns: ITableColumn<ITableItem>[] = [
@@ -143,7 +118,7 @@ const Builds = () => {
     ];
 
     const itemProvider = new ObservableArray<ITableItem>(
-        data.reports.map<ITableItem>(x => ({
+        report.data?.reports.map<ITableItem>(x => ({
             pipeline: x.pipeline,
             buildId: x.id,
             createdDate: x.createdDate,
@@ -165,11 +140,14 @@ const Builds = () => {
                     titleIconProps={{ iconName: "OpenSource" }}
                 />
 
-                <ErrorBar message={error} onDismiss={() => setError("")} />
+                <ErrorBar
+                    message={report.error}
+                    onDismiss={() => report.setError("")}
+                />
                 <InfoBlock showMoreInfoText={false} />
                 <div className="page-content page-content-top">
                     <Card>
-                        {loading ? (
+                        {report.loading ? (
                             <div className="page-content">Loading...</div>
                         ) : (
                             <Table<ITableItem>
