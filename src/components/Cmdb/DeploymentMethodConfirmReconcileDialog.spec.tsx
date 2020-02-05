@@ -2,12 +2,12 @@ import React from "react";
 
 import { render } from "@testing-library/react";
 
-import ConfirmReconcileDialog from "./ConfirmReconcileDialog";
+import DeploymentMethodConfirmReconcileDialog from "./DeploymentMethodConfirmReconcileDialog";
 
-describe("ConfirmReconcileDialog", () => {
+describe("DeploymentMethodConfirmReconcileDialog", () => {
     it("should render the dialog", async () => {
         const { findByText } = render(
-            <ConfirmReconcileDialog
+            <DeploymentMethodConfirmReconcileDialog
                 impact={[
                     "Rabobank Project Administrators group is created and added to Project Administrators",
                     "Delete team project permissions of the Rabobank Project Administrators group is set to deny",
@@ -28,6 +28,6 @@ describe("ConfirmReconcileDialog", () => {
 
         const btn = (await findByText("Reconcile")).closest("button");
         expect(btn).toBeDefined();
-        expect(!btn!.hasAttribute("disabled"));
+        expect(btn!.hasAttribute("disabled"));
     });
 });

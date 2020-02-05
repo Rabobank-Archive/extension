@@ -42,8 +42,8 @@ import { appInsightsReactPlugin } from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import "./MasterDetail.css";
 import { getDevopsUiStatus } from "../services/Status";
-import CiIdentifierPillGroup from "./CiIdentifierPillGroup";
-import DeploymentMethodReconcileButton from "./DeploymentMethodReconcileButton";
+import CiIdentifierPillGroup from "./Cmdb/CiIdentifierPillGroup";
+import DeploymentMethodReconcileButton from "./Cmdb/DeploymentMethodReconcileButton";
 
 interface IReportMaster {
     item: string;
@@ -163,10 +163,7 @@ class MasterDetail extends React.Component<
                 />
             ) : item.hasReconcilePermission &&
               item.status === Statuses.Failed ? (
-                <ReconcileButton
-                    reconcileDisabled={false}
-                    reconcilableItem={item}
-                />
+                <ReconcileButton reconcilableItem={item} />
             ) : (
                 ""
             );

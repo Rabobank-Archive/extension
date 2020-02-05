@@ -351,7 +351,7 @@ export const DummyReleasePipelinesReport: IReleasePipelinesReport = {
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
             rules: releasePipelineRules,
-            ciIdentifiers: "CI4234424"
+            ciIdentifiers: "NON-PROD"
         },
         {
             item: "mobile-ios-app",

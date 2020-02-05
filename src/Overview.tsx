@@ -118,10 +118,7 @@ const Overview = () => {
                 let content =
                     item.status === Statuses.Failed &&
                     item.hasReconcilePermission ? (
-                        <ReconcileButton
-                            reconcileDisabled={false}
-                            reconcilableItem={item}
-                        />
+                        <ReconcileButton reconcilableItem={item} />
                     ) : (
                         ""
                     );

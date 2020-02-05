@@ -1,23 +1,20 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { IEnvironment } from "../../services/IAzDoService";
 import { Button } from "azure-devops-ui/Button";
-import ConfirmReconcileDialog from "./ConfirmReconcileDialog";
-import {
-    appInsightsReactPlugin,
-    trackEvent
-} from "../services/ApplicationInsights";
-import { withAITracking } from "@microsoft/applicationinsights-react-js";
+import DeploymentMethodConfirmReconcileDialog from "./DeploymentMethodConfirmReconcileDialog";
+import { trackEvent } from "../../services/ApplicationInsights";
 
-interface IReconcileButtonProps {
+const DeploymentMethodReconcileButton = ({
+    reconcilableItem,
+    environments
+}: {
     reconcilableItem: {
         reconcileUrl: string;
         reconcileImpact: string[];
         name?: string | null | undefined;
     };
-    onReconcile?: () => void;
-}
-
-const ReconcileButton = ({ reconcilableItem }: IReconcileButtonProps) => {
+    environments?: IEnvironment[];
+}) => {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
     return (
@@ -27,13 +24,13 @@ const ReconcileButton = ({ reconcilableItem }: IReconcileButtonProps) => {
                 iconProps={{ iconName: "TriggerAuto" }}
                 onClick={() => {
                     setIsDialogOpen(true);
-                    trackEvent("[Reconcile Button] Clicked");
+                    trackEvent("[Deployment Method Reconcile Button] Clicked");
                 }}
                 text="Reconcile"
                 disabled={reconcilableItem.reconcileUrl === ""}
             />
             {isDialogOpen ? (
-                <ConfirmReconcileDialog
+                <DeploymentMethodConfirmReconcileDialog
                     impact={reconcilableItem.reconcileImpact}
                     reconcileUrl={reconcilableItem.reconcileUrl}
                     onReconcileCompleted={() => {
@@ -42,7 +39,8 @@ const ReconcileButton = ({ reconcilableItem }: IReconcileButtonProps) => {
                     onCancel={() => {
                         setIsDialogOpen(false);
                     }}
-                ></ConfirmReconcileDialog>
+                    environments={environments}
+                ></DeploymentMethodConfirmReconcileDialog>
             ) : (
                 ""
             )}
@@ -50,4 +48,4 @@ const ReconcileButton = ({ reconcilableItem }: IReconcileButtonProps) => {
     );
 };
 
-export default withAITracking(appInsightsReactPlugin, ReconcileButton);
+export default DeploymentMethodReconcileButton;

@@ -30,7 +30,7 @@ describe("DeploymentMethodReconcileButton", () => {
         expect(ciInput).toBeDefined();
 
         const environmentDropdown = getByPlaceholderText(
-            "Select the production environment"
+            "Select the production stage"
         ).closest("input");
         expect(environmentDropdown).toBeDefined();
     });

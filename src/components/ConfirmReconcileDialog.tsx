@@ -1,6 +1,5 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog } from "azure-devops-ui/Dialog";
-import { Status, Statuses, StatusSize } from "azure-devops-ui/Status";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { UnorderedList } from "./UnorderedList";
 import { DoReconcileRequest } from "../services/CompliancyCheckerService";
@@ -11,15 +10,13 @@ import {
 } from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./ErrorBar";
+import ReconcileLoader from "./ReconcileLoader";
 
 interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
     impact: string[];
     onReconcileCompleted?: () => void;
     onCancel?: () => void;
-    children?: ReactNode;
-    data?: {};
-    reconcileDisabled: boolean;
     onReconcile?: () => void;
 }
 
@@ -28,9 +25,6 @@ const ConfirmReconcileDialog = ({
     reconcileUrl,
     onReconcileCompleted,
     onCancel,
-    children,
-    data,
-    reconcileDisabled,
     onReconcile = () => {}
 }: IConfirmReconcileDialogProps) => {
     const [isReconciling, setIsReconciling] = useState<boolean>(false);
@@ -44,7 +38,7 @@ const ConfirmReconcileDialog = ({
         const doFetch = async () => {
             try {
                 onReconcile();
-                await DoReconcileRequest(reconcileUrl, data);
+                await DoReconcileRequest(reconcileUrl);
                 setErrorText("");
                 trackEvent("[Confirm Reconcile Dialog] Reconcile completed");
                 if (onReconcileCompleted) onReconcileCompleted();
@@ -58,7 +52,7 @@ const ConfirmReconcileDialog = ({
         if (isReconciling) {
             doFetch();
         }
-    }, [data, isReconciling, onReconcileCompleted, reconcileUrl, onReconcile]);
+    }, [isReconciling, onReconcileCompleted, reconcileUrl, onReconcile]);
 
     return (
         <Dialog
@@ -79,7 +73,7 @@ const ConfirmReconcileDialog = ({
                         trackEvent("[Confirm Reconcile Dialog] Confirmed");
                     },
                     primary: true,
-                    disabled: isReconciling || reconcileDisabled
+                    disabled: isReconciling
                 }
             ]}
             onDismiss={() => {
@@ -87,20 +81,11 @@ const ConfirmReconcileDialog = ({
             }}
         >
             <ErrorBar message={errorText} onDismiss={() => setErrorText("")} />
-            {isReconciling && (
-                <Status
-                    {...Statuses.Running}
-                    key="reconciling"
-                    // @ts-ignore
-                    size={StatusSize.xl}
-                    text="Reconciling..."
-                />
-            )}
+            {isReconciling && <ReconcileLoader />}
             <p>Are you sure? Reconciling will make the following changes:</p>
             <UnorderedList
                 itemProvider={new ArrayItemProvider<string>(impact)}
             />
-            {children}
         </Dialog>
     );
 };

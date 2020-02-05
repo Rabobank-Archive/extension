@@ -10,7 +10,6 @@ describe("ReconcileButton", () => {
     it("should reconcile", async () => {
         const { getByText, getAllByText, findByText } = render(
             <ReconcileButton
-                reconcileDisabled={false}
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"]
@@ -37,7 +36,6 @@ describe("ReconcileButton", () => {
     it("should show a loading state while reconciling", async () => {
         const { getByText, getAllByText } = render(
             <ReconcileButton
-                reconcileDisabled={false}
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"]
@@ -63,7 +61,6 @@ describe("ReconcileButton", () => {
     it("should show an error when reconciling failed", async () => {
         const { getByText, getAllByText } = render(
             <ReconcileButton
-                reconcileDisabled={false}
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"]
@@ -88,7 +85,6 @@ describe("ReconcileButton", () => {
     it("should dismiss the dialog", async () => {
         const { getByText, findByText } = render(
             <ReconcileButton
-                reconcileDisabled={false}
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"]
@@ -110,7 +106,6 @@ describe("ReconcileButton", () => {
     it("Should render dynamic content", async () => {
         const { getByText, findByText } = render(
             <ReconcileButton
-                reconcileDisabled={false}
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"]
