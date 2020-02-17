@@ -7,17 +7,19 @@ import { MessageCardSeverity, MessageCard } from "azure-devops-ui/MessageCard";
 interface IErrorBarProps {
     message: string;
     onDismiss?: () => void;
+    linkProps?: { text: string; link: string };
 }
 
-const ErrorBar = ({ message, onDismiss }: IErrorBarProps) => {
+const ErrorBar = ({ message, onDismiss, linkProps }: IErrorBarProps) => {
+    const linkText = linkProps?.text ?? "Contact TAS";
+    const onClick =
+        linkProps?.link ?? "https://tools.rabobank.nl/vsts/request?app=vsts";
+
     const buttonProps: IButtonProps[] = [
         {
-            text: "Contact TAS",
+            text: linkText,
             onClick: () => {
-                window.open(
-                    "https://tools.rabobank.nl/vsts/request?app=vsts",
-                    "_blank"
-                );
+                window.open(onClick, "_blank");
             }
         }
     ];

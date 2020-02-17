@@ -15,4 +15,15 @@ describe("ErrorBar", () => {
         var visibleButton = await queryByText("Contact TAS");
         expect(visibleButton).toBeNull();
     });
+
+    it("should render correctly when link properties are set", async () => {
+        const { findByText } = render(
+            <ErrorBar
+                message="some message"
+                linkProps={{ text: "link text", link: "https://somelink.com" }}
+            />
+        );
+
+        await findByText("link text");
+    });
 });

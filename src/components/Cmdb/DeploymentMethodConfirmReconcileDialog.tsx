@@ -18,6 +18,8 @@ import { IEnvironment } from "../../services/IAzDoService";
 import ReconcileLoader from "../ReconcileLoader";
 import { Toggle } from "azure-devops-ui/Toggle";
 
+import "./DeploymentMethodConfirmReconcileDialog.css";
+
 interface IDeploymentMethodConfirmReconcileDialogProps {
     reconcileUrl: string;
     impact: string[];
@@ -74,8 +76,10 @@ const DeploymentMethodConfirmReconcileDialog = ({
                 );
                 if (onReconcileCompleted) onReconcileCompleted();
             } catch (e) {
+                setErrorText(
+                    `Reconcile failed. You do not have permission to update the CI-identifier. Click on the link below for information. `
+                );
                 setIsReconciling(false);
-                setErrorText("Couldn't fulfill reconcile request.");
                 trackException(e);
             }
         };
@@ -122,7 +126,15 @@ const DeploymentMethodConfirmReconcileDialog = ({
                 setErrorText("");
             }}
         >
-            <ErrorBar message={errorText} onDismiss={() => setErrorText("")} />
+            <ErrorBar
+                message={errorText}
+                onDismiss={() => setErrorText("")}
+                linkProps={{
+                    text: "Go to Confluence",
+                    link:
+                        "https://confluence.dev.rabobank.nl/x/PqKbD#ReleasepipelinehasvalidCMDBlink-Permissions"
+                }}
+            />
             {isReconciling && <ReconcileLoader />}
             <p>Are you sure? Reconciling will make the following changes:</p>
             <UnorderedList
