@@ -124,7 +124,9 @@ const Overview = () => {
                 <div className="page-content page-content-top">
                     <Card>
                         {report.loading ? (
-                            <div className="page-content">Loading...</div>
+                            <div className="page-content" data-testid="loading">
+                                Loading...
+                            </div>
                         ) : (
                             <Table<ITableItem>
                                 columns={columns}
