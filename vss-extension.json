@@ -1,0 +1,114 @@
+{
+    "manifestVersion": 1,
+    "version": "1.0.0",
+    "publisher": "rabobank",
+    "public": false,
+    "galleryFlags": [
+        "Preview"
+    ],
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "categories": [
+        "Azure Boards"
+    ],
+    "icons": {
+        "default": "images/extension-icon.png"
+    },
+    "id": "azure-devops-compliance",
+    "name": "Azure DevOps Compliance",
+    "contributions": [
+        {
+            "id": "repos",
+            "type": "ms.vss-web.hub",
+            "targets": [
+                "ms.vss-code-web.code-hub-group"
+            ],
+            "properties": {
+                "name": "Compliancy",
+                "icon": {
+                    "light": "build/logo-light.png",
+                    "dark": "build/logo-dark.png"
+                },
+                "uri": "build/index.html#repositories"
+            }
+        },
+        {
+            "id": "buildpipelines",
+            "type": "ms.vss-web.hub",
+            "targets": [
+                "ms.vss-build-web.build-release-hub-group"
+            ],
+            "properties": {
+                "name": "Build pipeline compliancy",
+                "icon": {
+                    "light": "build/logo-light.png",
+                    "dark": "build/logo-dark.png"
+                },
+                "uri": "build/index.html#build-pipelines"
+            }
+        },
+        {
+            "id": "builds",
+            "type": "ms.vss-web.hub",
+            "targets": [
+                "ms.vss-build-web.build-release-hub-group"
+            ],
+            "properties": {
+                "name": "Build compliancy",
+                "icon": {
+                    "light": "build/logo-light.png",
+                    "dark": "build/logo-dark.png"
+                },
+                "uri": "build/index.html#builds"
+            }
+        },
+        {
+            "id": "releasepipelines",
+            "type": "ms.vss-web.hub",
+            "targets": [
+                "ms.vss-build-web.build-release-hub-group"
+            ],
+            "properties": {
+                "name": "Release pipeline compliancy",
+                "icon": {
+                    "light": "build/logo-light.png",
+                    "dark": "build/logo-dark.png"
+                },
+                "uri": "build/index.html#release-pipelines"
+            }
+        },
+        {
+            "id": "releases",
+            "type": "ms.vss-web.hub",
+            "targets": [
+                "ms.vss-build-web.build-release-hub-group"
+            ],
+            "properties": {
+                "name": "Release compliancy",
+                "icon": {
+                    "light": "build/logo-light.png",
+                    "dark": "build/logo-dark.png"
+                },
+                "uri": "build/index.html#releases"
+            }
+        },
+        {
+            "id": "overview",
+            "type": "ms.vss-web.hub",
+            "targets": [
+                "ms.vss-web.home-hub-group"
+            ],
+            "properties": {
+                "name": "Compliancy",
+                "icon": {
+                    "light": "build/logo-light.png",
+                    "dark": "build/logo-dark.png"
+                },
+                "uri": "build/index.html#overview"
+            }
+        }
+    ]
+}
