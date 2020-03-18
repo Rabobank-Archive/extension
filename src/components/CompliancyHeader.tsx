@@ -103,7 +103,7 @@ const CompliancyHeader = ({
                             iconProps: { iconName: "TriggerAuto" },
                             id: "rescan",
                             important: true,
-                            disabled: isRescanning || rescanUrl == undefined,
+                            disabled: isRescanning || rescanUrl === undefined,
                             isPrimary: true,
                             onActivate: () => {
                                 doRescanRequest();

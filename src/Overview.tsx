@@ -20,7 +20,6 @@ import {
 } from "./components/TableRenderers";
 import { onSize } from "./components/TableBehaviors";
 import ReconcileButton from "./components/ReconcileButton";
-import InfoBlock from "./components/InfoBlock";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import { getDevopsUiStatus } from "./services/Status";
 import { useEffect } from "react";
@@ -120,7 +119,6 @@ const Overview = () => {
                     message={report.error}
                     onDismiss={() => report.setError("")}
                 />
-                <InfoBlock showMoreInfoText={true} />
                 <div className="page-content page-content-top">
                     <Card>
                         {report.loading ? (

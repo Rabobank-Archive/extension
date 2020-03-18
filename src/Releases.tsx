@@ -28,7 +28,6 @@ import {
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
-import InfoBlock from "./components/InfoBlock";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import { getDevopsUiStatus } from "./services/Status";
 import { useEffect } from "react";
@@ -195,7 +194,6 @@ const Releases = () => {
                     message={report.error}
                     onDismiss={() => report.setError("")}
                 />
-                <InfoBlock showMoreInfoText={false} />
                 <div className="page-content page-content-top">
                     <Card>
                         {report.loading ? (

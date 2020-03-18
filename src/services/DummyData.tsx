@@ -12,9 +12,9 @@ const projectRules = [
         status: true,
         reconcile: {
             impact: [
-                "Rabobank Project Administrators group is created and added to Project Administrators",
-                "Delete team project permissions of the Rabobank Project Administrators group is set to deny",
-                "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                "Dummy Project Administrators group is created and added to Project Administrators",
+                "Delete team project permissions of the Dummy Project Administrators group is set to deny",
+                "Members of the Project Administrators are moved to Dummy Project Administrators",
                 "Delete team project permission is set to 'not set' for all other groups"
             ],
             url: "http://something.com"
@@ -42,7 +42,7 @@ const projectRules = [
             impact: [
                 "Dit is een test data zin, om te checken of blablablabal",
                 "Dit is een test data zin, om te checken of blablablabal",
-                "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                "Members of the Project Administrators are moved to Dummy Project Administrators",
                 "Delete team project permission is set to 'not set' for all other groups"
             ],
             url: "http://something.com"
@@ -57,7 +57,7 @@ const projectRules = [
             impact: [
                 "Dit is een test data zin, om te checken of blablablabal",
                 "Dit is een test data zin, om te checken of blablablabal",
-                "Members of the Project Administrators are moved to Rabobank Project Administrators",
+                "Members of the Project Administrators are moved to Dummy Project Administrators",
                 "Delete team project permission is set to 'not set' for all other groups"
             ],
             url: "http://something.com"
@@ -144,7 +144,7 @@ export const DummyReleaseReport: IReleaseReport = {
             usesManagedAgentsOnly: null,
             allArtifactsAreFromBuild: null,
             sM9ChangeId: "C000691701",
-            sM9ChangeUrl: "http://itsm.rabobank.nl/SM"
+            sM9ChangeUrl: "http://itsm.Dummy.nl/SM"
         }
     ]
 };
@@ -314,7 +314,7 @@ const releasePipelineRules = [
     },
     {
         description: "Release pipeline has valid CMDB link",
-        link: "https://confluence.dev.rabobank.nl/x/PqKbD",
+        link: "https://confluence.dev.Dummy.nl/x/PqKbD",
         status: false,
         name: "ReleasePipelineHasDeploymentMethod",
         reconcile: {

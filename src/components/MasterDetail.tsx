@@ -42,8 +42,6 @@ import { appInsightsReactPlugin } from "../services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import "./MasterDetail.css";
 import { getDevopsUiStatus } from "../services/Status";
-import CiIdentifierPillGroup from "./Cmdb/CiIdentifierPillGroup";
-import DeploymentMethodReconcileButton from "./Cmdb/DeploymentMethodReconcileButton";
 
 interface IReportMaster {
     item: string;
@@ -156,13 +154,8 @@ class MasterDetail extends React.Component<
     ): JSX.Element {
         const content =
             item.hasReconcilePermission &&
-            item.name === "ReleasePipelineHasDeploymentMethod" ? (
-                <DeploymentMethodReconcileButton
-                    reconcilableItem={item}
-                    environments={report.environments}
-                />
-            ) : item.hasReconcilePermission &&
-              item.status === Statuses.Failed ? (
+            item.hasReconcilePermission &&
+            item.status === Statuses.Failed ? (
                 <ReconcileButton reconcilableItem={item} />
             ) : (
                 ""
@@ -355,11 +348,6 @@ class MasterDetail extends React.Component<
                         // @ts-ignore
                         titleSize={TitleSize.Large}
                     />
-                    {detailItem.ciIdentifiers && (
-                        <CiIdentifierPillGroup
-                            ciIdentifiers={detailItem.ciIdentifiers}
-                        />
-                    )}
                     <div className="page-content page-content-top">
                         <Card
                             className="bolt-card-no-vertical-padding"

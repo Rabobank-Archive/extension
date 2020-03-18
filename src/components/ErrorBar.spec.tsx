@@ -6,13 +6,13 @@ describe("ErrorBar", () => {
     it("should show when message is set", async () => {
         const { findByText } = render(<ErrorBar message="Dummy message" />);
 
-        await findByText("Contact TAS");
+        await findByText("Contact maintainers");
     });
 
     it("shouldn't show when no message is set", async () => {
         const { queryByText } = render(<ErrorBar message="" />);
 
-        var visibleButton = await queryByText("Contact TAS");
+        var visibleButton = await queryByText("Contact maintainers");
         expect(visibleButton).toBeNull();
     });
 

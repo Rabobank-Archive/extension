@@ -11,9 +11,9 @@ interface IErrorBarProps {
 }
 
 const ErrorBar = ({ message, onDismiss, linkProps }: IErrorBarProps) => {
-    const linkText = linkProps?.text ?? "Contact TAS";
+    const linkText = linkProps?.text ?? "Contact maintainers";
     const onClick =
-        linkProps?.link ?? "https://tools.rabobank.nl/vsts/request?app=vsts";
+        linkProps?.link ?? "https://github.com/azure-devops-compliance/";
 
     const buttonProps: IButtonProps[] = [
         {

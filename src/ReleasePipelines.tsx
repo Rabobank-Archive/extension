@@ -13,7 +13,6 @@ import {
 } from "./services/ApplicationInsights";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
-import InfoBlock from "./components/InfoBlock";
 import { useEffect } from "react";
 import { useReconcileReport } from "./hooks/useReconcileReport";
 
@@ -42,7 +41,6 @@ const ReleasePipelines = () => {
                     message={report.error}
                     onDismiss={() => report.setError("")}
                 />
-                <InfoBlock showMoreInfoText={true} />
                 <div className="page-content-top full-size">
                     {report.loading || !report.data ? (
                         <div className="page-content">Loading...</div>
