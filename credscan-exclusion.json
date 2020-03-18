@@ -1,0 +1,9 @@
+{
+  "tool": "Credential Scanner",
+  "suppressions": [
+    {
+      "file": "AzDoService.spec.tsx",
+      "_justification": "Legitimate Azure DevOps personal access token in unit test in order to test the expiration of the token. "
+    }
+  ]
+}

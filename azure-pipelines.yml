@@ -1,41 +1,95 @@
-pool: Rabo-Build-Azure-Linux-Preview
+resources:
+  repositories:
+    - repository: templates
+      type: git
+      name: TAS/azdo-pipeline-templates
+
 trigger:
-    - master
+- '*'
+
 variables:
+  agentPool: "Rabo-Build-Azure-Windows"
+  artifactName: "Package"
   packageVersion: '0.1.$(build.buildid)'
 
-steps:
-- script: |
-    npm version $(packageVersion) --no-git-tag-version
-  displayName: 'Set package version'
-
-- script: |
-    npm install
-  displayName: 'npm install'
-
-- script: |
-    CI=true npm test
-  displayName: 'npm test'
-  
-- script: |
-    npm run lint
-  displayName: 'npm running linting'
-
-- script: |
-    npm run build
-  displayName: 'npm run build'
-
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.SourcesDirectory)/build' 
-    includeRootFolder: false 
-    archiveType: 'zip' # Options: zip, 7z, tar, wim
-    archiveFile: '$(Build.ArtifactStagingDirectory)/azdo-extensions-compliancy-frontend.zip' 
-    replaceExistingArchive: true 
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: package'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'Package'
-
+stages:    
+- stage: StaticAnalysis
+  jobs: 
+  - job: BuildNPM
+    displayName: "Build NPM"  
+    pool: $(agentPool)
+    steps:
+    - template: /steps/fortify-step.yml@templates
+      parameters:
+        fortifyBuildId: "prod"
+        fortifyServiceEndPoint: "Fortify SSC TAS"
+        fortifyApplicationName: "azdo-extensions-compliancy-frontend"
+        fortifyApplicationVersion: "1.0"
+        fortifyProjects: "**/*.tsx"
+    - template: /steps/credscan-step.yml@templates
+      parameters:
+        credScanSuppressionsFile: $(System.DefaultWorkingDirectory)/credscan-exclusion.json    
+    - script: |
+        npm version $(packageVersion) --no-git-tag-version
+      displayName: 'Set package version'
+    - script: |
+        npm install
+      displayName: 'npm install'
+    - bash: 
+        CI=true npm test
+      displayName: 'npm test'
+    - script: |
+        npm run lint
+      displayName: 'npm running linting'
+    - script: |
+        npm install typescript 
+      displayName: 'npm install typescript'
+    - task: SonarQubePrepare@4
+      displayName: 'Prepare analysis on SonarQube'
+      timeoutInMinutes: 15
+      inputs:
+        SonarQube: "SonarQube Production On Prem - with token"
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: "azdo-extensions-compliancy-frontend"
+        cliProjectName: "azdo-extensions-compliancy-frontend"
+        cliSources: 'src'
+        extraProperties: |
+          sonar.verbose=true
+          sonar.language=ts
+          sonar.sourceEncoding=UTF-8
+          sonar.tests=src
+          sonar.test.inclusions=src/*.test.tsx
+    - template: /steps/sonarqube-analysis-step.yml@templates
+    - template: /steps/nexusiq-step.yml@templates
+      parameters:
+        nexusIQServiceEndPoint: "Nexus IQ - Production"
+        nexusIQApplicationId: "azdo-extensions-compliancy-frontend"
+        nexusIQscanTargets: "src/*.tsx"
+- stage: Publish
+  jobs:
+  - job: PublishNPM
+    pool: $(agentPool)
+    displayName: "Publish NPM" 
+    steps:
+    - script: |
+        npm version $(packageVersion) --no-git-tag-version
+      displayName: 'Set package version'
+    - script: |
+        npm install
+      displayName: 'npm install'
+    - script: |
+        npm run build
+      displayName: 'npm run build'
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/build' 
+        includeRootFolder: false 
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/azdo-extensions-compliancy-frontend.zip' 
+        replaceExistingArchive: true 
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: package'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: '$(artifactName)'
