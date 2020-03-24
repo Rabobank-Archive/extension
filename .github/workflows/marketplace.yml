@@ -1,0 +1,26 @@
+on:
+    push:
+        branches:
+            - master
+
+name: deploy
+jobs:
+    build:
+        runs-on: ubuntu-18.04
+        steps:
+            - uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
+            - uses: actions/setup-node@v1
+              with:
+                  node-version: "10.x"
+            - run: npm install
+            - run: npm run build
+            - run: npm install -g tfx-cli
+            - name: tfx extension create & publish
+              run: |
+                  export VERSION=1.0.$(git rev-list --count HEAD)
+                  tfx extension create --manifest-globs vss-extension.json --override "{ \"version\": \"$VERSION\" }"
+                  tfx extension publish --token $TOKEN --share-with manuel --vsix riezebosch.azure-devops-compliance-$VERSION.vsix
+              env:
+                  TOKEN: ${{secrets.AZURE_DEVOPS_TOKEN}}
