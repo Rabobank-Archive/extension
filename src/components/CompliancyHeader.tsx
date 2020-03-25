@@ -13,8 +13,6 @@ import { Ago } from "azure-devops-ui/Ago";
 import { AgoFormat } from "azure-devops-ui/Utilities/Date";
 import { HeaderCommandBar } from "azure-devops-ui/HeaderCommandBar";
 import { DoRescanRequest } from "../services/CompliancyCheckerService";
-import { appInsightsReactPlugin } from "../services/ApplicationInsights";
-import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./ErrorBar";
 import { useState } from "react";
 
@@ -118,4 +116,4 @@ const CompliancyHeader = ({
     );
 };
 
-export default withAITracking(appInsightsReactPlugin, CompliancyHeader);
+export default CompliancyHeader;

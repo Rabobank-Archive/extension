@@ -1,13 +1,7 @@
 import * as React from "react";
 import OverviewReport from "./Overview";
 import { useReport } from "./hooks/useReport";
-import {
-    render,
-    getByTestId,
-    wait,
-    waitForElement,
-    waitForElementToBeRemoved
-} from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 jest.mock("./hooks/useReport", () => ({
     useReport: jest.fn()

@@ -7,12 +7,6 @@ import { IStatusProps, Statuses } from "azure-devops-ui/Status";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 import "./css/styles.css";
-import {
-    appInsightsReactPlugin,
-    trackEvent,
-    trackPageview
-} from "./services/ApplicationInsights";
-import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
 import {
     renderStringWithWhyTooltip,
@@ -22,7 +16,6 @@ import { onSize } from "./components/TableBehaviors";
 import ReconcileButton from "./components/ReconcileButton";
 import { SurfaceBackground, Surface } from "azure-devops-ui/Surface";
 import { getDevopsUiStatus } from "./services/Status";
-import { useEffect } from "react";
 import { ArrayItemProvider } from "azure-devops-ui/Utilities/Provider";
 import { useReconcileReport } from "./hooks/useReconcileReport";
 
@@ -37,11 +30,6 @@ interface ITableItem {
 
 const Overview = () => {
     const report = useReconcileReport("globalpermissions");
-
-    useEffect(() => {
-        trackEvent("[Overview] Page opened");
-        trackPageview();
-    }, []);
 
     const columns = [
         {
@@ -138,4 +126,4 @@ const Overview = () => {
     );
 };
 
-export default withAITracking(appInsightsReactPlugin, Overview);
+export default Overview;

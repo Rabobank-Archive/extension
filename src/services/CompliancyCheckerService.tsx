@@ -1,7 +1,6 @@
 import { GetAzDoAppToken, GetAzDoUser } from "./AzDoService";
 import { delay } from "./Delay";
 import { USE_COMPLIANCYCHECKER_SERVICE } from "./Environment";
-import { trackException, trackTrace } from "./ApplicationInsights";
 import axios, { AxiosRequestConfig } from "axios";
 
 export function HasReconcilePermission(
@@ -75,35 +74,14 @@ async function HasRealReconcilePermission(
         headers: { Authorization: `Bearer ${token}` }
     };
 
-    trackTrace("HasReconcilePermission started", {
-        token: token,
-        userName: user.name,
-        userDisplayName: user.displayName,
-        userId: user.id
-    });
-
     try {
         const url = `${hasReconcilePermissionUrl}?userId=${user.id}`;
         const response = await axios.get(url, config);
         hasReconcilePermission = response.data as boolean;
     } catch (e) {
         // Don't do anything when this fails. Since by default user doesn't have permission to reconcile, this won't do any harm
-        trackException(e);
-        trackTrace("HasReconcilePermission failed", {
-            token: token,
-            userName: user.name,
-            userDisplayName: user.displayName,
-            userId: user.id,
-            result: e
-        });
     }
-    trackTrace("HasReconcilePermission succeeded", {
-        token: token,
-        userName: user.name,
-        userDisplayName: user.displayName,
-        userId: user.id,
-        result: hasReconcilePermission
-    });
+
     return hasReconcilePermission;
 }
 
@@ -136,7 +114,6 @@ async function DoRealRescanRequest(
         if (onComplete) onComplete();
     } catch (e) {
         if (onError) onError();
-        trackException(e);
     }
 }
 

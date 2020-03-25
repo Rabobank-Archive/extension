@@ -110,9 +110,7 @@ describe("ReconcileButton", () => {
                     reconcileUrl: "/mock-url",
                     reconcileImpact: ["mock-impact"]
                 }}
-            >
-                <p>dynamic text</p>
-            </ReconcileButton>
+            />
         );
 
         fireEvent.click(getByText("Reconcile"));

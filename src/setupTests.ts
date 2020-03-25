@@ -1,7 +1,6 @@
 import { cleanup } from "@testing-library/react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { ReactPlugin } from "@microsoft/applicationinsights-react-js";
 
 let mock = new MockAdapter(axios);
 
@@ -14,29 +13,3 @@ jest.setTimeout(10e3);
 // see https://stackoverflow.com/questions/40919028/define-is-not-defined-in-jest-when-testing-es6-module-with-requirejs-dependenc
 jest.mock("azure-devops-extension-sdk", () => {});
 jest.mock("azure-devops-extension-api", () => {});
-
-// mock higher order function withAITracking to just return the component itself, as we don't need AI tracking in tests
-jest.mock("@microsoft/applicationinsights-react-js", () => {
-    return {
-        withAITracking: jest.fn(
-            (
-                reactPlugin: ReactPlugin,
-                Component: React.ComponentType,
-                componentName?: string
-            ) => {
-                return Component;
-            }
-        )
-    };
-});
-
-// mock tracking functions to do nothing as we don't need AI tracking in tests
-jest.mock("./services/ApplicationInsights", () => {
-    return {
-        appInsightsReactPlugin: {},
-        trackPageview: jest.fn(() => {}),
-        trackException: jest.fn(() => {}),
-        trackTrace: jest.fn(() => {}),
-        trackEvent: jest.fn(() => {})
-    };
-});

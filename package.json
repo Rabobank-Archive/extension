@@ -21,8 +21,6 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "@microsoft/applicationinsights-react-js": "^2.4.3",
-    "@microsoft/applicationinsights-web": "^2.4.3",
     "@types/jsonwebtoken": "^8.3.7",
     "axios": "^0.19.2",
     "azure-devops-extension-api": "^1.157.0",
