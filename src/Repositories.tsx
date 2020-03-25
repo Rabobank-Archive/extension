@@ -6,23 +6,11 @@ import MasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 import "./css/styles.css";
-import {
-    appInsightsReactPlugin,
-    trackEvent,
-    trackPageview
-} from "./services/ApplicationInsights";
-import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
-import { useEffect } from "react";
 import { useReconcileReport } from "./hooks/useReconcileReport";
 
 const Repositories = () => {
     const report = useReconcileReport("repository");
-
-    useEffect(() => {
-        trackEvent("[Repositories] Page opened");
-        trackPageview();
-    }, []);
 
     return (
         // @ts-ignore
@@ -59,4 +47,4 @@ const Repositories = () => {
     );
 };
 
-export default withAITracking(appInsightsReactPlugin, Repositories);
+export default Repositories;

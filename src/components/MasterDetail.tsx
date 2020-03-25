@@ -38,8 +38,6 @@ import { sortingBehavior } from "./TableBehaviors";
 import { Checkbox } from "azure-devops-ui/Checkbox";
 import { IItemReport, IEnvironment } from "../services/IAzDoService";
 import ReconcileButton from "./ReconcileButton";
-import { appInsightsReactPlugin } from "../services/ApplicationInsights";
-import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import "./MasterDetail.css";
 import { getDevopsUiStatus } from "../services/Status";
 
@@ -404,7 +402,7 @@ class MasterDetail extends React.Component<
     }
 }
 
-export default withAITracking(appInsightsReactPlugin, MasterDetail);
+export default MasterDetail;
 
 const InitialMasterPanelContent: React.FunctionComponent<{
     initialSelectedMasterItem: IObservableValue<IReportMaster>;

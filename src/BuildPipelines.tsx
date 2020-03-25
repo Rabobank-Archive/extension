@@ -6,23 +6,11 @@ import MasterDetail from "./components/MasterDetail";
 import CompliancyHeader from "./components/CompliancyHeader";
 
 import "./css/styles.css";
-import {
-    appInsightsReactPlugin,
-    trackEvent,
-    trackPageview
-} from "./services/ApplicationInsights";
-import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import ErrorBar from "./components/ErrorBar";
-import { useEffect } from "react";
 import { useReconcileReport } from "./hooks/useReconcileReport";
 
 const BuildPipelines = () => {
     const report = useReconcileReport("buildpipelines");
-
-    useEffect(() => {
-        trackEvent("[Build Pipelines] Page opened");
-        trackPageview();
-    }, []);
 
     return (
         // @ts-ignore
@@ -59,4 +47,4 @@ const BuildPipelines = () => {
     );
 };
 
-export default withAITracking(appInsightsReactPlugin, BuildPipelines);
+export default BuildPipelines;
