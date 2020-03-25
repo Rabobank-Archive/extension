@@ -9,4 +9,5 @@ jobs:
               with:
                   node-version: "10.x"
             - run: npm install
-            - run: CI=true npm test
+            - run: CI=true npm test -- --coverage
+            - uses: codecov/codecov-action@v1
