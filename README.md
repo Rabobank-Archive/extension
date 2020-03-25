@@ -1,4 +1,4 @@
-[![build](https://github.com/azure-devops-compliance/extension/workflows/nuget/badge.svg)](https://github.com/azure-devops-compliance/extension)
+[![build](https://github.com/azure-devops-compliance/extension/workflows/test/badge.svg)](https://github.com/azure-devops-compliance/extension/actions)
 [![codecov](https://codecov.io/gh/azure-devops-compliance/extension/branch/master/graph/badge.svg)](https://codecov.io/gh/azure-devops-compliance/extension)
 
 # Azure DevOps Compliance - Extension
