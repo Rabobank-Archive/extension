@@ -2,6 +2,9 @@ on:
     push:
         branches:
             - master
+        paths:
+            - "src/**"
+            - "vss-extension.json"
 
 name: deploy
 jobs:

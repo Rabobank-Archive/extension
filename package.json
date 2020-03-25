@@ -63,6 +63,13 @@
     "coverageReporters": [
       "text",
       "json"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx}",
+      "!src/index.tsx",
+      "!**/*.stories.{ts,tsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
     ]
   }
 }
