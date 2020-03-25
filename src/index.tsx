@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { HashRouter, Route } from "react-router-dom";
 import * as ReactDOM from "react-dom";
 import Repositories from "./Repositories";
-import Releases from "./Releases";
 import Overview from "./Overview";
-import Builds from "./Builds";
 import BuildPipelines from "./BuildPipelines";
 import ReleasePipelines from "./ReleasePipelines";
 import "azure-devops-ui/Core/override.css";
@@ -33,9 +31,7 @@ class App extends Component {
                         path="/release-pipelines"
                         component={ReleasePipelines}
                     />
-                    <Route path="/builds" component={Builds} />
                     <Route path="/repositories" component={Repositories} />
-                    <Route path="/releases" component={Releases} />
                     <Route path="/overview" component={Overview} />
                 </div>
             </HashRouter>
