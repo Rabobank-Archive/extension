@@ -34,10 +34,7 @@
             ],
             "properties": {
                 "name": "Compliancy",
-                "icon": {
-                    "light": "build/logo.png",
-                    "dark": "build/logo.png"
-                }
+                "icon": "build/logo.png"
             }
         },
         {
