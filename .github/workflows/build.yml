@@ -7,7 +7,7 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
               with:
-                  node-version: "10.x"
+                  node-version: "13.x"
             - run: npm install
             - run: CI=true npm test -- --coverage
             - uses: codecov/codecov-action@v1
