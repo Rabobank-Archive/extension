@@ -49,7 +49,15 @@
             "properties": {
                 "name": "Compliancy",
                 "icon": "build/logo.png"
-            }
+            },
+            "constraints": [
+                {
+                    "name": "Feature",
+                    "properties": {
+                        "featureId": "riezebosch.azure-devops-compliance.feature-compliance"
+                    }
+                }
+            ]
         },
         {
             "id": "repos",
