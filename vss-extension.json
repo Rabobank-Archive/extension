@@ -27,6 +27,20 @@
     ],
     "contributions": [
         {
+            "id": "feature-compliance",
+            "type": "ms.vss-web.feature",
+            "description": "Enable the  Compliancy hub group",
+            "targets": [
+                "ms.vss-web.managed-features",
+                "ms.vss-web.managed-features-onprem"
+            ],
+            "properties": {
+                "name": "Compliancy",
+                "userConfigurable": true,
+                "hostConfigurable": true
+            }
+        },
+        {
             "id": "compliance",
             "type": "ms.vss-web.hub-group",
             "targets": [
