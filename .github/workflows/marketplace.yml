@@ -3,6 +3,7 @@ on:
         branches:
             - master
         paths:
+            - "package.json"
             - "src/**"
             - "vss-extension.json"
 
