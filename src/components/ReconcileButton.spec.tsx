@@ -2,7 +2,7 @@ import React from "react";
 import ReconcileButton from "./ReconcileButton";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { fireEvent, render, wait } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 
 let mock = new MockAdapter(axios);
 
@@ -12,7 +12,7 @@ describe("ReconcileButton", () => {
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"]
+                    reconcileImpact: ["mock-impact"],
                 }}
             />
         );
@@ -28,7 +28,7 @@ describe("ReconcileButton", () => {
         const dialogConfirmButton = reconcileButtons[1];
         fireEvent.click(dialogConfirmButton);
 
-        wait(() => {
+        waitFor(() => {
             expect(findByText("Confirm reconciliation")).toBeNull();
         });
     });
@@ -38,7 +38,7 @@ describe("ReconcileButton", () => {
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"]
+                    reconcileImpact: ["mock-impact"],
                 }}
             />
         );
@@ -53,7 +53,7 @@ describe("ReconcileButton", () => {
         const dialogConfirmButton = reconcileButtons[1];
         fireEvent.click(dialogConfirmButton);
 
-        wait(() => {
+        waitFor(() => {
             getByText("Reconciling...");
         });
     });
@@ -63,7 +63,7 @@ describe("ReconcileButton", () => {
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"]
+                    reconcileImpact: ["mock-impact"],
                 }}
             />
         );
@@ -77,7 +77,7 @@ describe("ReconcileButton", () => {
         const dialogConfirmButton = reconcileButtons[1];
         fireEvent.click(dialogConfirmButton);
 
-        wait(() => {
+        waitFor(() => {
             getByText("Couldn't fulfill reconcile request.");
         });
     });
@@ -87,7 +87,7 @@ describe("ReconcileButton", () => {
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"]
+                    reconcileImpact: ["mock-impact"],
                 }}
             />
         );
@@ -98,7 +98,7 @@ describe("ReconcileButton", () => {
 
         fireEvent.click(getByText("Cancel"));
 
-        wait(() => {
+        waitFor(() => {
             expect(findByText("Confirm reconciliation")).toBeNull();
         });
     });
@@ -108,7 +108,7 @@ describe("ReconcileButton", () => {
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"]
+                    reconcileImpact: ["mock-impact"],
                 }}
             />
         );
