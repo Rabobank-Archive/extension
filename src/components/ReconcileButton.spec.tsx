@@ -2,13 +2,20 @@ import React from "react";
 import ReconcileButton from "./ReconcileButton";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import {
+    render,
+    waitFor,
+    waitForElementToBeRemoved,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-let mock = new MockAdapter(axios);
+let mock = new MockAdapter(axios, { delayResponse: 200 });
 
 describe("ReconcileButton", () => {
     it("should reconcile", async () => {
-        const { getByText, getAllByText, findByText } = render(
+        mock.onPost(/\/mock-url/).reply(200);
+
+        const { getByText, getAllByText, getByRole } = render(
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
@@ -17,49 +24,23 @@ describe("ReconcileButton", () => {
             />
         );
 
-        fireEvent.click(getByText("Reconcile"));
-
-        mock.onGet("*").reply(200);
-
+        userEvent.click(getByRole("button"));
         getByText("Confirm reconciliation");
 
         const reconcileButtons = getAllByText("Reconcile");
         expect(reconcileButtons).toHaveLength(2);
         const dialogConfirmButton = reconcileButtons[1];
-        fireEvent.click(dialogConfirmButton);
 
-        waitFor(() => {
-            expect(findByText("Confirm reconciliation")).toBeNull();
-        });
-    });
+        userEvent.click(dialogConfirmButton);
 
-    it("should show a loading state while reconciling", async () => {
-        const { getByText, getAllByText } = render(
-            <ReconcileButton
-                reconcilableItem={{
-                    reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"],
-                }}
-            />
-        );
-
-        fireEvent.click(getByText("Reconcile"));
-
-        const reconcileButtons = getAllByText("Reconcile");
-        expect(reconcileButtons).toHaveLength(2);
-
-        mock.onGet("*").reply(200);
-
-        const dialogConfirmButton = reconcileButtons[1];
-        fireEvent.click(dialogConfirmButton);
-
-        waitFor(() => {
-            getByText("Reconciling...");
+        await waitForElementToBeRemoved(() => getByText("Reconciling..."), {
+            timeout: 500,
         });
     });
 
     it("should show an error when reconciling failed", async () => {
-        const { getByText, getAllByText } = render(
+        mock.onPost(/\/mock-url/).reply(500);
+        const { getByRole, getByText, getAllByText, findByText } = render(
             <ReconcileButton
                 reconcilableItem={{
                     reconcileUrl: "/mock-url",
@@ -68,52 +49,16 @@ describe("ReconcileButton", () => {
             />
         );
 
-        fireEvent.click(getByText("Reconcile"));
-
-        mock.onGet("*").reply(500);
+        userEvent.click(getByRole("button"));
+        getByText("Confirm reconciliation");
 
         const reconcileButtons = getAllByText("Reconcile");
         expect(reconcileButtons).toHaveLength(2);
         const dialogConfirmButton = reconcileButtons[1];
-        fireEvent.click(dialogConfirmButton);
+        userEvent.click(dialogConfirmButton);
 
-        waitFor(() => {
-            getByText("Couldn't fulfill reconcile request.");
+        await waitFor(() => {
+            findByText("Couldn't fulfill reconcile request.");
         });
-    });
-
-    it("should dismiss the dialog", async () => {
-        const { getByText, findByText } = render(
-            <ReconcileButton
-                reconcilableItem={{
-                    reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"],
-                }}
-            />
-        );
-
-        fireEvent.click(getByText("Reconcile"));
-
-        getByText("Confirm reconciliation");
-
-        fireEvent.click(getByText("Cancel"));
-
-        waitFor(() => {
-            expect(findByText("Confirm reconciliation")).toBeNull();
-        });
-    });
-
-    it("Should render dynamic content", async () => {
-        const { getByText, findByText } = render(
-            <ReconcileButton
-                reconcilableItem={{
-                    reconcileUrl: "/mock-url",
-                    reconcileImpact: ["mock-impact"],
-                }}
-            />
-        );
-
-        fireEvent.click(getByText("Reconcile"));
-        expect(findByText("dynamic text")).toBeDefined();
     });
 });

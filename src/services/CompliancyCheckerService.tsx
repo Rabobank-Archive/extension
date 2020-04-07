@@ -11,14 +11,19 @@ export function HasReconcilePermission(
         : HasDummyReconcilePermission(hasReconcilePermissionUrl);
 }
 
-export function DoReconcileRequest(
+export const DoReconcileRequest = async (
     reconcileUrl: string,
     data?: {}
-): Promise<void> {
-    return USE_COMPLIANCYCHECKER_SERVICE
-        ? DoRealReconcileRequest(reconcileUrl, data)
-        : DoDummyReconcileRequest(reconcileUrl);
-}
+): Promise<void> => {
+    const token = await GetAzDoAppToken();
+    const user = GetAzDoUser();
+
+    let config: AxiosRequestConfig = {
+        headers: { Authorization: `Bearer ${token}` },
+    };
+
+    await axios.post(`${reconcileUrl}?userId=${user.id}`, data, config);
+};
 
 export function DoRescanRequest(
     rescanUrl: string,
@@ -39,12 +44,6 @@ async function HasDummyReconcilePermission(
         `Called 'HasReconcilePermission(${hasReconcilePermissionUrl})', returning '${retval}'`
     );
     return retval;
-}
-
-async function DoDummyReconcileRequest(reconcileUrl: string): Promise<void> {
-    console.log(`Called 'DoReconcileRequest(${reconcileUrl})`);
-    await delay(2000);
-    return Promise.resolve();
 }
 
 async function DoDummyRescanRequest(
@@ -71,7 +70,7 @@ async function HasRealReconcilePermission(
     let hasReconcilePermission: boolean = false;
 
     const config: AxiosRequestConfig = {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
     };
 
     try {
@@ -85,20 +84,6 @@ async function HasRealReconcilePermission(
     return hasReconcilePermission;
 }
 
-async function DoRealReconcileRequest(
-    reconcileUrl: string,
-    data?: {}
-): Promise<void> {
-    const token = await GetAzDoAppToken();
-    const user = GetAzDoUser();
-
-    let config: AxiosRequestConfig = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
-
-    await axios.post(`${reconcileUrl}?userId=${user.id}`, data, config);
-}
-
 async function DoRealRescanRequest(
     rescanUrl: string,
     onComplete?: () => void,
@@ -108,7 +93,7 @@ async function DoRealRescanRequest(
 
     try {
         let config: AxiosRequestConfig = {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: { Authorization: `Bearer ${token}` },
         };
         await axios.get(rescanUrl, config);
         if (onComplete) onComplete();

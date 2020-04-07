@@ -9,28 +9,26 @@ import ReconcileLoader from "./ReconcileLoader";
 interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
     impact: string[];
-    onReconcileCompleted?: () => void;
-    onCancel?: () => void;
-    onReconcile?: () => void;
+    onCompleted?: () => void;
+    onCancel: () => void;
 }
 
 const ConfirmReconcileDialog = ({
     impact,
     reconcileUrl,
-    onReconcileCompleted,
+    onCompleted,
     onCancel,
-    onReconcile = () => {}
 }: IConfirmReconcileDialogProps) => {
-    const [isReconciling, setIsReconciling] = useState<boolean>(false);
-    const [errorText, setErrorText] = useState<string>("");
+    const [isReconciling, setIsReconciling] = useState(false);
+    const [errorText, setErrorText] = useState("");
+    const [isDone, setIsDone] = useState(false);
 
     useEffect(() => {
         const doFetch = async () => {
             try {
-                onReconcile();
                 await DoReconcileRequest(reconcileUrl);
                 setErrorText("");
-                if (onReconcileCompleted) onReconcileCompleted();
+                setIsDone(true);
             } catch (e) {
                 setErrorText("Couldn't fulfill reconcile request.");
             }
@@ -40,7 +38,15 @@ const ConfirmReconcileDialog = ({
         if (isReconciling) {
             doFetch();
         }
-    }, [isReconciling, onReconcileCompleted, reconcileUrl, onReconcile]);
+
+        if (isDone && onCompleted) {
+            onCompleted();
+        }
+
+        return () => {
+            onCompleted = undefined;
+        };
+    }, [isReconciling, onCompleted, reconcileUrl, isDone]);
 
     return (
         <Dialog
@@ -48,23 +54,16 @@ const ConfirmReconcileDialog = ({
             footerButtonProps={[
                 {
                     text: "Cancel",
-                    onClick: () => {
-                        setErrorText("");
-                        if (onCancel) onCancel();
-                    }
+                    onClick: onCancel,
                 },
                 {
                     text: "Reconcile",
-                    onClick: () => {
-                        setIsReconciling(true);
-                    },
+                    onClick: () => setIsReconciling(true),
                     primary: true,
-                    disabled: isReconciling
-                }
+                    disabled: isReconciling,
+                },
             ]}
-            onDismiss={() => {
-                setErrorText("");
-            }}
+            onDismiss={onCancel}
         >
             <ErrorBar message={errorText} onDismiss={() => setErrorText("")} />
             {isReconciling && <ReconcileLoader />}

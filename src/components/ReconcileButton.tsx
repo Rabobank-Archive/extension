@@ -30,7 +30,7 @@ const ReconcileButton = ({ reconcilableItem }: IReconcileButtonProps) => {
                 <ConfirmReconcileDialog
                     impact={reconcilableItem.reconcileImpact}
                     reconcileUrl={reconcilableItem.reconcileUrl}
-                    onReconcileCompleted={() => {
+                    onCompleted={() => {
                         setIsDialogOpen(false);
                     }}
                     onCancel={() => {
