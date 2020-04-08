@@ -9,7 +9,7 @@ import ReconcileLoader from "./ReconcileLoader";
 interface IConfirmReconcileDialogProps {
     reconcileUrl: string;
     impact: string[];
-    onCompleted?: () => void;
+    onCompleted: () => void;
     onCancel: () => void;
 }
 
@@ -27,7 +27,6 @@ const ConfirmReconcileDialog = ({
         const doFetch = async () => {
             try {
                 await DoReconcileRequest(reconcileUrl);
-                setErrorText("");
                 setIsDone(true);
             } catch (e) {
                 setErrorText("Couldn't fulfill reconcile request.");
@@ -39,13 +38,9 @@ const ConfirmReconcileDialog = ({
             doFetch();
         }
 
-        if (isDone && onCompleted) {
+        if (isDone) {
             onCompleted();
         }
-
-        return () => {
-            onCompleted = undefined;
-        };
     }, [isReconciling, onCompleted, reconcileUrl, isDone]);
 
     return (

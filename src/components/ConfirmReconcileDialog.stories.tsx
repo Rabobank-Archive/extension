@@ -12,5 +12,6 @@ storiesOf("ConfirmReconcileDialog", module).add("default", () => (
         ]}
         reconcileUrl={"Mock url"}
         onCancel={() => {}}
+        onCompleted={() => {}}
     />
 ));
