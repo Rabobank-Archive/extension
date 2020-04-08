@@ -23,24 +23,17 @@ import {
 
 let appToken: string | undefined;
 
-export function GetAzDoUser(): IUserContext {
-    return USE_AZDO_SERVICE ? GetRealAzDoUser() : GetDummyAzDoUser();
-}
+export const GetAzDoUser = USE_AZDO_SERVICE ? getUser : getDummyUser;
 
-export async function GetAzDoAppToken(): Promise<string> {
-    return USE_AZDO_SERVICE ? GetRealAzDoAppToken() : GetDummyAzDoAppToken();
-}
+export const GetAzDoAppToken = USE_AZDO_SERVICE
+    ? GetRealAzDoAppToken
+    : GetDummyAzDoAppToken;
 
-export async function GetAzDoReportsFromDocumentStorage<TReport>(
-    documentCollectionName: string
-): Promise<TReport> {
-    return USE_AZDO_SERVICE
-        ? GetRealAzDoReportsFromDocumentStorage<TReport>(documentCollectionName)
-        : GetDummyReportsFromDocumentStorage<TReport>(documentCollectionName);
-}
+export const GetAzDoReportsFromDocumentStorage = USE_AZDO_SERVICE
+    ? GetRealAzDoReportsFromDocumentStorage
+    : GetDummyReportsFromDocumentStorage;
 
-//#region Dummy implementations
-function GetDummyAzDoUser(): IUserContext {
+function getDummyUser(): IUserContext {
     return {
         descriptor: "dummy-descriptor",
         displayName: "dummy-displayname",
@@ -50,24 +43,20 @@ function GetDummyAzDoUser(): IUserContext {
     };
 }
 
-async function GetDummyAzDoAppToken(): Promise<string> {
+function GetDummyAzDoAppToken(): Promise<string> {
     const token = "DUMMYTOKEN!@#";
-    console.log(
-        `Called 'DummyAzDoService.GetAppToken()', returning '${token}'`
-    );
-    return token;
+    return Promise.resolve(token);
 }
 
 async function GetDummyReportsFromDocumentStorage<TReport>(
-    documentCollectionName: string
+    collection: string
 ): Promise<TReport> {
-    // Simulate some waiting time
     await delay(1000);
-    return Promise.resolve<TReport>(loadData(documentCollectionName));
+    return loadData(collection);
 }
 
-function loadData<TReport>(documentCollectionName: string): TReport {
-    switch (documentCollectionName) {
+function loadData<TReport>(collection: string): TReport {
+    switch (collection) {
         case "globalpermissions":
             return (DummyProjectRulesReport as unknown) as TReport;
         case "repository":
@@ -77,14 +66,8 @@ function loadData<TReport>(documentCollectionName: string): TReport {
         case "releasepipelines":
             return (DummyReleasePipelinesReport as unknown) as TReport;
         default:
-            throw Error(`unsupported collection ${documentCollectionName}`);
+            throw Error(`unsupported collection ${collection}`);
     }
-}
-//#endregion
-
-//#region Real implementations
-function GetRealAzDoUser(): IUserContext {
-    return getUser();
 }
 
 async function GetRealAzDoAppToken(): Promise<string> {
@@ -101,7 +84,7 @@ export function IsTokenExpired(token: string): boolean {
 }
 
 async function GetRealAzDoReportsFromDocumentStorage<TReport>(
-    documentCollectionName: string
+    collection: string
 ): Promise<TReport> {
     const token = await getAccessToken();
     const dataService = await getService<IExtensionDataService>(
@@ -115,6 +98,5 @@ async function GetRealAzDoReportsFromDocumentStorage<TReport>(
         getExtensionContext().id,
         token
     );
-    return dataManager.getDocument(documentCollectionName, project!.name);
+    return dataManager.getDocument(collection, project!.name);
 }
-//#endregion
