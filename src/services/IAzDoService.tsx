@@ -58,7 +58,3 @@ export interface IPreventiveRulesReport
     rescanUrl: string;
     hasReconcilePermissionUrl: string;
 }
-
-export interface IBuildReport extends IExtensionDocument<IBuildRule> {}
-
-export interface IReleaseReport extends IExtensionDocument<IReleaseRule> {}

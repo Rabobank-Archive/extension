@@ -1,15 +1,13 @@
 import {
     IExtensionDataService,
-    IProjectPageService
+    IProjectPageService,
 } from "azure-devops-extension-api";
 
 import {
     DummyProjectRulesReport,
-    DummyBuildReport,
-    DummyReleaseReport,
     DummyRepositoriesReport,
     DummyBuildPipelinesReport,
-    DummyReleasePipelinesReport
+    DummyReleasePipelinesReport,
 } from "./DummyData";
 import { USE_AZDO_SERVICE } from "./Environment";
 import { delay } from "./Delay";
@@ -20,7 +18,7 @@ import {
     getAppToken,
     getAccessToken,
     getService,
-    getExtensionContext
+    getExtensionContext,
 } from "azure-devops-extension-sdk";
 
 let appToken: string | undefined;
@@ -48,7 +46,7 @@ function GetDummyAzDoUser(): IUserContext {
         displayName: "dummy-displayname",
         id: "dummy-id",
         imageUrl: "https://dummy-image-url",
-        name: "dummy-name"
+        name: "dummy-name",
     };
 }
 
@@ -72,10 +70,6 @@ function loadData<TReport>(documentCollectionName: string): TReport {
     switch (documentCollectionName) {
         case "globalpermissions":
             return (DummyProjectRulesReport as unknown) as TReport;
-        case "BuildReports":
-            return (DummyBuildReport as unknown) as TReport;
-        case "Releases":
-            return (DummyReleaseReport as unknown) as TReport;
         case "repository":
             return (DummyRepositoriesReport as unknown) as TReport;
         case "buildpipelines":

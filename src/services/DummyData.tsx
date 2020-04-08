@@ -1,8 +1,4 @@
-import {
-    IReleaseReport,
-    IBuildReport,
-    IPreventiveRulesReport
-} from "./IAzDoService";
+import { IPreventiveRulesReport } from "./IAzDoService";
 
 const projectRules = [
     {
@@ -15,10 +11,10 @@ const projectRules = [
                 "Dummy Project Administrators group is created and added to Project Administrators",
                 "Delete team project permissions of the Dummy Project Administrators group is set to deny",
                 "Members of the Project Administrators are moved to Dummy Project Administrators",
-                "Delete team project permission is set to 'not set' for all other groups"
+                "Delete team project permission is set to 'not set' for all other groups",
             ],
-            url: "http://something.com"
-        }
+            url: "http://something.com",
+        },
     },
     {
         description: "Some rule that cannot autofix",
@@ -28,10 +24,10 @@ const projectRules = [
         reconcile: {
             impact: [
                 "Typ gewoon blablabal wat mij betreft zet je er",
-                "henkie is een test"
+                "henkie is een test",
             ],
-            url: ""
-        }
+            url: "",
+        },
     },
     {
         description: "Just some dummy other rule",
@@ -43,10 +39,10 @@ const projectRules = [
                 "Dit is een test data zin, om te checken of blablablabal",
                 "Dit is een test data zin, om te checken of blablablabal",
                 "Members of the Project Administrators are moved to Dummy Project Administrators",
-                "Delete team project permission is set to 'not set' for all other groups"
+                "Delete team project permission is set to 'not set' for all other groups",
             ],
-            url: "http://something.com"
-        }
+            url: "http://something.com",
+        },
     },
     {
         description: "Another dummy other rule",
@@ -58,11 +54,11 @@ const projectRules = [
                 "Dit is een test data zin, om te checken of blablablabal",
                 "Dit is een test data zin, om te checken of blablablabal",
                 "Members of the Project Administrators are moved to Dummy Project Administrators",
-                "Delete team project permission is set to 'not set' for all other groups"
+                "Delete team project permission is set to 'not set' for all other groups",
             ],
-            url: "http://something.com"
-        }
-    }
+            url: "http://something.com",
+        },
+    },
 ];
 
 export const DummyProjectRulesReport: IPreventiveRulesReport = {
@@ -76,77 +72,9 @@ export const DummyProjectRulesReport: IPreventiveRulesReport = {
             item: "",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: projectRules
-        }
-    ]
-};
-
-export const DummyBuildReport: IBuildReport = {
-    reports: [
-        {
-            id: "1234",
-            pipeline: "auto-lst",
-            createdDate: "2019-02-12T11:34:18.8188815Z",
-            artifactsStoredSecure: true,
-            usesFortify: true,
-            usesSonarQube: false
+            rules: projectRules,
         },
-        {
-            id: "2435",
-            pipeline: "SM9",
-            createdDate: "2019-01-12T11:34:18.8188815Z",
-            artifactsStoredSecure: false,
-            usesFortify: false,
-            usesSonarQube: true
-        }
-    ]
-};
-
-export const DummyReleaseReport: IReleaseReport = {
-    reports: [
-        {
-            release: "Release-200",
-            environment: "raboweb-test",
-            releaseId: "2375",
-            createdDate: "2019-02-12T11:39:12.9157118Z",
-            usesProductionEndpoints: true,
-            hasApprovalOptions: false,
-            pipeline: "TAS Azure DevOps Extensions",
-            hasBranchFilterForAllArtifacts: true,
-            usesManagedAgentsOnly: false,
-            allArtifactsAreFromBuild: false,
-            sM9ChangeId: null,
-            sM9ChangeUrl: null
-        },
-        {
-            release: "Release-199",
-            environment: "raboweb-test",
-            releaseId: "2374",
-            createdDate: "2019-02-12T11:34:18.8188815Z",
-            usesProductionEndpoints: false,
-            hasApprovalOptions: null,
-            pipeline: "TAS Azure DevOps Extensions",
-            hasBranchFilterForAllArtifacts: false,
-            usesManagedAgentsOnly: true,
-            allArtifactsAreFromBuild: true,
-            sM9ChangeId: null,
-            sM9ChangeUrl: null
-        },
-        {
-            release: "Release-198",
-            environment: "raboweb-test",
-            releaseId: "2374",
-            createdDate: "2019-02-12T11:34:18.8188815Z",
-            usesProductionEndpoints: null,
-            hasApprovalOptions: false,
-            pipeline: "TAS Azure DevOps Extensions",
-            hasBranchFilterForAllArtifacts: false,
-            usesManagedAgentsOnly: null,
-            allArtifactsAreFromBuild: null,
-            sM9ChangeId: "C000691701",
-            sM9ChangeUrl: "http://itsm.Dummy.nl/SM"
-        }
-    ]
+    ],
 };
 
 const repoRules = [
@@ -157,8 +85,8 @@ const repoRules = [
         status: true,
         reconcile: {
             url: "http://some-reconcile-url",
-            impact: ["some impact"]
-        }
+            impact: ["some impact"],
+        },
     },
     {
         description: "Master and release branches are protected",
@@ -167,8 +95,8 @@ const repoRules = [
         status: false,
         reconcile: {
             url: "http://some-reconcile-url",
-            impact: ["some impact"]
-        }
+            impact: ["some impact"],
+        },
     },
     {
         description: "No secrets",
@@ -177,9 +105,9 @@ const repoRules = [
         status: null,
         reconcile: {
             url: "http://some-reconcile-url",
-            impact: ["some impact"]
-        }
-    }
+            impact: ["some impact"],
+        },
+    },
 ];
 
 export const DummyRepositoriesReport: IPreventiveRulesReport = {
@@ -191,69 +119,69 @@ export const DummyRepositoriesReport: IPreventiveRulesReport = {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "investment-application-messages",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
+            rules: repoRules,
         },
         {
             item: "rbo-feature-settings-ked",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: repoRules
-        }
-    ]
+            rules: repoRules,
+        },
+    ],
 };
 
 const buildRules = [
@@ -264,9 +192,9 @@ const buildRules = [
         status: true,
         reconcile: {
             url: "http://some-reconcile-url",
-            impact: ["some impact"]
-        }
-    }
+            impact: ["some impact"],
+        },
+    },
 ];
 
 export const DummyBuildPipelinesReport: IPreventiveRulesReport = {
@@ -278,27 +206,27 @@ export const DummyBuildPipelinesReport: IPreventiveRulesReport = {
             item: "microservice-architecture",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: buildRules
+            rules: buildRules,
         },
         {
             item: "enterprise-distributed-service",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: buildRules
+            rules: buildRules,
         },
         {
             item: "mobile-ios-app",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: buildRules
+            rules: buildRules,
         },
         {
             item: "node-package",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: buildRules
-        }
-    ]
+            rules: buildRules,
+        },
+    ],
 };
 
 const releasePipelineRules = [
@@ -309,8 +237,8 @@ const releasePipelineRules = [
         status: false,
         reconcile: {
             url: "http://some-reconcile-url",
-            impact: ["some impact"]
-        }
+            impact: ["some impact"],
+        },
     },
     {
         description: "Release pipeline has valid CMDB link",
@@ -321,10 +249,10 @@ const releasePipelineRules = [
             url:
                 "https://azdocompliancydev.azurewebsites.net/api/reconcile/raboweb-test/53410703-e2e5-4238-9025-233bd7c811b3/releasepipelines/ReleasePipelineHasDeploymentMethod/4",
             impact: [
-                "In the CMDB the deployment method for the CI is set to Azure DevOps and coupled to this release pipeline"
-            ]
-        }
-    }
+                "In the CMDB the deployment method for the CI is set to Azure DevOps and coupled to this release pipeline",
+            ],
+        },
+    },
 ];
 
 export const DummyReleasePipelinesReport: IPreventiveRulesReport = {
@@ -340,27 +268,27 @@ export const DummyReleasePipelinesReport: IPreventiveRulesReport = {
             ciIdentifiers: "CI1312312,CI23444432,CI1231122",
             environments: [
                 { id: "1", name: "UAT" },
-                { id: "2", name: "PROD" }
-            ]
+                { id: "2", name: "PROD" },
+            ],
         },
         {
             item: "microservice-architecture",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
             rules: releasePipelineRules,
-            ciIdentifiers: "NON-PROD"
+            ciIdentifiers: "NON-PROD",
         },
         {
             item: "mobile-ios-app",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: releasePipelineRules
+            rules: releasePipelineRules,
         },
         {
             item: "node-package",
             itemId: "1",
             projectId: "f64ffdfa-0c4e-40d9-980d-bb8479366fc5",
-            rules: releasePipelineRules
-        }
-    ]
+            rules: releasePipelineRules,
+        },
+    ],
 };
