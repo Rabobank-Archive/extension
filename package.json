@@ -28,7 +28,7 @@
     "azure-devops-ui": "^2.166.1",
     "history": "^4.10.1",
     "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-json-pretty": "^2.2.0",
