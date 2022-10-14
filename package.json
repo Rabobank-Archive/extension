@@ -21,7 +21,7 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "@types/jsonwebtoken": "^8.3.8",
+    "@types/jsonwebtoken": "^8.5.9",
     "axios": "^0.19.2",
     "azure-devops-extension-api": "^1.157.0",
     "azure-devops-extension-sdk": "^2.0.11",
